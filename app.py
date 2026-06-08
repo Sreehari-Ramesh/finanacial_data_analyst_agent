@@ -167,27 +167,27 @@ def _agent_worker(
     }
 
     try:
-        progress["step"] = "🔍 Understanding your question…"
+        # progress["step"] = "🔍 Understanding your question…"
         if stopped(): result_q.put({"__stopped__": True}); return
         state.update(analyze_question(state))
 
         if not state.get("needs_db", True):
-            progress["step"] = "💬 Preparing answer…"
+            # progress["step"] = "💬 Preparing answer…"
             if stopped(): result_q.put({"__stopped__": True}); return
             state.update(chat_response(state))
             result_q.put(state)
             return
 
-        progress["step"] = "📋 Reading database schema…"
+        # progress["step"] = "📋 Reading database schema…"
         if stopped(): result_q.put({"__stopped__": True}); return
         state.update(fetch_schema(state))
 
         for attempt in range(MAX_RETRIES + 1):
-            progress["step"] = (
-                "⚙️ Writing SQL query…"
-                if attempt == 0
-                else f"⚙️ Fixing SQL (attempt {attempt + 1})…"
-            )
+            # progress["step"] = (
+            #     "⚙️ Writing SQL query…"
+            #     if attempt == 0
+            #     else f"⚙️ Fixing SQL (attempt {attempt + 1})…"
+            # )
             if stopped(): result_q.put({"__stopped__": True}); return
             state.update(generate_sql(state))
 

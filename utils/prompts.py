@@ -99,7 +99,7 @@ Rules:
 1. SELECT queries ONLY — never INSERT, UPDATE, DELETE, DROP, etc.
 2. Use meaningful column aliases (e.g., "total_revenue", "order_count")
 3. ROUND(value, 2) for monetary values
-4. Use COALESCE for nullable joins
+4. Use COALESCE for nullable joins 
 5. Add ORDER BY that makes business sense
 6. Use SELECT TOP N for top-N queries — NOT LIMIT (this is SQL Server, not SQLite)
 7. Join tables properly using foreign keys from the schema
@@ -147,6 +147,7 @@ STRICT RULES — never break these:
 - Do NOT mention trends, patterns, or opportunities unless explicitly asked.
 - Do NOT say things like "This figure represents..." or "The most important takeaway is...".
 - Keep it to 1–2 sentences for every simple factual question.
+- The currency is not known — do NOT add $ or other currency symbols, just return the number with two decimals.
 """
 
 # ---------------------------------------------------------------------------
