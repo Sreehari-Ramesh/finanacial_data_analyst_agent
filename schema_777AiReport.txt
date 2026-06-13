@@ -1,0 +1,3735 @@
+TABLE: ReservedWords (47 rows)
+  id INTEGER NOT NULL  [PK]
+  word VARCHAR(20) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+
+TABLE: tblAction (10 rows)
+  appActionID SMALLINT NOT NULL  [PK]
+  appActionName VARCHAR(32) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appActionEnumID SMALLINT NULL
+
+TABLE: tblActionmacro (36 rows)
+  appActionMacroID INTEGER NOT NULL  [PK]
+  appActionEnumID INTEGER NOT NULL
+  appMacroId INTEGER NOT NULL
+
+TABLE: tblActionStatus (3 rows)
+  appID INTEGER NOT NULL  [PK]
+  appActionStatusName VARCHAR(48) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appActionStatusEnumID INTEGER NULL
+
+TABLE: tblAdminNotificationActionMapping (1 rows)
+  appId INTEGER NOT NULL  [PK]
+  appSettingType VARCHAR(255) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appActionId INTEGER NULL
+  appUserIds NVARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appActionBody NVARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appActionSubject NVARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+
+TABLE: tblAdminNotificationSetting (2 rows)
+  appId INTEGER NOT NULL  [PK]
+  appEmail VARCHAR(255) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appPassword VARCHAR(255) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsSSL BIT NULL
+  appPort INTEGER NULL
+  appReceiverEmail VARCHAR(255) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appSMTP VARCHAR(255) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appCreatedDate DATETIME NULL
+  appCreatedBy INTEGER NULL
+  appModifiedBy INTEGER NULL
+  appModifiedDate DATETIME NULL
+  appIsEmailSend BIT NULL
+  appEmailSubject VARCHAR(180) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appEmailBody VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appTelegramBotName VARCHAR(255) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appTelegramBotAuthKey VARCHAR(255) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appReceiverTelegramId VARCHAR(255) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appTelegramBody VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsTelegramSend BIT NULL
+  appIsSiteNotificationSend BIT NULL
+  appIsForAdmin BIT NULL
+  appResendOtpLimit INTEGER NULL
+  appResendOtpIntervalType INTEGER NULL
+
+TABLE: tblAdminShare (16,332 rows)
+  appAdminShareId INTEGER NOT NULL  [PK]
+  appShare DECIMAL(18, 2) NULL
+  appRefID INTEGER NULL
+  appUserId INTEGER NULL
+  appUserType INTEGER NULL
+  appParentId INTEGER NULL
+  appParentType INTEGER NULL
+  appPoint DECIMAL(10, 2) NULL
+  appCreateDate DATETIME NULL
+  appCreateBy INTEGER NULL
+  appModifyDate DATETIME NULL
+  appModifyBy INTEGER NULL
+
+TABLE: tblAdminShareMaster (8,092 rows)
+  appAdminShareMasterID INTEGER NOT NULL  [PK]
+  appUserID INTEGER NULL
+  appUserType INTEGER NULL
+  appParentID INTEGER NOT NULL
+  appParentType INTEGER NULL
+  appParentShare DECIMAL(18, 2) NULL
+  appOwnShare DECIMAL(18, 2) NULL
+  appUserPoint DECIMAL(10, 2) NULL
+  appGameType INTEGER NULL
+  appMarketType INTEGER NULL
+  appEventType INTEGER NULL
+  appEventID INTEGER NULL
+  appDisplayOrder INTEGER NULL
+  appIsActive BIT NULL
+  appCreatedBy INTEGER NULL
+  appCreatedDate DATETIME NULL
+  appModifiedBy INTEGER NULL
+  appModifiedDate DATETIME NULL
+
+TABLE: tblAngularCasinoGame (3,383 rows)
+  AngularCasinoGameId INTEGER NOT NULL  [PK]
+  Name VARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  Icon VARCHAR(1000) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  IsActive BIT NULL
+  IsShow BIT NULL
+  types VARCHAR(50) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  isNewGame BIT NULL
+  gameCode VARCHAR(50) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  apiParamName VARCHAR(50) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  apiEndPoint VARCHAR(50) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  CategoryID INTEGER NULL
+  DisplayOrder INTEGER NULL
+  appCasinoGameID INTEGER NULL
+  appProviderID INTEGER NULL
+  IsPopular BIT NULL
+  isShowOnDashboard BIT NULL
+  DisplayOrderNew INTEGER NULL
+  DisplayOrderPopular INTEGER NULL
+  DisplayOrderLive INTEGER NULL
+  DisplayOrderVirtual INTEGER NULL
+  IsOpenInNewTab BIT NULL
+  appShare DECIMAL(18, 2) NULL
+
+TABLE: tblAngularCasinoGame_08122025 (2,362 rows)
+  AngularCasinoGameId INTEGER NOT NULL
+  Name VARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  Icon VARCHAR(1000) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  IsActive BIT NULL
+  IsShow BIT NULL
+  types VARCHAR(50) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  isNewGame BIT NULL
+  gameCode VARCHAR(50) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  apiParamName VARCHAR(50) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  apiEndPoint VARCHAR(50) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  CategoryID INTEGER NULL
+  DisplayOrder INTEGER NULL
+  appCasinoGameID INTEGER NULL
+  appProviderID INTEGER NULL
+  IsPopular BIT NULL
+  isShowOnDashboard BIT NULL
+  DisplayOrderNew INTEGER NULL
+  DisplayOrderPopular INTEGER NULL
+  DisplayOrderLive INTEGER NULL
+  DisplayOrderVirtual INTEGER NULL
+  IsOpenInNewTab BIT NULL
+  appShare DECIMAL(18, 2) NULL
+
+TABLE: tblAngularCasinoGame_09012026 (2,365 rows)
+  AngularCasinoGameId INTEGER NOT NULL
+  Name VARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  Icon VARCHAR(1000) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  IsActive BIT NULL
+  IsShow BIT NULL
+  types VARCHAR(50) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  isNewGame BIT NULL
+  gameCode VARCHAR(50) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  apiParamName VARCHAR(50) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  apiEndPoint VARCHAR(50) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  CategoryID INTEGER NULL
+  DisplayOrder INTEGER NULL
+  appCasinoGameID INTEGER NULL
+  appProviderID INTEGER NULL
+  IsPopular BIT NULL
+  isShowOnDashboard BIT NULL
+  DisplayOrderNew INTEGER NULL
+  DisplayOrderPopular INTEGER NULL
+  DisplayOrderLive INTEGER NULL
+  DisplayOrderVirtual INTEGER NULL
+  IsOpenInNewTab BIT NULL
+  appShare DECIMAL(18, 2) NULL
+
+TABLE: tblAngularCasinoGameCategory (7 rows)
+  CategoryID INTEGER NOT NULL  [PK]
+  Name VARCHAR(50) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  DisplayName VARCHAR(50) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  IconPath VARCHAR(300) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  IsActive BIT NULL
+  IsNew BIT NULL
+  DisplayOrder INTEGER NULL
+
+TABLE: tblAngularSettings (69 rows)
+  appKeyId INTEGER NOT NULL  [PK]
+  appKey VARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appValueBit BIT NULL
+  appValueString VARCHAR(1000) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+
+TABLE: tblB2CDWUserSettlementLog (13,402 rows)
+  appB2CDWUserSettlementLogID INTEGER NOT NULL  [PK]
+  appFinalTransactionID INTEGER NULL
+  appLogType INTEGER NULL
+  appCreatedDate DATETIME NULL
+
+TABLE: tblB2CSettings (10 rows)
+  appB2CSettingID INTEGER NOT NULL  [PK]
+  appWhiteLableID INTEGER NULL
+  appB2CAgentID INTEGER NULL
+  appEmailID VARCHAR(300) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appEmailPassword VARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appPort INTEGER NULL
+  appSMTP VARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsSsl BIT NULL
+  appDepositMinCash DECIMAL(18, 3) NULL
+  appDepositMaxCash DECIMAL(18, 3) NULL
+  appDepositLimit DECIMAL(18, 3) NULL
+  appWithdrawMinCash DECIMAL(18, 3) NULL
+  appWithdrawMaxCash DECIMAL(18, 3) NULL
+  appWithdrawLImit DECIMAL(18, 3) NULL
+  appIsManualWithdraw BIT NULL
+  appManualDepositLimit DECIMAL(18, 3) NULL
+  appManualWithdrawLImit DECIMAL(18, 3) NULL
+  appAffiliateAgentShare DECIMAL(18, 2) NULL
+  appPayPhoneNo VARCHAR(15) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appDepositTimeInterval INTEGER NULL
+  appIsTrackierEnable BIT NULL
+  appTrackierApiUrl VARCHAR(300) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appTrackierToken VARCHAR(300) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsBitRixEnable BIT NULL
+  appBitRixApiURL VARCHAR(200) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsEmailSendEnable BIT NULL
+  appIsDCOEnable BIT NULL
+  appIsCryptoEnable BIT NULL
+  appIsCryptoManualDeposit BIT NULL
+  appIsCryptoManualWithdraw BIT NULL
+  appCryptoAPI VARCHAR(120) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appCryptoToken VARCHAR(120) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsSendOTP BIT NULL
+  appIsWALoginEnable BIT NULL
+  appIsUpdateMobileNo BIT NULL
+  appIsKYCRequired BIT NULL
+  appDefaultRegisterFranchise INTEGER NULL
+  appTelegramBotName VARCHAR(80) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appTelegramBotAuthKey VARCHAR(240) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+
+TABLE: tblBank (142 rows)
+  appBankId INTEGER NOT NULL  [PK]
+  appBankName VARCHAR(120) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsActive BIT NULL
+
+TABLE: tblBankDetail (518 rows)
+  appBankDetailId INTEGER NOT NULL  [PK]
+  appClientId INTEGER NULL
+  appBankName VARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIFSC VARCHAR(20) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appAccountNo VARCHAR(104) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appAccountHolderName VARCHAR(50) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appCreatedDate DATETIME NULL
+  appIsActive BIT NULL
+  appIsCrypto BIT NULL
+  appIsUpi BIT NULL
+  appDeviceInfo VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appBankBranchName VARCHAR(96) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appBeneficiaryId VARCHAR(20) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appUpiQRCode VARCHAR(160) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+
+TABLE: tblBanner (16 rows)
+  appBannerID INTEGER NOT NULL  [PK]
+  appTitle VARCHAR(50) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appBannerImage VARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appBannerType INTEGER NULL
+  appIsActive BIT NULL
+  appDisplayOrder INTEGER NULL
+  appCreateDate DATETIME NULL
+  appCreateBy INTEGER NULL
+  appWhiteLableid INTEGER NULL
+  appIsforWebView BIT NULL
+  appIsforMobileView BIT NULL
+  appIsforApplicationView BIT NULL
+  appMatchID INTEGER NULL
+  appIsPermenent BIT NULL
+  appFromDate DATETIME NULL
+  appToDate DATETIME NULL
+  appURL VARCHAR(500) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appMobileBannerImage VARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+
+TABLE: tblBannerType (16 rows)
+  appBannerTypeID INTEGER NOT NULL  [PK]
+  appBannerType INTEGER NULL
+  appBannerTypeName VARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsActive BIT NULL
+  appIsforAgent BIT NULL
+  appCreateDate DATETIME NULL
+  appCreateBy INTEGER NULL
+
+TABLE: tblBet (5,400,205 rows)
+  appBetID INTEGER NOT NULL  [PK]
+  appMatchID INTEGER NULL
+  appBetName VARCHAR(150) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appMarketID_BF VARCHAR(25) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appBetStatus INTEGER NULL
+  appMarketRate INTEGER NULL
+  appIsActive BIT NULL
+  appMatchedAmount DECIMAL(18, 2) NULL
+  appBetTypeID INTEGER NULL
+  appIsFancy BIT NULL
+  appFancyType INTEGER NULL
+  appIsCentralizationID BIT NULL
+  appCentralizationID VARCHAR(50) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  apprateDifferent DECIMAL(10, 2) NULL
+  appMaxStack DECIMAL(10, 2) NULL
+  appPlaceStack DECIMAL(10, 2) NULL
+  appResult DECIMAL(10, 2) NULL
+  appRules VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appFancyResultReferenceID INTEGER NULL
+  appIsAustralian BIT NULL
+  appIsUnmatchedAllow BIT NULL
+  appLastUpdateShow DATETIME NULL
+  appNavigationID VARCHAR(50) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appDisplayOrder INTEGER NULL
+  appGetDataTime DATETIME NULL
+  appRateChangeTime DATETIME NULL
+  appBallStartSec INTEGER NULL
+  appMarketMsg VARCHAR(2000) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsInplay BIT NULL
+  appIsManualInplay BIT NULL
+  appCreatedBy INTEGER NULL
+  appCreatedDate DATETIME NULL
+  appSystemStatus INTEGER NULL
+  appSystemBetAllow BIT NULL
+  appAfterClose DATETIME NULL
+  appAfterSuspend DATETIME NULL
+  appAfterBetAllowFalse DATETIME NULL
+  appLayPointMeterPari DECIMAL(10, 2) NULL
+  appBackPointMeterPari DECIMAL(10, 2) NULL
+  appMarketOpenDate DATETIME NULL
+  appBeforeBetAllowTrue DECIMAL(10, 2) NULL
+  CategoryMarketType INTEGER NULL
+  appIsNodeCentralizationID BIT NULL
+  appAlterCentralizationID VARCHAR(50) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appStatusCloseTime DATETIME NULL
+  appMarketBeforeInPlayLimit1 DECIMAL(10, 2) NULL
+  appMarketWinner VARCHAR(1000) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appModifyBy INTEGER NULL
+  appModifyDate DATETIME NULL
+  appIstobeSettleMarket BIT NULL
+  appRateSource INTEGER NULL
+  appIsManualActive BIT NULL
+  appNoWinner INTEGER NULL
+  appNoRunner INTEGER NULL
+  appNoActiveRunner INTEGER NULL
+  appBSPMarket INTEGER NULL
+  appBetfairMarketType VARCHAR(104) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appBettingType VARCHAR(104) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsHandicapMarket BIT NULL
+  appCountryCode VARCHAR(24) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appRaceType VARCHAR(104) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appLiabilityCalType INTEGER NULL
+
+TABLE: tblBetDetail (19,147,418 rows)
+  appBetDetailID INTEGER NOT NULL  [PK]
+  appBetID INTEGER NULL
+  appSelectionID_BF VARCHAR(50) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appBetTitle VARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appLastUpdated DATETIME NULL
+  appIsWinner BIT NULL
+  appDisplayOrder INTEGER NULL
+  appIsActive BIT NULL
+  appBackRate DECIMAL(10, 2) NULL
+  appLayRate DECIMAL(10, 2) NULL
+  appRunnerStatus INTEGER NULL
+  appAdjustmentFactor DECIMAL(10, 3) NULL
+  appRemovalDate DATETIME NULL
+  appSireName VARCHAR(500) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appClothNumberAlpha VARCHAR(10) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appOfficaialRating INTEGER NULL
+  appColoursDescription VARCHAR(500) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appColoursFilename VARCHAR(500) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appDamSireName VARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appWeight DECIMAL(10, 2) NULL
+  appSexType VARCHAR(6) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appDaySinceLastRun INTEGER NULL
+  appOwnerName VARCHAR(500) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appDamYearBorn INTEGER NULL
+  appSireBred VARCHAR(50) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appJockeyName VARCHAR(500) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appDam_Bred VARCHAR(50) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appAdjustedRating INTEGER NULL
+  appClothNumber VARCHAR(10) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appSireYearBorn INTEGER NULL
+  appTrainerName VARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appColourType VARCHAR(10) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appAge INTEGER NULL
+  appDamSireBred VARCHAR(50) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appForm VARCHAR(50) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appForecastePriceNumerator VARCHAR(50) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appBred VARCHAR(50) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appDamName VARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appDamSireYearBorn INTEGER NULL
+  appStallDraw VARCHAR(2) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appWeightUnite VARCHAR(10) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+
+TABLE: tblBetLiability (14 rows)
+  appBetLiabilityID INTEGER NOT NULL  [PK]
+  appBetID INTEGER NULL
+  appClientID INTEGER NULL
+  appLiability DECIMAL(10, 2) NULL
+  appLiabilityDate DATETIME NULL
+  appAdminShareMasterID INTEGER NULL
+  appTPGameRefType INTEGER NULL
+  appTPRoundID VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appRealLiability DECIMAL(10, 2) NULL
+  appBonusLiability DECIMAL(10, 2) NULL
+  appWalletID INTEGER NULL
+  appRemarks VARCHAR(200) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsFreebet BIT NULL
+  appIsSportbookbet BIT NULL
+  appUserId INTEGER NULL
+
+TABLE: tblBetLiability_Delete (364,876 rows)
+  appID INTEGER NOT NULL  [PK]
+  appBetLiabilityID INTEGER NULL
+  appBetID INTEGER NULL
+  appClientID INTEGER NULL
+  appLiability DECIMAL(10, 2) NULL
+  appLiabilityDate DATETIME NULL
+  appAdminShareMasterID INTEGER NULL
+  appTPGameRefType INTEGER NULL
+  appTPRoundID VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appRealLiability DECIMAL(10, 2) NULL
+  appBonusLiability DECIMAL(10, 2) NULL
+  appWalletID INTEGER NULL
+  appDeletedTime DATETIME NULL
+  appRemarks VARCHAR(200) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsFreebet BIT NULL
+  appIsSportbookbet BIT NULL
+  appUserId INTEGER NULL
+
+TABLE: tblBetLiabilityWager_DeleteTRG (487 rows)
+  appID INTEGER NOT NULL
+  appBetLiabilityID INTEGER NULL
+  appBetID INTEGER NULL
+  appClientID INTEGER NULL
+  appLiability DECIMAL(10, 2) NULL
+  appLiabilityDate DATETIME NULL
+  appAdminShareMasterID INTEGER NULL
+  appTPGameRefType INTEGER NULL
+  appTPRoundID VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appRealLiability DECIMAL(10, 2) NULL
+  appBonusLiability DECIMAL(10, 2) NULL
+  appWalletID INTEGER NULL
+  appDeletedDate DATETIME NULL
+  appUserId INTEGER NULL
+
+TABLE: tblBetLog (50,153 rows)
+  appBetLogID INTEGER NOT NULL  [PK]
+  appDescription VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appLogCode INTEGER NULL
+  appClientID INTEGER NULL
+  appBetID INTEGER NULL
+  appBetDetailID INTEGER NULL
+  appIsBack BIT NULL
+  appRate DECIMAL(18, 3) NULL
+  appStake DECIMAL(10, 3) NULL
+  appPlaceBetInfo VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsMasterLimit BIT NULL
+  appCreatedOn DATETIME NULL
+  appCreatedBy INTEGER NULL
+
+TABLE: tblBetLogWager (1,291 rows)
+  appBetLogID INTEGER NOT NULL
+  appDescription NVARCHAR(800) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appLogCode INTEGER NULL
+  appClientID INTEGER NULL
+  appBetID INTEGER NULL
+  appBetDetailID INTEGER NULL
+  appIsBack BIT NULL
+  appRate DECIMAL(10, 3) NULL
+  appStake DECIMAL(10, 3) NULL
+  appPlaceBetInfo VARCHAR(800) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsMasterLimit BIT NULL
+  appCreatedOn DATETIME NULL
+  appCreatedBy INTEGER NULL
+
+TABLE: tblBgActioncondition (16 rows)
+  appBgActionConditionId INTEGER NOT NULL  [PK]
+  appBgActionCondition VARCHAR(20) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appBgActionConditionName VARCHAR(30) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appBgActionConditionExpression VARCHAR(20) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+
+TABLE: tblBgActionConditionDataType (25 rows)
+  appId INTEGER NOT NULL  [PK]
+  appBgActionConditionId INTEGER NULL
+  appDataType INTEGER NULL
+
+TABLE: tblBGActionDataType (3 rows)
+  appId INTEGER NOT NULL  [PK]
+  appDataType INTEGER NULL
+  appDataTypeName VARCHAR(20) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+
+TABLE: tblBgActionFields (23 rows)
+  appBgActionFieldsId INTEGER NOT NULL  [PK]
+  appTableName VARCHAR(104) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appFieldName VARCHAR(104) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appDisplayName VARCHAR(104) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appDataType INTEGER NULL
+  appFieldAggregateCondition VARCHAR(20) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appCreatedBy INTEGER NULL
+  appCreatedDate DATETIME NULL
+
+TABLE: tblBgActionType (2 rows)
+  appId INTEGER NOT NULL  [PK]
+  appBgActionTypeName VARCHAR(48) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appBgActionTypeEnum INTEGER NULL
+  appIsActive BIT NULL
+
+TABLE: tblBgAggregateCondition (6 rows)
+  appBgAggregateConditionId INTEGER NOT NULL  [PK]
+  appBgAggregateConditionName VARCHAR(20) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appBgAggregateConditionValue VARCHAR(10) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+
+TABLE: tblBgWorker (165 rows)
+  appId INTEGER NOT NULL  [PK]
+  appDate DATETIME NULL
+  appDescription VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+
+TABLE: tblBlock (7 rows)
+  appBlockId INTEGER NOT NULL  [PK]
+  appBlockName NVARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NOT NULL
+  appIsShowContent BIT NOT NULL
+  appContent VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appControlId NVARCHAR(50) COLLATE "SQL_Latin1_General_CP1_CI_AS" NOT NULL
+  appCreatedDate DATETIME NOT NULL
+  appCreatedBy INTEGER NOT NULL
+  appIsActive BIT NULL
+  appBlockDisplayPosition SMALLINT NULL
+  appWhiteLabelid INTEGER NULL
+
+TABLE: tblBlogCategory (7 rows)
+  appBlogCategoryId INTEGER NOT NULL  [PK]
+  appBlogCategory VARCHAR(96) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appSlug VARCHAR(192) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appDescription VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsActive BIT NULL
+  appCreatedDate DATETIME NULL
+  appCreatedBy INTEGER NULL
+  appModifiedDate DATETIME NULL
+  appModifiedBy INTEGER NULL
+
+TABLE: tblBonusCalculationType (4 rows)
+  appCalculationTypeId INTEGER NOT NULL  [PK]
+  appName NVARCHAR(255) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  AppBonusCalculationTypeEnumId INTEGER NULL
+  appIsActive BIT NULL
+
+TABLE: tblBonusSchedule (4 rows)
+  appScheduleId INTEGER NOT NULL  [PK]
+  appName NVARCHAR(255) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appBonusScheduleEnumId INTEGER NULL
+  appIsActive BIT NULL
+
+TABLE: tblCampaign (7 rows)
+  appCampaignId INTEGER NOT NULL  [PK]
+  appCampaignActionID INTEGER NULL
+  appCampaignName VARCHAR(96) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appImage VARCHAR(500) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appDisplayStartDate DATETIME NULL
+  appDisplayEndDate DATETIME NULL
+  appCampaignStartDate DATETIME NULL
+  appCampaignEndDate DATETIME NULL
+  appFixedDays SMALLINT NULL
+  appCampaignApplyOn TINYINT NULL
+  appBonusAmount DECIMAL(15, 2) NULL
+  appIsPercentage BIT NULL
+  appMaxBetAmount DECIMAL(15, 2) NULL
+  appMinBetAmount DECIMAL(15, 2) NULL
+  appPercentBonusUsedInBet DECIMAL(5, 2) NULL
+  appMaxBonusAmoutUsedInBet DECIMAL(9, 2) NULL
+  appNoOfBetRequired TINYINT NULL
+  appWalletTypeId INTEGER NULL
+  appIsWager BIT NULL
+  appWagerMultiplyByPerc DECIMAL(5, 2) NULL
+  appIsProviderInclude BIT NULL
+  appProviderIDs VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsTableInclude BIT NULL
+  appTableIDs VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsSportInClude BIT NULL
+  appSportIDs VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsTournamentInclude BIT NULL
+  appTournamentsIDs VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsMatchInclude BIT NULL
+  appMatchIDs VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appTotalSubscription SMALLINT NULL
+  appTotalSubscribed INTEGER NULL
+  appIsActive BIT NULL
+  appCreatedBy INTEGER NULL
+  appCreatedDate DATETIME NULL
+  appModifiedBy INTEGER NULL
+  appModifiedDate DATETIME NULL
+  appIsBonusInPerc BIT NULL
+  appBonusPerc DECIMAL(10, 2) NULL
+  appPromoCode VARCHAR(30) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appMaxSubscriptionPerUser INTEGER NULL
+  appWagerApplyOn INTEGER NULL
+  appMinOdds DECIMAL(8, 2) NULL
+  appMaxOdds DECIMAL(8, 2) NULL
+  appMaxBetPerMarket INTEGER NULL
+  appTermCondition VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appDescription VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appAllowWagerBetOn INTEGER NULL
+  appIsManualSubscribeOnly BIT NULL
+  appIsExpireOldBonus BIT NULL
+  appApplyIfOldBonusExist BIT NULL
+  appFreeBets INTEGER NULL
+  appFreeBetsAmount DECIMAL(8, 2) NULL
+  appBetsRequireToActiveBonus INTEGER NULL
+  appTitle1 VARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appTitle2 VARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appBonusCalculationTypeEnumId INTEGER NULL
+  appBonusScheduleType INTEGER NULL
+  appBonusScheduleValue NVARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appCampaignActionEnumId INTEGER NULL
+  appCampaignActionCategoryEnumId INTEGER NULL
+  appWalletTypeEnumId INTEGER NULL
+  appCampaignExpireActionEnumId INTEGER NULL
+  appDisplayOrder INTEGER NULL
+  appLowestBonus DECIMAL(8, 2) NULL
+  appIsShowClientSide BIT NULL
+  appIsClaimRequired BIT NULL
+  appPaymentTransferModeId INTEGER NULL
+
+TABLE: tblCampaignAction (12 rows)
+  appCampaignActionId INTEGER NOT NULL  [PK]
+  appActionName VARCHAR(96) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appCampaignActionEnumId TINYINT NULL
+  appIsActive BIT NULL
+  appCreatedBy INTEGER NULL
+  appCreatedDate DATETIME NULL
+  appModifiedBy INTEGER NULL
+  appModifiedDate DATETIME NULL
+  appGroupCode INTEGER NULL
+  appGroupName VARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+
+TABLE: tblCampaignActionCategory (5 rows)
+  appCampaignActionCategoryId INTEGER NOT NULL  [PK]
+  appActionCategoryName VARCHAR(96) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appCampaignActionCategoryEnumId INTEGER NULL
+  appIsActive BIT NULL
+
+TABLE: tblCampaignActionMapping (18 rows)
+  appCampaignActionMappingId INTEGER NOT NULL  [PK]
+  appCampaignActionCategoryEnumId INTEGER NULL
+  appCampaignActionEnumId INTEGER NULL
+  appIsActive BIT NULL
+
+TABLE: tblCampaignBonusDetailRange (4 rows)
+  appCampaignBonusDetailRangeId INTEGER NOT NULL  [PK]
+  appCampaignId INTEGER NULL
+  appMinAmount INTEGER NULL
+  appMaxAmount INTEGER NULL
+  appBonusPerc INTEGER NULL
+  appBonusAmount INTEGER NULL
+
+TABLE: tblCampaignExpireAction (2 rows)
+  appCampaignExpireActionId INTEGER NOT NULL  [PK]
+  appCampaignExpireActionName VARCHAR(96) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appCampaignExpireActionEnumId INTEGER NULL
+  appIsActive BIT NULL
+
+TABLE: tblCampaignSubscription (11,390 rows)
+  appCampaignSubscriptionId INTEGER NOT NULL  [PK]
+  appCampaignId INTEGER NULL
+  appCampaignActionId INTEGER NULL
+  appUserId INTEGER NULL
+  appSubscriptionDate DATETIME NULL
+  appExpiryDate DATETIME NULL
+  appFixedDays SMALLINT NULL
+  appCampaignApplyOn TINYINT NULL
+  appBonusAmount DECIMAL(15, 2) NULL
+  appIsPercentage BIT NULL
+  appMaxBetAmount DECIMAL(15, 2) NULL
+  appMinBetAmount DECIMAL(15, 2) NULL
+  appPercentBonusUsedInBet DECIMAL(5, 2) NULL
+  appMaxBonusAmoutUsedInBet DECIMAL(9, 2) NULL
+  appNoOfBetRequired TINYINT NULL
+  appWalletTypeId INTEGER NULL
+  appIsWager BIT NULL
+  appWagerMultiplyByPerc DECIMAL(5, 2) NULL
+  appIsProviderInclude BIT NULL
+  appProviderIDs VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsTableInclude BIT NULL
+  appTableIDs VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsSportInClude BIT NULL
+  appSportIDs VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsTournamentInclude BIT NULL
+  appTournamentsIDs VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsMatchInclude BIT NULL
+  appMatchIDs VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsActive BIT NULL
+  appCreatedBy INTEGER NULL
+  appCreatedDate DATETIME NULL
+  appModifiedBy INTEGER NULL
+  appModifiedDate DATETIME NULL
+  appIsExpired BIT NULL
+  appExpiredUpdateDate DATETIME NULL
+  appWagerApplyOn INTEGER NULL
+  appMinOdds DECIMAL(8, 2) NULL
+  appMaxOdds DECIMAL(8, 2) NULL
+  appMaxBetPerMarket INTEGER NULL
+  appAllowWagerBetOn INTEGER NULL
+  appIsExpireOldBonus BIT NULL
+  appApplyIfOldBonusExist BIT NULL
+  appDescription VARCHAR(600) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appRefId INTEGER NULL
+  appFreeBets INTEGER NULL
+  appFreeBetsAmount DECIMAL(8, 2) NULL
+  appBetsRequireToActiveBonus INTEGER NULL
+  appIsEligibleToUseBonus BIT NULL
+  appTotalBetPlaced INTEGER NULL
+  appCampaignActionEnumId INTEGER NULL
+  appCampaignActionCategoryEnumId INTEGER NULL
+  appWalletTypeEnumId INTEGER NULL
+  appCampaignExpireActionEnumId INTEGER NULL
+  appLowestBonus DECIMAL(8, 2) NULL
+  appUsedFreeBet INTEGER NULL
+  appDepositClientId INTEGER NULL
+  appIsClaimRequired BIT NULL
+  appIsClaimed BIT NULL
+  appClaimedDateTime DATETIME NULL
+  appPaymentTransferModeId INTEGER NULL
+  appCampaignExpireEnumId INTEGER NULL
+  appExpiredRemarks VARCHAR(600) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+
+TABLE: tblCampaignSubscriptionFailLog (77 rows)
+  appLogId INTEGER NOT NULL  [PK]
+  appCampaignId INTEGER NULL
+  appClientId INTEGER NULL
+  appParticular VARCHAR(500) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appDate DATETIME NULL
+
+TABLE: tblCampaignSubscriptionRequest (12,838 rows)
+  appCampaignSubscriptionRequestID INTEGER NOT NULL  [PK]
+  appClientID INTEGER NULL
+  appRefID INTEGER NULL
+  appCampaignID INTEGER NULL
+  appCampaignActionId INTEGER NULL
+  appCampaignActionEnumId TINYINT NULL
+  appCreatedBy INTEGER NULL
+  appCreatedDate DATETIME NULL
+
+TABLE: tblCaptcha (10 rows)
+  appCaptchaId INTEGER NOT NULL  [PK]
+  appCaptchaCode VARCHAR(10) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIp VARCHAR(50) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+
+TABLE: tblCasinoCurrency (7 rows)
+  appId INTEGER NOT NULL  [PK]
+  appCurrencyName VARCHAR(104) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appCurrencyValue VARCHAR(8) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appMin DECIMAL(9, 2) NULL
+  appMax DECIMAL(9, 2) NULL
+  appIsActive BIT NULL
+
+TABLE: tblCasinoFinalTransaction_DeleteTRG (362,476 rows)
+  appId INTEGER NOT NULL  [PK]
+  appCasinoFinalTransactionID INTEGER NULL
+  appUserID INTEGER NULL
+  appAmount DECIMAL(18, 2) NULL
+  appParticular VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appUserType INTEGER NULL
+  appDate DATETIME NULL
+  appIsIn BIT NULL
+  appTransactionType INTEGER NULL
+  appIsFreeChips BIT NULL
+  appRefType INTEGER NULL
+  appRefID INTEGER NULL
+  appPlaceFrom INTEGER NULL
+  appIPInfo VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appCasinoSessionID INTEGER NULL
+  appFinalTransactionID INTEGER NULL
+  appLiveCasinoRemark VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appLiveCasinoGameID VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appLiveCasinoTransactionID VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appLiveTeenPattiGameID VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appLiveTeenPattiRemark VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appLiveTeenPattiTransactionID VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appCreatedBy INTEGER NULL
+  appCreatedType INTEGER NULL
+  appLiveCasinoVeronicaGameID VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appLiveCasinoVeronicaRemark VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appLiveCasinoVeronicaTransactionID VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsLiveCasinoVeronicaSettlementStart BIT NULL
+  appIsLiveCasinoSettlementStart BIT NULL
+  appBinaryGameID VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsBinarySettlementStart BIT NULL
+  appBinaryRemark VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appBinaryTransactionID VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appSlotGameRoundID VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appSlotGameGameID VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appSlotGameTransactionID VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appSlotGameResponse VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appSlotGameRemark VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appSlotGameRequest VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsSlotGameSettlementStart BIT NULL
+  appEzugiCasinoRemark VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appEzugiCasinoSeatID VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appEzugiCasinoTransactionID VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appEzugiCasinoTableID VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appEzugiCasinoRoundID VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appEzugiCasinoGameID VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appEzugiCasinoBetTypeID VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appEzugiCasinoToken VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsEzugiCasinoSettlementStart BIT NULL
+  appLotteryGameID VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appLotteryTransactionID VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appLotteryRemark VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsLotterySettlementStart BIT NULL
+  appVacuumPlayRemark VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appVacuumPlayTransactionID VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsVacuumPlaySettlementStart BIT NULL
+  appVacuumPlayGameID VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appvkingplayRemark VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appvkingplayTransactionID VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsvkingplaySettlementStart BIT NULL
+  appvkingplayGameID VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appTPGameType VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appTPGameName VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appTPGameCode INTEGER NULL
+  appTableCode VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appRealAmount DECIMAL(15, 3) NULL
+  appBonusAmount DECIMAL(15, 3) NULL
+  appWalletId INTEGER NULL
+  appDeletedDate DATETIME NULL
+
+TABLE: tblCasinoFinalTransactionWager_DeleteTRG (413 rows)
+  appId INTEGER NOT NULL  [PK]
+  appCasinoFinalTransactionID INTEGER NULL
+  appUserID INTEGER NULL
+  appAmount DECIMAL(18, 2) NULL
+  appParticular VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appUserType INTEGER NULL
+  appDate DATETIME NULL
+  appIsIn BIT NULL
+  appTransactionType INTEGER NULL
+  appIsFreeChips BIT NULL
+  appRefType INTEGER NULL
+  appRefID INTEGER NULL
+  appPlaceFrom INTEGER NULL
+  appIPInfo VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appCasinoSessionID INTEGER NULL
+  appFinalTransactionID INTEGER NULL
+  appLiveCasinoRemark VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appLiveCasinoGameID VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appLiveCasinoTransactionID VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appLiveTeenPattiGameID VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appLiveTeenPattiRemark VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appLiveTeenPattiTransactionID VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appCreatedBy INTEGER NULL
+  appCreatedType INTEGER NULL
+  appLiveCasinoVeronicaGameID VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appLiveCasinoVeronicaRemark VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appLiveCasinoVeronicaTransactionID VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsLiveCasinoVeronicaSettlementStart BIT NULL
+  appIsLiveCasinoSettlementStart BIT NULL
+  appBinaryGameID VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsBinarySettlementStart BIT NULL
+  appBinaryRemark VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appBinaryTransactionID VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appSlotGameRoundID VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appSlotGameGameID VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appSlotGameTransactionID VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appSlotGameResponse VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appSlotGameRemark VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appSlotGameRequest VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsSlotGameSettlementStart BIT NULL
+  appEzugiCasinoRemark VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appEzugiCasinoSeatID VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appEzugiCasinoTransactionID VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appEzugiCasinoTableID VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appEzugiCasinoRoundID VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appEzugiCasinoGameID VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appEzugiCasinoBetTypeID VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appEzugiCasinoToken VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsEzugiCasinoSettlementStart BIT NULL
+  appLotteryGameID VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appLotteryTransactionID VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appLotteryRemark VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsLotterySettlementStart BIT NULL
+  appVacuumPlayRemark VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appVacuumPlayTransactionID VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsVacuumPlaySettlementStart BIT NULL
+  appVacuumPlayGameID VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appvkingplayRemark VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appvkingplayTransactionID VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsvkingplaySettlementStart BIT NULL
+  appvkingplayGameID VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appTPGameType VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appTPGameName VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appTPGameCode INTEGER NULL
+  appTableCode VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appRealAmount DECIMAL(15, 3) NULL
+  appBonusAmount DECIMAL(15, 3) NULL
+  appWalletId INTEGER NULL
+  appDeletedDate DATETIME NULL
+
+TABLE: tblCasinoGame (24 rows)
+  appCasinoGameID INTEGER NOT NULL  [PK]
+  appGameName VARCHAR(56) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appDisplayName VARCHAR(56) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsActive BIT NULL
+  appIcon VARCHAR(800) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appDisplayOrder INTEGER NULL
+  appCreatedDate DATETIME NULL
+
+TABLE: tblCDTriggerApi (4 rows)
+  appCDTriggerApiID INTEGER NOT NULL  [PK]
+  appAPIUrl VARCHAR(200) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsActive BIT NULL
+  appIsClientApi BIT NULL
+  appIsPanelApi BIT NULL
+  appIsNotifyApi BIT NULL
+  appIsPaymentApi BIT NULL
+
+TABLE: tblCDTriggerApiDetail (55 rows)
+  appCDTriggerApiDetailID INTEGER NOT NULL  [PK]
+  appTableName VARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appControllerName VARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appEndPoint VARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsActive BIT NULL
+  appIsClientApi BIT NULL
+  appIsPanelApi BIT NULL
+  appIsNotifyApi BIT NULL
+  appIsPaymentApi BIT NULL
+
+TABLE: tblChangePasswordLog (498 rows)
+  appChangePasswordLog INTEGER NOT NULL  [PK]
+  appUserId INTEGER NULL
+  appUserType INTEGER NULL
+  appLoginUserId INTEGER NULL
+  appLoginUserType INTEGER NULL
+  appIpAddress VARCHAR(300) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appBrowser VARCHAR(800) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appPasswordChangeType INTEGER NULL
+  appDateTime DATETIME NULL
+
+TABLE: tblChildLevel (7 rows)
+  appID INTEGER NOT NULL  [PK]
+  appName VARCHAR(48) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appLevel INTEGER NULL
+  appIsActive BIT NULL
+
+TABLE: tblChipsTemplate (8 rows)
+  appChipsTemplateID INTEGER NOT NULL  [PK]
+  appChipsName VARCHAR(50) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appChips DECIMAL(12, 2) NULL
+  appChipsIsActive BIT NULL
+  appDisplayOrder INTEGER NULL
+  appCreatedDate DATETIME NULL
+  appCreadtedBy INTEGER NULL
+  appModifyBy INTEGER NULL
+  appModifyDate DATETIME NULL
+
+TABLE: tblChipsTemplateDetail (8 rows)
+  appChipsTemplateDetailID INTEGER NOT NULL  [PK]
+  appChipsTemplateID INTEGER NULL
+  appClientID INTEGER NULL
+  appChipsName VARCHAR(50) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appChips DECIMAL(12, 2) NULL
+  appCreatedDate DATETIME NULL
+  appCreadtedBy INTEGER NULL
+  appModifyBy INTEGER NULL
+  appModifyDate DATETIME NULL
+
+TABLE: tblClient (2,691 rows)
+  appClientID INTEGER NOT NULL  [PK]
+  appClientName VARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appUserName VARCHAR(50) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appBalance DECIMAL(18, 2) NULL
+  appExposureLimit DECIMAL(10, 2) NULL
+  appCommission DECIMAL(10, 2) NULL
+  appSessionCommission DECIMAL(10, 2) NULL
+  appIsApproved BIT NULL
+  appPassword VARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsAllowMultiLogin BIT NULL
+  appMarketPLBalance DECIMAL(10, 2) NULL
+  appSessionPLBalance DECIMAL(18, 3) NULL
+  appCommissionBalance DECIMAL(10, 2) NULL
+  appSessionCommissionBalance DECIMAL(18, 3) NULL
+  appIsCasinoLogin BIT NULL
+  appIsVeronica BIT NULL
+  appCreatedBy INTEGER NULL
+  appCreatedDate DATETIME NULL
+  appCreateType INTEGER NULL
+  appModifyBy INTEGER NULL
+  appModifyDate DATETIME NULL
+  appModifyType INTEGER NULL
+  appIsDelete BIT NULL
+  appIsApplyDefaultSetting BIT NULL
+  appIsReverse BIT NULL
+  appIsLiveTeenPattiLogin BIT NULL
+  appIsBacCaratLogin BIT NULL
+  appIsResetPassword BIT NULL
+  appUserId INTEGER NOT NULL
+  appIsBinaryLogin BIT NULL
+  appIsEzugiCasinoLogin BIT NULL
+  appIsLotteryLogin BIT NULL
+  appIsDemoUser BIT NULL
+  appReference VARCHAR(500) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appChipsPts DECIMAL(18, 3) NULL
+  appChipsRs DECIMAL(18, 3) NULL
+  appCashAmountPts DECIMAL(18, 3) NULL
+  appCashAmountRs DECIMAL(18, 3) NULL
+  appChipsPLAmountPts DECIMAL(18, 3) NULL
+  appChipsPLAmountRs DECIMAL(18, 3) NULL
+  appBalanceRs DECIMAL(18, 3) NULL
+  appMarketCommissionPts DECIMAL(18, 3) NULL
+  appMarketCommissionRs DECIMAL(18, 3) NULL
+  appSessionCommissionPts DECIMAL(18, 3) NULL
+  appSessionCommissionRs DECIMAL(18, 3) NULL
+  appMarketPLPts DECIMAL(18, 3) NULL
+  appMarketPLRs DECIMAL(18, 3) NULL
+  appSessionPLPts DECIMAL(18, 3) NULL
+  appSessionPLRs DECIMAL(18, 3) NULL
+  appIsVacuumPlayLogin BIT NULL
+  appIsVkingPlayLogin BIT NULL
+  appCreditReference DECIMAL(18, 3) NULL
+  appIsBetallow BIT NULL
+  appCash DECIMAL(18, 3) NOT NULL
+  appCashRs DECIMAL(18, 3) NOT NULL
+  appCreditReferenceRs DECIMAL(18, 3) NOT NULL
+  appEClientId VARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appEParentId VARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsAcceptAnyOdds BIT NULL
+  appCasinoPLPts DECIMAL(18, 3) NULL
+  appCasinoPLRs DECIMAL(18, 3) NULL
+  appIsB2C BIT NULL
+  appIsEmailVerified BIT NULL
+  appEmailID VARCHAR(300) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsMobileVerified BIT NULL
+  appMobileNo VARCHAR(20) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsWorldcasinoLogin BIT NULL
+  appReferralCode VARCHAR(50) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIpAddress VARCHAR(200) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appMktcode VARCHAR(20) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appWithdrawableAmount DECIMAL(18, 5) NULL
+  appIsRealBalanceUse BIT NULL
+  appLimitType TINYINT NULL
+  appParentUserTree VARCHAR(2400) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appRegisteredBy INTEGER NULL
+  appManagedBy INTEGER NULL
+  appSeamlessUser BIT NULL
+  appIsCashout BIT NULL
+  appIsAccountSuspended BIT NULL
+  appIsAllowWithdraw BIT NULL
+  appIsSportBook BIT NULL
+  appClientBlockOnPlacebetCount INTEGER NULL
+  appIsClientBlockOnPlacebet BIT NULL
+  appWithdrawableRatio DECIMAL(9, 3) NULL
+  appSessionCommissionOnStake DECIMAL(18, 2) NULL
+  appLineCommission DECIMAL(10, 2) NULL
+  appLineCommissionRs DECIMAL(10, 3) NULL
+  appLineCommissionPts DECIMAL(10, 3) NULL
+
+TABLE: tblClientBet (378,216 rows)
+  appClientBetID INTEGER NOT NULL  [PK]
+  appClientID INTEGER NULL
+  appMatchID INTEGER NULL
+  appBetID INTEGER NULL
+  appBetDetailID INTEGER NULL
+  appAdminShareMasterID INTEGER NULL
+  appIsBack BIT NULL
+  appRate DECIMAL(10, 3) NULL
+  appStake DECIMAL(18, 3) NULL
+  appProfit DECIMAL(18, 3) NULL
+  appStatus INTEGER NULL
+  appPlacedStake DECIMAL(18, 3) NULL
+  appIsMatched BIT NULL
+  appPlaceFrom TINYINT NULL
+  appUpdateFrom TINYINT NULL
+  appPlaceBetInfo VARCHAR(816) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appMatchedDate DATETIME NULL
+  appCreatedDate DATETIME NULL
+  appRefID INTEGER NULL
+  appIsRunningUpdate BIT NULL
+  appUnmatchCheckTime DATETIME NULL
+  appCommission DECIMAL(10, 2) NULL
+  appIsOverflow BIT NULL
+  appOverflowMessage VARCHAR(240) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appTempRefID INTEGER NULL
+  appIsManualPlaceBet BIT NULL
+  appTPGameRefID VARCHAR(104) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsCashOut BIT NULL
+  appTPGameRefType INTEGER NULL
+  appIsAdjustmentFactor BIT NULL
+  appTPGameType VARCHAR(64) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appTPGameName VARCHAR(80) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appTPGameCode INTEGER NULL
+  appTableCode VARCHAR(64) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appWalletID INTEGER NULL
+  appRateDate DATETIME NULL
+  appIsAcceptAnyOdds BIT NULL
+  appPoint DECIMAL(10, 2) NULL
+  appTransactionID VARCHAR(56) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appCashoutPer DECIMAL(5, 3) NULL
+  appIsCheckBet BIT NULL
+  appCertainly SMALLINT NULL
+  appIpAddress VARCHAR(96) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsFreebet BIT NULL
+  appSBTransactionID VARCHAR(56) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appSBMarketID INTEGER NULL
+  appUserId INTEGER NULL
+
+TABLE: tblClientbettemp (12 rows)
+  appClientBetID INTEGER NOT NULL  [PK]
+  appClientID INTEGER NOT NULL
+  appMatchID INTEGER NOT NULL
+  appBetID INTEGER NOT NULL
+  appBetDetailID INTEGER NOT NULL
+  appIsBack BIT NOT NULL
+  appRate DECIMAL(10, 3) NULL
+  appStake DECIMAL(10, 3) NULL
+  appProfit DECIMAL(10, 3) NULL
+  appStatus INTEGER NOT NULL
+  appPlacedStake DECIMAL(10, 2) NOT NULL
+  appIsMatched BIT NOT NULL
+  appPlaceFrom INTEGER NOT NULL
+  appUpdateFrom INTEGER NULL
+  appPlaceBetInfo VARCHAR(800) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appMatchedDate DATETIME NULL
+  appCreatedDate DATETIME NULL
+  appRefID INTEGER NOT NULL
+  appIsRunningUpdate BIT NULL
+  appUnmatchCheckTime DATETIME NULL
+  appCommission DECIMAL(10, 2) NOT NULL
+  appIsOverfolw BIT NOT NULL
+  appIsManualPlaceBet BIT NOT NULL
+  appOverflowMessage VARCHAR(160) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appAdminShareMasterID INTEGER NOT NULL
+  appTempRefID INTEGER NULL
+  appIsAdjustmentFactor BIT NULL
+  appWalletID INTEGER NULL
+  appRateDate DATETIME NULL
+  appIsCashOut BIT NULL
+  appIsAcceptAnyOdds BIT NULL
+  appPoint DECIMAL(10, 2) NULL
+  appTransactionID VARCHAR(56) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appCashoutPer DECIMAL(5, 3) NULL
+  appIsCheckBet BIT NULL
+  appCertainly SMALLINT NULL
+  appIpAddress VARCHAR(96) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appDeviceInfo VARCHAR(1024) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsFreebet BIT NULL
+  appUserId INTEGER NULL
+
+TABLE: tblClientBetWager (519 rows)
+  appClientBetID INTEGER NOT NULL
+  appClientID INTEGER NULL
+  appMatchID INTEGER NULL
+  appBetID INTEGER NULL
+  appBetDetailID INTEGER NULL
+  appAdminShareMasterID INTEGER NULL
+  appIsBack BIT NULL
+  appRate DECIMAL(10, 3) NULL
+  appStake DECIMAL(10, 3) NULL
+  appProfit DECIMAL(10, 3) NULL
+  appStatus INTEGER NULL
+  appPlacedStake DECIMAL(10, 2) NULL
+  appIsMatched BIT NULL
+  appPlaceFrom TINYINT NULL
+  appUpdateFrom TINYINT NULL
+  appPlaceBetInfo VARCHAR(816) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appMatchedDate DATETIME NULL
+  appCreatedDate DATETIME NULL
+  appRefID INTEGER NULL
+  appIsRunningUpdate BIT NULL
+  appUnmatchCheckTime DATETIME NULL
+  appCommission DECIMAL(10, 2) NULL
+  appIsOverflow BIT NULL
+  appOverflowMessage VARCHAR(240) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appTempRefID INTEGER NULL
+  appIsManualPlaceBet BIT NULL
+  appTPGameRefID VARCHAR(104) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsCashOut BIT NULL
+  appTPGameRefType INTEGER NULL
+  appIsAdjustmentFactor BIT NULL
+  appTPGameType VARCHAR(64) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appTPGameName VARCHAR(80) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appTPGameCode INTEGER NULL
+  appTableCode VARCHAR(64) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appWalletID INTEGER NULL
+  appRateDate DATETIME NULL
+  appIsAcceptAnyOdds BIT NULL
+  appPoint DECIMAL(5, 2) NULL
+  appIpAddress VARCHAR(96) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appUserId INTEGER NULL
+
+TABLE: tblClientDetails (2,690 rows)
+  appClientDetailsID INTEGER NOT NULL  [PK]
+  appClientID INTEGER NULL
+  appWhiteLableid INTEGER NULL
+  appParentUserName VARCHAR(104) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsRegisterWithWA BIT NULL
+  appBeneficiary VARCHAR(104) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appClientCategoryId INTEGER NULL
+  appCreatedDate DATETIME NULL
+  appConsecutiveDeposit INTEGER NULL
+  appConsecutiveBet INTEGER NULL
+  appConsecutiveLogin INTEGER NULL
+  appVolumeClickid VARCHAR(48) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appTelegramId VARCHAR(24) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsTelegramNotification BIT NULL
+  appDepositDeclineCount INTEGER NULL
+  appIsUpdateUserNamePassword BIT NULL
+  appRegisterByEnumId INTEGER NULL
+  appReferralHirarchy VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appPaymentCategoryId INTEGER NULL
+  appCategoryScore DECIMAL(15, 2) NULL
+  appPoint DECIMAL(10, 2) NULL
+
+TABLE: tblClientFollowups (2 rows)
+  appCallerFollowupID INTEGER NOT NULL  [PK]
+  appParentId INTEGER NULL
+  appUserID INTEGER NULL
+  appCustomerInterest NVARCHAR(200) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appEmailId NVARCHAR(200) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appOtherPlatform NVARCHAR(200) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appDailyDepositAmt DECIMAL(15, 2) NULL
+  appTimeofPlay NVARCHAR(200) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appRemarks NVARCHAR(250) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appNextFollowupDate DATETIME NULL
+  appCallerId INTEGER NULL
+  appCreatedDate DATETIME NULL
+  appOptOutReason NVARCHAR(500) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appCreatedBy INTEGER NULL
+
+TABLE: tblClientLocation (2,281 rows)
+  Id INTEGER NOT NULL  [PK]
+  appClientId INTEGER NULL
+  appCountry VARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appCountryCode VARCHAR(50) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appStateCode VARCHAR(50) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appState VARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appCity VARCHAR(50) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appZip VARCHAR(50) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appLatitude DECIMAL(18, 4) NULL
+  appLongitude DECIMAL(18, 4) NULL
+  appTimezone VARCHAR(50) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appInternetServiceProvider VARCHAR(500) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appOrganization VARCHAR(500) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIPAddress VARCHAR(50) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsRegister BIT NULL
+  appDate DATETIME NULL
+  appLoginFrom INTEGER NULL
+
+TABLE: tblClientOptOutReason (10 rows)
+  appReasonID INTEGER NOT NULL  [PK]
+  appReasonName NVARCHAR(200) COLLATE "SQL_Latin1_General_CP1_CI_AS" NOT NULL
+  appIsActive BIT NULL
+
+TABLE: tblClientTemp (266 rows)
+  appClientID INTEGER NOT NULL  [PK]
+  appClientName VARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appUserName VARCHAR(50) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appPassword VARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appCreatedDate DATETIME NULL
+  appIsEmailVerified BIT NULL
+  appEmailID VARCHAR(300) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsMobileVerified BIT NULL
+  appMobileNo VARCHAR(20) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appReferralCode VARCHAR(50) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIpAddress VARCHAR(200) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appMktcode VARCHAR(20) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appPromoCode VARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appClickID VARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsUpdateUserNamePassword BIT NULL
+  appRegisterByEnumId INTEGER NULL
+
+TABLE: tblCountry (251 rows)
+  appCountryId INTEGER NOT NULL  [PK]
+  appCountryName VARCHAR(50) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsActive BIT NULL
+  appShortName VARCHAR(16) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appTimeZoneId INTEGER NULL
+  appIsDefault BIT NULL
+
+TABLE: tblCryptoNetworkCurrency (1 rows)
+  appID INTEGER NOT NULL  [PK]
+  appCoinName VARCHAR(50) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appNetwork VARCHAR(50) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsActive BIT NULL
+  appCreatedDate DATETIME NULL
+  appCreatedBy INTEGER NULL
+  appModifiedDate DATETIME NULL
+  appModifiedBy INTEGER NULL
+
+TABLE: tblDeletedMarketBets (355 rows)
+  appDeletedMarketBetID INTEGER NOT NULL  [PK]
+  appClientBetID INTEGER NULL
+  appClientID INTEGER NULL
+  appMatchID INTEGER NULL
+  appBetID INTEGER NULL
+  appBetDetailID INTEGER NULL
+  appIsBack BIT NULL
+  appRate DECIMAL(10, 3) NULL
+  appStake DECIMAL(10, 3) NULL
+  appProfit DECIMAL(10, 3) NULL
+  appStatus INTEGER NULL
+  appPlacedStake DECIMAL(10, 2) NULL
+  appIsMatched BIT NULL
+  appPlaceFrom INTEGER NULL
+  appUpdateFrom INTEGER NULL
+  appPlaceBetInfo VARCHAR(1400) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appMatchedDate DATETIME NULL
+  appCreatedDate DATETIME NULL
+  appRefID INTEGER NULL
+  appIsRunningUpdate BIT NULL
+  appUnmatchCheckTime DATETIME NULL
+  appCommission DECIMAL(10, 2) NULL
+  appIsOverfolw BIT NULL
+  appIsManualPlaceBet BIT NULL
+  appOverflowMessage VARCHAR(1000) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsDeleted BIT NULL
+  appDeletedBy INTEGER NULL
+  appDeletedType INTEGER NULL
+  appDeleteTime DATETIME NULL
+  appAdminShareMasterID INTEGER NULL
+  appTransactionID VARCHAR(56) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appTempRefID INTEGER NULL
+  appIsAdjustmentFactor BIT NULL
+  appWalletID INTEGER NULL
+  appRateDate DATETIME NULL
+  appIsCashOut BIT NULL
+  appIsAcceptAnyOdds BIT NULL
+  appPoint DECIMAL(5, 2) NULL
+  appCashoutPer DECIMAL(5, 3) NULL
+  appIsCheckBet BIT NULL
+  appCertainly SMALLINT NULL
+  appDeleteReason VARCHAR(2000) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+
+TABLE: tblDeletedMarketBets_Clientbettemp (61,679 rows)
+  appDeletedMarketBetID INTEGER NOT NULL
+  appClientBetID INTEGER NULL
+  appClientID INTEGER NULL
+  appMatchID INTEGER NULL
+  appBetID INTEGER NULL
+  appBetDetailID INTEGER NULL
+  appIsBack BIT NULL
+  appRate DECIMAL(10, 3) NULL
+  appStake DECIMAL(10, 3) NULL
+  appProfit DECIMAL(10, 3) NULL
+  appStatus INTEGER NULL
+  appPlacedStake DECIMAL(10, 2) NULL
+  appIsMatched BIT NULL
+  appPlaceFrom INTEGER NULL
+  appUpdateFrom INTEGER NULL
+  appPlaceBetInfo VARCHAR(1400) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appMatchedDate DATETIME NULL
+  appCreatedDate DATETIME NULL
+  appRefID INTEGER NULL
+  appIsRunningUpdate BIT NULL
+  appUnmatchCheckTime DATETIME NULL
+  appCommission DECIMAL(10, 2) NULL
+  appIsOverfolw BIT NULL
+  appIsManualPlaceBet BIT NULL
+  appOverflowMessage VARCHAR(1000) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsDeleted BIT NULL
+  appDeletedBy INTEGER NULL
+  appDeletedType INTEGER NULL
+  appDeleteTime DATETIME NULL
+  appAdminShareMasterID INTEGER NULL
+  appTempRefID INTEGER NULL
+  appWalletID INTEGER NULL
+  appRateDate DATETIME NULL
+  appIsCashOut BIT NULL
+  appIsAcceptAnyOdds BIT NULL
+  appTransactionID VARCHAR(56) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsAdjustmentFactor BIT NULL
+  appPoint DECIMAL(10, 2) NULL
+  appCashoutPer DECIMAL(5, 3) NULL
+  appIsCheckBet BIT NULL
+  appCertainly SMALLINT NULL
+  appIpAddress VARCHAR(96) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsFreebet BIT NULL
+  appUserId INTEGER NULL
+
+TABLE: tblDeletedMarketBets_ClientbettempWager (150 rows)
+  appDeletedMarketBetID INTEGER NOT NULL
+  appClientBetID INTEGER NULL
+  appClientID INTEGER NULL
+  appMatchID INTEGER NULL
+  appBetID INTEGER NULL
+  appBetDetailID INTEGER NULL
+  appIsBack BIT NULL
+  appRate DECIMAL(10, 3) NULL
+  appStake DECIMAL(10, 3) NULL
+  appProfit DECIMAL(10, 3) NULL
+  appStatus INTEGER NULL
+  appPlacedStake DECIMAL(10, 2) NULL
+  appIsMatched BIT NULL
+  appPlaceFrom INTEGER NULL
+  appUpdateFrom INTEGER NULL
+  appPlaceBetInfo VARCHAR(1400) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appMatchedDate DATETIME NULL
+  appCreatedDate DATETIME NULL
+  appRefID INTEGER NULL
+  appIsRunningUpdate BIT NULL
+  appUnmatchCheckTime DATETIME NULL
+  appCommission DECIMAL(10, 2) NULL
+  appIsOverfolw BIT NULL
+  appIsManualPlaceBet BIT NULL
+  appOverflowMessage VARCHAR(1000) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsDeleted BIT NULL
+  appDeletedBy INTEGER NULL
+  appDeletedType INTEGER NULL
+  appDeleteTime DATETIME NULL
+  appAdminShareMasterID INTEGER NULL
+  appTempRefID INTEGER NULL
+  appWalletID INTEGER NULL
+  appRateDate DATETIME NULL
+  appIsCashOut BIT NULL
+  appIsAcceptAnyOdds BIT NULL
+  appIsAdjustmentFactor BIT NULL
+  appPoint DECIMAL(5, 2) NULL
+  appTransactionID VARCHAR(56) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appCashoutPer DECIMAL(5, 3) NULL
+  appIsCheckBet BIT NULL
+  appCertainly SMALLINT NULL
+  appIpAddress VARCHAR(96) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appUserId INTEGER NULL
+
+TABLE: tblDeletedMarketBets_TRG (8 rows)
+  appDeletedMarketBetID INTEGER NOT NULL
+  appClientBetID INTEGER NULL
+  appClientID INTEGER NULL
+  appMatchID INTEGER NULL
+  appBetID INTEGER NULL
+  appBetDetailID INTEGER NULL
+  appIsBack BIT NULL
+  appRate DECIMAL(10, 3) NULL
+  appStake DECIMAL(10, 3) NULL
+  appProfit DECIMAL(10, 3) NULL
+  appStatus INTEGER NULL
+  appPlacedStake DECIMAL(10, 2) NULL
+  appIsMatched BIT NULL
+  appPlaceFrom INTEGER NULL
+  appUpdateFrom INTEGER NULL
+  appPlaceBetInfo VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appMatchedDate DATETIME NULL
+  appCreatedDate DATETIME NULL
+  appRefID INTEGER NULL
+  appIsRunningUpdate BIT NULL
+  appUnmatchCheckTime DATETIME NULL
+  appCommission DECIMAL(10, 2) NULL
+  appIsOverfolw BIT NULL
+  appIsManualPlaceBet BIT NULL
+  appOverflowMessage VARCHAR(1000) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsDeleted BIT NULL
+  appDeletedBy INTEGER NULL
+  appDeletedType INTEGER NULL
+  appDeleteTime DATETIME NULL
+  appAdminShareMasterID INTEGER NULL
+  appTempRefID INTEGER NULL
+  appTPGameRefID VARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appTPGameRefType INTEGER NULL
+  appIsAdjustmentFactor BIT NULL
+  appTPGameName VARCHAR(160) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appTPGameCode INTEGER NULL
+  appTableCode VARCHAR(160) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appWalletID INTEGER NULL
+  appRateDate DATETIME NULL
+  appIsCashOut BIT NULL
+  appIsAcceptAnyOdds BIT NULL
+  appTPGameType VARCHAR(160) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appTransactionID VARCHAR(56) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appPoint DECIMAL(10, 2) NULL
+  appCashoutPer DECIMAL(5, 3) NULL
+  appIsCheckBet BIT NULL
+  appCertainly SMALLINT NULL
+  appIpAddress VARCHAR(96) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsFreebet BIT NULL
+  appSBTransactionID VARCHAR(56) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appSBMarketID INTEGER NULL
+  appUserId INTEGER NULL
+
+TABLE: tblDeposit (27,052 rows)
+  appDepositId INTEGER NOT NULL  [PK]
+  appClientId INTEGER NULL
+  appAmount DECIMAL(18, 3) NULL
+  appStatus INTEGER NULL
+  appTransactionId VARCHAR(64) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appRemarks VARCHAR(400) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appDeviceInfo VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appCreatedDate DATETIME NULL
+  appManualDeposit BIT NULL
+  appDocPath VARCHAR(160) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appStatusDate DATETIME NULL
+  appPayMode VARCHAR(50) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appWhiteLableid INTEGER NULL
+  appPlaceFrom INTEGER NULL
+  appUTRTransactionNo VARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsCryptoDeposit BIT NULL
+  appDepositTypeEnum TINYINT NULL
+  appPaymentAPIID INTEGER NULL
+  appFDTransactionId VARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appApprovedBy INTEGER NULL
+  appPaymentApiProviderEnumId TINYINT NULL
+  appPaymentAccountId INTEGER NULL
+  appPGRemarks VARCHAR(400) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appPaymentTransferModeId INTEGER NULL
+
+TABLE: tblDepositWithdrawCount (3,489 rows)
+  appDepositContId INTEGER NOT NULL  [PK]
+  appUserId INTEGER NULL
+  appUserType INTEGER NULL
+  appDepositCount INTEGER NULL
+  appSettlementCount INTEGER NULL
+  appDate DATE NULL
+  appWithdrawCount INTEGER NULL
+
+TABLE: tblDevices (713 rows)
+  appDeviceId INTEGER NOT NULL  [PK]
+  appName NVARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appPushEndpoint NVARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appPushP256DH NVARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appPushAuth NVARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appCreatedDate DATETIME NULL
+  appUserId INTEGER NULL
+  appUserType INTEGER NULL
+  appIsAndroid BIT NULL
+
+TABLE: tblEnumKeyEncrypted (101 rows)
+  appId INTEGER NOT NULL
+  appKey INTEGER NULL
+  appValue NVARCHAR(400) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+
+TABLE: tblFavorites (27 rows)
+  appFavoriteID INTEGER NOT NULL  [PK]
+  appClientID INTEGER NULL
+  appProviderID INTEGER NULL
+  appAngularCasinoGameID INTEGER NULL
+  appCreatedDate DATETIME NULL
+
+TABLE: tblFinalTransaction (1,557,325 rows)
+  appFinalTransactionID INTEGER NOT NULL  [PK]
+  appUserID INTEGER NULL
+  appAmount DECIMAL(18, 5) NULL
+  appParticular VARCHAR(240) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appUserType TINYINT NULL
+  appDate DATETIME NULL
+  appIsIn BIT NULL
+  appClientBetID INTEGER NULL
+  appBetId INTEGER NULL
+  appIsAc BIT NULL
+  appBalance DECIMAL(18, 5) NULL
+  appTransactionType INTEGER NULL
+  appIsFreeChips BIT NULL
+  appCommission DECIMAL(13, 5) NULL
+  appRefType TINYINT NULL
+  appRefID INTEGER NULL
+  appPlaceFrom INTEGER NULL
+  appIPInfo VARCHAR(360) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appAdminShareMasterID INTEGER NULL
+  appIsHavala BIT NULL
+  appHavalaID INTEGER NULL
+  appCreatedBy INTEGER NULL
+  appCreatedType INTEGER NULL
+  appTPGameRefID VARCHAR(104) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appUserPoint INTEGER NULL
+  appTPGameRefType INTEGER NULL
+  appDrCrUserName VARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appWalletID INTEGER NULL
+  appCalAmountPts DECIMAL(20, 5) NULL
+  appCalAmountRs DECIMAL(31, 5) NULL
+  appSportID INTEGER NULL
+  appTournamentID INTEGER NULL
+  appMatchID INTEGER NULL
+  appisBonusEntry BIT NULL
+  appSBTransactionID VARCHAR(56) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appSBMarketID INTEGER NULL
+  appFancyType INTEGER NULL
+  appRateSource INTEGER NULL
+
+TABLE: tblFinalTransaction_DeleteTRG (64 rows)
+  appID INTEGER NOT NULL  [PK]
+  appFinalTransactionID INTEGER NULL
+  appUserID INTEGER NULL
+  appAmount DECIMAL(18, 3) NULL
+  appParticular VARCHAR(800) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appUserType INTEGER NULL
+  appDate DATETIME NULL
+  appIsIn BIT NULL
+  appClientBetID INTEGER NULL
+  appBetId INTEGER NULL
+  appIsAc BIT NULL
+  appBalance DECIMAL(18, 2) NULL
+  appTransactionType INTEGER NULL
+  appIsFreeChips BIT NULL
+  appCommission DECIMAL(10, 2) NULL
+  appRefType INTEGER NULL
+  appRefID INTEGER NULL
+  appPlaceFrom INTEGER NULL
+  appIPInfo VARCHAR(800) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appAdminShareMasterID INTEGER NULL
+  appIsHavala BIT NULL
+  appHavalaID INTEGER NULL
+  appCreatedBy INTEGER NULL
+  appCreatedType INTEGER NULL
+  appTPGameRefID VARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appUserPoint INTEGER NULL
+  appTPGameRefType INTEGER NULL
+  appCalAmountPts DECIMAL(20, 3) NULL
+  appCalAmountRs DECIMAL(31, 3) NULL
+  appDrCrUserName VARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appWalletID INTEGER NULL
+  appDeleteedBy INTEGER NULL
+  appDeletedType INTEGER NULL
+  appDeleteTime DATETIME NULL
+  appSportID INTEGER NULL
+  appTournamentID INTEGER NULL
+  appMatchID INTEGER NULL
+  appSBTransactionID VARCHAR(56) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appSBMarketID INTEGER NULL
+  appisBonusEntry BIT NULL
+  appFancyType INTEGER NULL
+  appRateSource INTEGER NULL
+
+TABLE: tblFinalTransactionCasinoBackup (1,300,950 rows)
+  appFinalTransactionCasinoID INTEGER NULL
+  appUserID INTEGER NULL
+  appAmount DECIMAL(18, 3) NULL
+  appParticular VARCHAR(160) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appUserType INTEGER NULL
+  appDate DATETIME NULL
+  appIsIn BIT NULL
+  appClientBetID INTEGER NULL
+  appBetId INTEGER NULL
+  appIsAc BIT NULL
+  appBalance DECIMAL(18, 2) NULL
+  appTransactionType INTEGER NULL
+  appIsFreeChips BIT NULL
+  appAdminShare DECIMAL(10, 2) NULL
+  appMDLShare DECIMAL(10, 2) NULL
+  appDLShare DECIMAL(10, 2) NULL
+  appAdminPoint DECIMAL(10, 2) NULL
+  appMDLPoint DECIMAL(10, 2) NULL
+  appDLPoint DECIMAL(10, 2) NULL
+  appClientPoint DECIMAL(10, 2) NULL
+  appCommission DECIMAL(10, 2) NULL
+  appRefType INTEGER NULL
+  appRefID INTEGER NULL
+  appPlaceFrom INTEGER NULL
+  appIPInfo VARCHAR(160) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appAdminShareMasterID INTEGER NULL
+  appIsHavala BIT NULL
+  appHavalaID INTEGER NULL
+  appCreatedBy INTEGER NULL
+  appCreatedType INTEGER NULL
+  appTPGameRefID VARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appUserPoint INTEGER NULL
+  appTPGameRefType INTEGER NULL
+  appCalAmountPts DECIMAL(18, 2) NULL
+  appCalAmountRs DECIMAL(18, 2) NULL
+  appDrCrUserName VARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appWalletID INTEGER NULL
+  appSportID INTEGER NULL
+  appTournamentID INTEGER NULL
+  appMatchID INTEGER NULL
+
+TABLE: tblFinalTransactionCasinoBackupWager (1,504 rows)
+  appFinalTransactionCasinoID INTEGER NULL
+  appUserID INTEGER NULL
+  appAmount DECIMAL(18, 3) NULL
+  appParticular VARCHAR(160) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appUserType INTEGER NULL
+  appDate DATETIME NULL
+  appIsIn BIT NULL
+  appClientBetID INTEGER NULL
+  appBetId INTEGER NULL
+  appIsAc BIT NULL
+  appBalance DECIMAL(18, 2) NULL
+  appTransactionType INTEGER NULL
+  appIsFreeChips BIT NULL
+  appAdminShare DECIMAL(10, 2) NULL
+  appMDLShare DECIMAL(10, 2) NULL
+  appDLShare DECIMAL(10, 2) NULL
+  appAdminPoint DECIMAL(10, 2) NULL
+  appMDLPoint DECIMAL(10, 2) NULL
+  appDLPoint DECIMAL(10, 2) NULL
+  appClientPoint DECIMAL(10, 2) NULL
+  appCommission DECIMAL(10, 2) NULL
+  appRefType INTEGER NULL
+  appRefID INTEGER NULL
+  appPlaceFrom INTEGER NULL
+  appIPInfo VARCHAR(160) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appAdminShareMasterID INTEGER NULL
+  appIsHavala BIT NULL
+  appHavalaID INTEGER NULL
+  appCreatedBy INTEGER NULL
+  appCreatedType INTEGER NULL
+  appTPGameRefID VARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appUserPoint INTEGER NULL
+  appTPGameRefType INTEGER NULL
+  appCalAmountPts DECIMAL(18, 2) NULL
+  appCalAmountRs DECIMAL(18, 2) NULL
+  appDrCrUserName VARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appWalletID INTEGER NULL
+  appSportID INTEGER NULL
+  appTournamentID INTEGER NULL
+  appMatchID INTEGER NULL
+
+TABLE: tblFinalTransactionWager (1,647 rows)
+  appFinalTransactionID INTEGER NOT NULL
+  appUserID INTEGER NULL
+  appAmount DECIMAL(18, 5) NULL
+  appParticular VARCHAR(240) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appUserType TINYINT NULL
+  appDate DATETIME NULL
+  appIsIn BIT NULL
+  appClientBetID INTEGER NULL
+  appBetId INTEGER NULL
+  appIsAc BIT NULL
+  appBalance DECIMAL(18, 5) NULL
+  appTransactionType INTEGER NULL
+  appIsFreeChips BIT NULL
+  appCommission DECIMAL(13, 5) NULL
+  appRefType TINYINT NULL
+  appRefID INTEGER NULL
+  appPlaceFrom INTEGER NULL
+  appIPInfo VARCHAR(360) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appAdminShareMasterID INTEGER NULL
+  appIsHavala BIT NULL
+  appHavalaID INTEGER NULL
+  appCreatedBy INTEGER NULL
+  appCreatedType INTEGER NULL
+  appTPGameRefID VARCHAR(104) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appUserPoint INTEGER NULL
+  appTPGameRefType INTEGER NULL
+  appDrCrUserName VARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appWalletID INTEGER NULL
+  appCalAmountPts DECIMAL(20, 5) NULL
+  appCalAmountRs DECIMAL(31, 5) NULL
+  appSBTransactionID VARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appSBMarketID INTEGER NULL
+  appFancyType INTEGER NULL
+  appRateSource INTEGER NULL
+  appisBonusEntry BIT NULL
+  appSportID INTEGER NULL
+  appTournamentID INTEGER NULL
+  appMatchID INTEGER NULL
+
+TABLE: tblFraudulentReason (51,213 rows)
+  appID INTEGER NOT NULL  [PK]
+  appDate DATETIME NULL
+  appClientId INTEGER NULL
+  appBetId INTEGER NULL
+  appBetDetailId INTEGER NULL
+  appIsFraudulent BIT NULL
+  appClientBetTempId INTEGER NULL
+  appBetPlacedDateTime DATETIME NULL
+  appBetDataProviderId INTEGER NULL
+  appBetType VARCHAR(10) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appTimeZone INTEGER NULL
+  appSportID INTEGER NULL
+  appSportName VARCHAR(50) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appTournamentID INTEGER NULL
+  appTournamentName VARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appEventID INTEGER NULL
+  appEventName VARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appEventDate DATETIME NULL
+  appRunnerID INTEGER NULL
+  appRunnerName VARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appMarketID INTEGER NULL
+  appMarketType INTEGER NULL
+  appMarketName VARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appCountryCode VARCHAR(10) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appStake DECIMAL(18, 3) NULL
+  appRate DECIMAL(18, 3) NULL
+  appIPAddress VARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appCreationDateTime DATETIME NULL
+  appPlacedFrom VARCHAR(10) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appDeviceId VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appUserID VARCHAR(50) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appWebsiteID VARCHAR(50) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appWsSportID INTEGER NULL
+  appWsTournamentID INTEGER NULL
+  appWsEventID INTEGER NULL
+  appWsMarketID VARCHAR(50) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appWsRunnerID VARCHAR(50) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appFraudulentReason VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appErrorCode VARCHAR(50) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appConflictngBet VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appUserIds VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appWebSites VARCHAR(1024) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appRequestParameter VARBINARY NULL
+  appRequestParameterDecomp NVARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appResponseParameter VARBINARY NULL
+  appResponseParameterDecomp NVARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsSuccess BIT NULL
+
+TABLE: tblFunctionalPermission (50 rows)
+  appFunctionalPermissionId INTEGER NOT NULL  [PK]
+  appTabId INTEGER NULL
+  appApplyFor INTEGER NULL
+  appPermissionName VARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appDescription VARCHAR(200) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appAPIEndPoint VARCHAR(200) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appCreatedBy INTEGER NULL
+  appCreatedDate DATETIME NULL
+
+TABLE: tblFunctionalPermissionDetail (940 rows)
+  appFunctionalPermissionDetailId INTEGER NOT NULL  [PK]
+  appFunctionalPermissionId INTEGER NULL
+  appIsAllow BIT NULL
+  appRoleId INTEGER NULL
+  appCreatedBy INTEGER NULL
+  appCreaatedDate DATETIME NULL
+
+TABLE: tblGameType (6 rows)
+  appGameTypeID INTEGER NOT NULL  [PK]
+  appGameTypeName VARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appDisplayName VARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appGameTypeEnumID INTEGER NULL
+  appIsActive BIT NULL
+  appRemark VARCHAR(500) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appMinShare DECIMAL(18, 2) NULL
+  appIsDefault BIT NULL
+  appDisplayOrder INTEGER NULL
+
+TABLE: tblKYCMaster (2 rows)
+  appKYCMasterId INTEGER NOT NULL  [PK]
+  appName VARCHAR(400) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsActive BIT NULL
+  appMinLength INTEGER NULL
+  appMaxLength INTEGER NULL
+
+TABLE: tblLimit (5,405,407 rows)
+  appLimitId INTEGER NOT NULL  [PK]
+  appFreshDelay INTEGER NULL
+  appCancelDelay INTEGER NULL
+  appMinRate DECIMAL(6, 2) NULL
+  appMaxRate DECIMAL(6, 2) NULL
+  appMinStake DECIMAL(18, 2) NULL
+  appMaxStake DECIMAL(18, 2) NULL
+  appMaxProfit DECIMAL(18, 2) NULL
+  appMaxLoss DECIMAL(18, 2) NULL
+  appBeforeInPlay DECIMAL(18, 2) NULL
+  appBetRateLimit DECIMAL(6, 2) NULL
+  appBetRateLimitPL DECIMAL(18, 2) NULL
+  appIsAllowUnmatch BIT NULL
+  appUnmatchRate DECIMAL(6, 2) NULL
+  appIsChangeBackRate BIT NULL
+  appIsChangeLayRate BIT NULL
+  appTotalStake DECIMAL(18, 2) NULL
+  appBackStake DECIMAL(18, 2) NULL
+  appLayStake DECIMAL(18, 2) NULL
+  appIsAllowPlaceBet BIT NULL
+  appIsVolumeCheck BIT NULL
+  appIsMasterLimit BIT NULL
+  appIsApplyCommission BIT NULL
+  appIsSkipApplytoAllChild BIT NULL
+  appLowVolumeLimit DECIMAL(18, 2) NULL
+  appIsActive BIT NULL
+  appCreateDate DATETIME NULL
+  appCreateBy INTEGER NULL
+  appIsAcceptAnyOdds BIT NULL
+  appSubcategory INTEGER NULL
+  appBallStartLimit DECIMAL(18, 2) NULL
+  appBeforeAutoBetAllowTrue INTEGER NULL
+  appOldLimitId INTEGER NULL
+  appBackPlaceRateDiff SMALLINT NULL
+  appLayPlaceRateDiff SMALLINT NULL
+  appIsAllowPlaceBetBack BIT NULL
+  appIsAllowPlaceBetLay BIT NULL
+
+TABLE: tblLimitCategory (156 rows)
+  appLimitCategoryId INTEGER NOT NULL  [PK]
+  appParentId INTEGER NULL
+  appParentType INTEGER NULL
+  appUserId INTEGER NULL
+  appUserType INTEGER NULL
+  appMarketType INTEGER NULL
+  appEventType INTEGER NULL
+  appEventId INTEGER NULL
+  appCategoryMarketType SMALLINT NULL
+  appLimitVolumnRangeID INTEGER NULL
+  appEventCategory SMALLINT NULL
+  appLimitId INTEGER NULL
+  appIsActive BIT NULL
+  appCreateDate DATETIME NULL
+  appCreateBy INTEGER NULL
+
+TABLE: tblLimitDetail (5,456,204 rows)
+  appLimitDetailId INTEGER NOT NULL  [PK]
+  appParentId INTEGER NULL
+  appParentType INTEGER NULL
+  appUserId INTEGER NULL
+  appUserType INTEGER NULL
+  appMarketType INTEGER NULL
+  appEventType INTEGER NULL
+  appEventId INTEGER NULL
+  appLimitId INTEGER NULL
+  appIsActive BIT NULL
+  appCreateDate DATETIME NULL
+  appCreateBy INTEGER NULL
+  appCategoryMarketType SMALLINT NULL
+  appLimitVolumnRangeID INTEGER NULL
+
+TABLE: tblLimitVolumnRange (5 rows)
+  appLimitVolumnRangeID INTEGER NOT NULL  [PK]
+  appName VARCHAR(48) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appMin INTEGER NULL
+  appMax INTEGER NULL
+  appIsActive BIT NULL
+
+TABLE: tblLimitVolumnRangeData (25 rows)
+  appID INTEGER NOT NULL  [PK]
+  appMarketTypeID INTEGER NULL
+  appMarketTypeEnum INTEGER NULL
+  appMarketTypeName VARCHAR(96) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appSubCategoryID SMALLINT NULL
+  appSubCategoryName VARCHAR(48) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsMainType BIT NULL
+  appLimitVolumnRangeID INTEGER NULL
+  appRangeName VARCHAR(48) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appMin INTEGER NULL
+  appMax INTEGER NULL
+  appIsVolumnwiseLimit BIT NULL
+
+TABLE: tblLoginRegisterByEnums (8 rows)
+  appID INTEGER NOT NULL
+  appName VARCHAR(96) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appEnumID INTEGER NULL
+  appIsActive BIT NULL
+
+TABLE: tblMacro (30 rows)
+  appMacroId INTEGER NOT NULL  [PK]
+  appMacroKey VARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appDescription VARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+
+TABLE: tblManualPaymentAccount (2 rows)
+  appManualPaymentAccountID INTEGER NOT NULL  [PK]
+  appPaymentModeID INTEGER NULL
+  appManualPaymentAccountDetail VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appQRCodeImage VARCHAR(500) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsActive BIT NULL
+  appCreatedDate DATETIME NULL
+  appCreatedBy INTEGER NULL
+  appModifiedDate DATETIME NULL
+  appModifiedBy INTEGER NULL
+  appMinAmount DECIMAL(10, 2) NULL
+  appMaxAmount DECIMAL(10, 2) NULL
+  appUserId INTEGER NULL
+  appIsUPI BIT NULL
+  appIsUPIRequestQRCode BIT NULL
+  appDisplayOrder INTEGER NULL
+  appDepositAmountLimit DECIMAL(15, 2) NULL
+  appDepositLimitSchedule TINYINT NULL
+  appTotalDepositAmount DECIMAL(15, 2) NULL
+  appNoOfDepositPerClient INTEGER NULL
+  appPaymentCategoryId INTEGER NULL
+
+TABLE: tblMarketCategory (26 rows)
+  appMarketCategoryId INTEGER NOT NULL
+  appMarketTypeID INTEGER NULL
+  appMarketCategoryName VARCHAR(200) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appDisplayOrder INTEGER NULL
+  appCreatedBy INTEGER NULL
+  appCreatedOn DATETIME NULL
+  appIsDefault BIT NULL
+  appIsActive BIT NULL
+  appDisplayName VARCHAR(50) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsSetLimit BIT NULL
+
+TABLE: tblMarketType (8 rows)
+  appMarketTypeID INTEGER NOT NULL  [PK]
+  appMarketEnum VARCHAR(200) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appMarketType VARCHAR(200) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appCreatedBy INTEGER NULL
+  appCreatedOn DATETIME NULL
+  appDisplayOrder INTEGER NULL
+  appIsActive BIT NULL
+  appDisplayName VARCHAR(50) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsVolumnwiseLimit BIT NULL
+  appIsLimitForAdmin BIT NULL
+  appIsLimitForAgent BIT NULL
+  appIsCommission BIT NULL
+
+TABLE: tblMarketwisePLSummary (709,181 rows)
+  appID INTEGER NOT NULL  [PK]
+  appMarketID INTEGER NULL
+  appParentType TINYINT NULL
+  appParentID INTEGER NULL
+  appUserType TINYINT NULL
+  appUserID INTEGER NULL
+  appParentShare DECIMAL(6, 2) NULL
+  appOwnShare DECIMAL(6, 2) NULL
+  appChildShare DECIMAL(6, 2) NULL
+  appParentPoint DECIMAL(6, 2) NULL
+  appOwnPoint DECIMAL(6, 2) NULL
+  appChildPoint DECIMAL(6, 2) NULL
+  appProfitLoss DECIMAL(18, 5) NULL
+  appParentPL DECIMAL(18, 5) NULL
+  appOwnPL DECIMAL(18, 5) NULL
+  appChildPL DECIMAL(18, 5) NULL
+  appCommission DECIMAL(18, 5) NULL
+  appTotalStake DECIMAL(18, 5) NULL
+  appParentStake DECIMAL(18, 5) NULL
+  appOwnStake DECIMAL(18, 5) NULL
+  appChidStake DECIMAL(18, 5) NULL
+  appParentAdminShareMasterID INTEGER NULL
+  appChildAdminShareMasterID INTEGER NULL
+  appRemark VARCHAR(64) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appCreatedPlace INTEGER NULL
+  appCreatedBy INTEGER NULL
+  appCreatedType INTEGER NULL
+  appCreatedDate DATETIME NULL
+  appModifyBy INTEGER NULL
+  appModifyDate DATETIME NULL
+  appModifyType TINYINT NULL
+  appModifyPlace INTEGER NULL
+  appTPGameRefID VARCHAR(104) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appTPClientbetRefID INTEGER NULL
+  appTPGameRefType INTEGER NULL
+  appTotalCommission DECIMAL(18, 5) NULL
+  appTotalCommissionRs DECIMAL(18, 5) NULL
+  appPlacebetCount INTEGER NULL
+  appSportID INTEGER NULL
+  appTournamentID INTEGER NULL
+  appMatchID INTEGER NULL
+  appSBTransactionID VARCHAR(56) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appSBMarketID INTEGER NULL
+  appTotalBonus DECIMAL(18, 5) NULL
+  appFancyType INTEGER NULL
+  appRateSource INTEGER NULL
+  appParentCommission DECIMAL(18, 5) NULL
+  appOwnCommission DECIMAL(18, 5) NULL
+  appChildCommission DECIMAL(18, 5) NULL
+  appParentBonus DECIMAL(18, 5) NULL
+  appOwnBonus DECIMAL(18, 5) NULL
+  appChildBonus DECIMAL(18, 5) NULL
+  appTotalPLBonus DECIMAL(18, 5) NULL
+  appPLParentBonus DECIMAL(18, 5) NULL
+  appPLOwnBonus DECIMAL(18, 5) NULL
+  appPLChildBonus DECIMAL(18, 5) NULL
+  appTotalRetrunBonus DECIMAL(18, 5) NULL
+  appRetrunParentBonus DECIMAL(18, 5) NULL
+  appRetrunOwnBonus DECIMAL(18, 5) NULL
+  appRetrunChildBonus DECIMAL(18, 5) NULL
+
+TABLE: tblMarketwisePLSummary_TRG (26 rows)
+  appTRGID INTEGER NOT NULL  [PK]
+  appID INTEGER NOT NULL
+  appMarketID INTEGER NULL
+  appParentType INTEGER NULL
+  appParentID INTEGER NULL
+  appUserType INTEGER NULL
+  appUserID INTEGER NULL
+  appParentShare DECIMAL(6, 2) NULL
+  appOwnShare DECIMAL(6, 2) NULL
+  appChildShare DECIMAL(16, 2) NULL
+  appParentPoint DECIMAL(10, 2) NULL
+  appOwnPoint DECIMAL(10, 2) NULL
+  appChildPoint DECIMAL(10, 2) NULL
+  appProfitLoss DECIMAL(18, 3) NULL
+  appParentPL DECIMAL(18, 3) NULL
+  appOwnPL DECIMAL(18, 3) NULL
+  appChildPL DECIMAL(18, 3) NULL
+  appCommission DECIMAL(18, 3) NULL
+  appTotalStake DECIMAL(18, 3) NULL
+  appParentStake DECIMAL(18, 3) NULL
+  appOwnStake DECIMAL(18, 3) NULL
+  appChidStake DECIMAL(18, 3) NULL
+  appParentAdminShareMasterID INTEGER NULL
+  appChildAdminShareMasterID INTEGER NULL
+  appRemark VARCHAR(1000) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appCreatedPlace INTEGER NULL
+  appCreatedBy INTEGER NULL
+  appCreatedType INTEGER NULL
+  appCreatedDate DATETIME NULL
+  appModifyBy INTEGER NULL
+  appModifyDate DATETIME NULL
+  appModifyType INTEGER NULL
+  appModifyPlace INTEGER NULL
+  appTPGameRefID VARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appTPClientbetRefID INTEGER NULL
+  appTPGameRefType INTEGER NULL
+  appTotalCommission DECIMAL(18, 3) NULL
+  appTotalCommissionRs DECIMAL(18, 3) NULL
+  appSportID INTEGER NULL
+  appTournamentID INTEGER NULL
+  appMatchID INTEGER NULL
+  appSBTransactionID VARCHAR(56) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appSBMarketID INTEGER NULL
+
+TABLE: tblMarketwisePLSummaryWager (856 rows)
+  appID INTEGER NOT NULL  [PK]
+  appMarketID INTEGER NULL
+  appParentType INTEGER NULL
+  appParentID INTEGER NULL
+  appUserType INTEGER NULL
+  appUserID INTEGER NULL
+  appParentShare DECIMAL(6, 2) NULL
+  appOwnShare DECIMAL(6, 2) NULL
+  appChildShare DECIMAL(16, 2) NULL
+  appParentPoint DECIMAL(10, 2) NULL
+  appOwnPoint DECIMAL(10, 2) NULL
+  appChildPoint DECIMAL(10, 2) NULL
+  appProfitLoss DECIMAL(18, 3) NULL
+  appParentPL DECIMAL(18, 3) NULL
+  appOwnPL DECIMAL(18, 3) NULL
+  appChildPL DECIMAL(18, 3) NULL
+  appCommission DECIMAL(18, 3) NULL
+  appTotalStake DECIMAL(18, 3) NULL
+  appParentStake DECIMAL(18, 3) NULL
+  appOwnStake DECIMAL(18, 3) NULL
+  appChidStake DECIMAL(18, 3) NULL
+  appParentAdminShareMasterID INTEGER NULL
+  appChildAdminShareMasterID INTEGER NULL
+  appRemark VARCHAR(1000) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appCreatedPlace INTEGER NULL
+  appCreatedBy INTEGER NULL
+  appCreatedType INTEGER NULL
+  appCreatedDate DATETIME NULL
+  appModifyBy INTEGER NULL
+  appModifyDate DATETIME NULL
+  appModifyType INTEGER NULL
+  appModifyPlace INTEGER NULL
+  appTPGameRefID VARCHAR(104) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appTPClientbetRefID INTEGER NULL
+  appTPGameRefType INTEGER NULL
+  appTotalCommission DECIMAL(18, 3) NULL
+  appTotalCommissionRs DECIMAL(18, 3) NULL
+  appSBTransactionID VARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appSBMarketID INTEGER NULL
+  appFancyType INTEGER NULL
+  appRateSource INTEGER NULL
+  appParentCommission DECIMAL(18, 5) NULL
+  appOwnCommission DECIMAL(18, 5) NULL
+  appChildCommission DECIMAL(18, 5) NULL
+  appPlacebetCount INTEGER NULL
+  appSportID INTEGER NULL
+  appTournamentID INTEGER NULL
+  appMatchID INTEGER NULL
+  appTotalBonus DECIMAL(18, 5) NULL
+  appParentBonus DECIMAL(18, 5) NULL
+  appOwnBonus DECIMAL(18, 5) NULL
+  appChildBonus DECIMAL(18, 5) NULL
+  appTotalPLBonus DECIMAL(18, 5) NULL
+  appPLParentBonus DECIMAL(18, 5) NULL
+  appPLOwnBonus DECIMAL(18, 5) NULL
+  appPLChildBonus DECIMAL(18, 5) NULL
+  appTotalRetrunBonus DECIMAL(18, 5) NULL
+  appRetrunParentBonus DECIMAL(18, 5) NULL
+  appRetrunOwnBonus DECIMAL(18, 5) NULL
+  appRetrunChildBonus DECIMAL(18, 5) NULL
+
+TABLE: tblMarketwiseStack (632 rows)
+  appMarketwiseStackID INTEGER NOT NULL  [PK]
+  appClientID INTEGER NOT NULL
+  appBetID INTEGER NOT NULL
+  appIsBack BIT NULL
+  appRate DECIMAL(10, 3) NULL
+  appStack NUMERIC(18, 2) NULL
+  appClientBetID INTEGER NULL
+  appCreatedDate DATETIME NULL
+  appTotalStack NUMERIC(18, 2) NULL
+
+TABLE: tblMarketwiseStackWager (7 rows)
+  appMarketwiseStackID INTEGER NOT NULL
+  appClientID INTEGER NOT NULL
+  appBetID INTEGER NOT NULL
+  appIsBack BIT NULL
+  appRate DECIMAL(10, 3) NULL
+  appStack NUMERIC(18, 2) NULL
+  appClientBetID INTEGER NULL
+  appCreatedDate DATETIME NULL
+  appTotalStack NUMERIC(18, 2) NULL
+
+TABLE: tblMatch (1,567,269 rows)
+  appMatchID INTEGER NOT NULL  [PK]
+  appMatch VARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appTournamentID INTEGER NULL
+  appEventID_BF INTEGER NULL
+  appDate DATETIME NULL
+  appMatchStatus INTEGER NULL
+  appInPlay BIT NULL
+  appDisplayOrder INTEGER NULL
+  appIsAustralian BIT NULL
+  appIsActive BIT NULL
+  appCreatedDate DATETIME NULL
+  appCreatedBy INTEGER NULL
+  appChannelNo VARCHAR(10) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsShowLive BIT NULL
+  appManualInplay BIT NULL
+  appTeamID1 INTEGER NULL
+  appTeamID2 INTEGER NULL
+  appIsAutoCommentry BIT NULL
+  appCommentryID INTEGER NULL
+  appVideoUrl VARCHAR(300) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsPlayVideoUrl BIT NULL
+  appModifyBy INTEGER NULL
+  appModifyDate DATETIME NULL
+  IsVirtual BIT NULL
+  appGameType INTEGER NULL
+  appDescription NVARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appMatchCategoryId SMALLINT NULL
+
+TABLE: tblMatchCategoryEnum (5 rows)
+  appId INTEGER NOT NULL  [PK]
+  appName VARCHAR(50) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appEnumId INTEGER NULL
+  appIsActive BIT NULL
+
+TABLE: tblMenuItem (15 rows)
+  appMenuItemId INTEGER NOT NULL  [PK]
+  appMenuTypeId INTEGER NOT NULL
+  appMenuItem NVARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NOT NULL
+  appParentId INTEGER NOT NULL
+  appDisplayOrder INTEGER NOT NULL
+  appPageId INTEGER NULL
+  appIsActive BIT NOT NULL
+  appCreatedDate DATETIME NOT NULL
+  appCreatedBy INTEGER NOT NULL
+  appMenuItemTypeID INTEGER NULL  [FK -> tblMenuItemType.appMenuItemTypeID]
+  appMenuIcon VARCHAR(250) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appWhiteLabelId INTEGER NULL
+
+TABLE: tblMenuItemType (1 rows)
+  appMenuItemTypeID INTEGER NOT NULL  [PK]
+  appMenuItemType VARCHAR(50) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsActive BIT NULL
+  appDisplayOrder INTEGER NULL
+  appCreateDate DATETIME NULL
+  appCreateBy INTEGER NULL
+
+TABLE: tblMenuType (2 rows)
+  appMenuTypeId INTEGER NOT NULL  [PK]
+  appBlockId INTEGER NOT NULL
+  appMenuTypeName NVARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NOT NULL
+  appIsActive BIT NOT NULL
+  appNoOfLevel INTEGER NULL
+  appCreatedDate DATETIME NOT NULL
+  appCreatedBy INTEGER NOT NULL
+
+TABLE: tblNews (42 rows)
+  appNewsID INTEGER NOT NULL  [PK]
+  appType INTEGER NULL
+  appRefID INTEGER NULL
+  appDisplayType INTEGER NULL
+  appTitle NVARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appFromDate DATETIME NULL
+  appToDate DATETIME NULL
+  appIsPermenent BIT NULL
+  appIsActive BIT NULL
+  appIsForcefullyShow BIT NULL
+  appDisplayOrder INTEGER NULL
+  appCreatedDate DATETIME NULL
+  appCreatedBy INTEGER NULL
+  appModifiedDate DATETIME NULL
+  appModifyBy INTEGER NULL
+  appRefNewsId INTEGER NULL
+
+TABLE: tblNewsMarket (20 rows)
+  appNewsMarketID INTEGER NOT NULL  [PK]
+  appCentralizationID VARCHAR(50) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appNews VARCHAR(2000) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsSend BIT NULL
+  appCreatedDate DATETIME NULL
+  appCreatedBy INTEGER NULL
+  appIsPermenent BIT NULL
+  appFromDate DATETIME NULL
+  appToDate DATETIME NULL
+  appRefNewsMarketId INTEGER NULL
+
+TABLE: tblNotificationIcon (3 rows)
+  appNotificationIconId INTEGER NOT NULL  [PK]
+  appIconName VARCHAR(40) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIconURL VARCHAR(255) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+
+TABLE: tblNotificationLog (80,482 rows)
+  appNotificationLogID INTEGER NOT NULL  [PK]
+  appNotificationMasterID INTEGER NULL
+  appUserID INTEGER NULL
+  appUserType INTEGER NULL
+  appIsRead BIT NULL
+  appReadDateTime DATETIME NULL
+  appCreatedBy INTEGER NULL
+  appCreatedDate DATETIME NULL
+  appNotificationTitle VARCHAR(150) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appNotificationMessage VARCHAR(500) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appNotificationCategoryEnumId TINYINT NULL
+  appNotificationIconId INTEGER NULL
+  appTransactionID VARCHAR(64) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+
+TABLE: tblNotificationWithdrawApproval (304 rows)
+  appID INTEGER NOT NULL  [PK]
+  appClientID INTEGER NULL
+  appTransactionID VARCHAR(96) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appNotificationIconId INTEGER NULL
+  appNotificationTitle VARCHAR(150) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appNotificationMessage VARCHAR(500) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appNotificationCategoryEnumId TINYINT NULL
+  appIsRead BIT NULL
+  appCreatedDate DATETIME NULL
+  appReadDateTime DATETIME NULL
+  appStatus INTEGER NULL
+  appScheduleRecall DATETIME NULL
+  appRefID INTEGER NULL
+  appWithdrawDate DATETIME NULL
+
+TABLE: tblOTP (8,926 rows)
+  appOTPId INTEGER NOT NULL  [PK]
+  appMobileNo NVARCHAR(20) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appOTP INTEGER NULL
+  appDate DATETIME NULL
+  appIsForAdmin BIT NOT NULL
+  appUserId INTEGER NULL
+
+TABLE: tblOTPTracelog (17,848 rows)
+  appOTPTracelogId INTEGER NOT NULL  [PK]
+  appDescription VARCHAR(160) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsRequest BIT NULL
+  appData VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appCreatedDate DATETIME NULL
+  appClientId INTEGER NULL
+  appMobile VARCHAR(16) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appOTPType INTEGER NULL
+  appUserId BIT NOT NULL
+
+TABLE: tblPage (26 rows)
+  appPageId INTEGER NOT NULL  [PK]
+  appPageTitle NVARCHAR(300) COLLATE "SQL_Latin1_General_CP1_CI_AS" NOT NULL
+  appPageHeading NVARCHAR(300) COLLATE "SQL_Latin1_General_CP1_CI_AS" NOT NULL
+  appPageName NVARCHAR(300) COLLATE "SQL_Latin1_General_CP1_CI_AS" NOT NULL
+  appAlias NVARCHAR(300) COLLATE "SQL_Latin1_General_CP1_CI_AS" NOT NULL
+  appIsLink BIT NOT NULL
+  appLinkURL NVARCHAR(300) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appPageFormatId INTEGER NULL
+  appIsOpenInNewTab BIT NULL
+  appPageContent NTEXT NULL
+  appSEOWord NVARCHAR(300) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appSEODescription NTEXT NULL
+  appCreatedDate DATETIME NOT NULL
+  appCreatedBy INTEGER NOT NULL
+  appIsDefault BIT NULL
+  appDynamicParameters VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsStatic BIT NULL
+  appWhiteLabelId INTEGER NULL
+
+TABLE: tblPageFormat (2 rows)
+  appPageFormatId INTEGER NOT NULL  [PK]
+  appPageFormatName NVARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NOT NULL
+  appPageName NVARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NOT NULL
+  appImage NVARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appDescription NTEXT NULL
+  appIsActive BIT NOT NULL
+  appCreatedDate DATETIME NOT NULL
+  appCreatedBy INTEGER NOT NULL
+
+TABLE: tblPaymentAccountDetail (2 rows)
+  appManualPaymentAccountID INTEGER NULL
+  appKey VARCHAR(48) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appValue VARCHAR(96) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+
+TABLE: tblPaymentAPI (2 rows)
+  appPaymentAPIID INTEGER NOT NULL  [PK]
+  appAPITitle VARCHAR(60) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appAPIURL VARCHAR(480) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appStatusAPIURL VARCHAR(480) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appPrivateKey VARCHAR(160) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appClientCode VARCHAR(208) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appAPIType TINYINT NULL
+  appIsDefault BIT NULL
+  appIsActive BIT NULL
+  appCreatedBy INTEGER NULL
+  appCreatedDate DATETIME NULL
+  appModifiedBy INTEGER NULL
+  appModifiedDate DATETIME NULL
+  appBetGrade TINYINT NULL
+  appDepositGrade TINYINT NULL
+  appPaymentApiProviderEnumId INTEGER NULL
+  appVerifyURL VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appHashKey VARCHAR(208) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appDisplayOrder INTEGER NULL
+  appIsCallPGForVerify BIT NULL
+  appDepositAmountLimit DECIMAL(18, 2) NULL
+  appDepositLimitSchedule TINYINT NULL
+  appTotalDepositAmount DECIMAL(18, 2) NULL
+  appPaymentCategoryId INTEGER NULL
+  appFranchiseUserIds VARCHAR(200) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appWhitelistIps VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appApprovalUrl VARCHAR(480) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appMinDeposit DECIMAL(15, 2) NULL
+  appMaxDeposit DECIMAL(15, 2) NULL
+
+TABLE: tblpaymentAPI_17092025 (6 rows)
+  appPaymentAPIID INTEGER NOT NULL
+  appAPITitle VARCHAR(60) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appAPIURL VARCHAR(480) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appStatusAPIURL VARCHAR(480) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appPrivateKey VARCHAR(160) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appClientCode VARCHAR(208) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appAPIType TINYINT NULL
+  appIsDefault BIT NULL
+  appIsActive BIT NULL
+  appCreatedBy INTEGER NULL
+  appCreatedDate DATETIME NULL
+  appModifiedBy INTEGER NULL
+  appModifiedDate DATETIME NULL
+  appBetGrade TINYINT NULL
+  appDepositGrade TINYINT NULL
+  appPaymentApiProviderEnumId INTEGER NULL
+  appVerifyURL VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appHashKey VARCHAR(208) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appDisplayOrder INTEGER NULL
+  appIsCallPGForVerify BIT NULL
+  appDepositAmountLimit DECIMAL(18, 2) NULL
+  appDepositLimitSchedule TINYINT NULL
+  appTotalDepositAmount DECIMAL(18, 2) NULL
+  appPaymentCategoryId INTEGER NULL
+  appFranchiseUserIds VARCHAR(200) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appWhitelistIps VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appApprovalUrl VARCHAR(480) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appMinDeposit DECIMAL(15, 2) NULL
+  appMaxDeposit DECIMAL(15, 2) NULL
+
+TABLE: tblPaymentCategory (1 rows)
+  appPaymentCategoryId INTEGER NOT NULL  [PK]
+  appPaymentCategory VARCHAR(50) COLLATE "SQL_Latin1_General_CP1_CI_AS" NOT NULL
+  appCreatedBy INTEGER NULL
+  appCreatedDate DATETIME NULL
+  appModifyBy INTEGER NULL
+  appModifyDate DATETIME NULL
+  appMinScore DECIMAL(15, 2) NULL
+  appMaxScore DECIMAL(15, 2) NULL
+
+TABLE: tblPaymentCategoryWeightage (1 rows)
+  appId INTEGER NOT NULL  [PK]
+  appUseBalanceWeightage DECIMAL(15, 2) NULL
+  appIsActiveWeightage DECIMAL(15, 2) NULL
+  appUserLastLoginWeightage DECIMAL(15, 2) NULL
+  appTotalDepositWeightage DECIMAL(15, 2) NULL
+  appTotalWithdrawWeightage DECIMAL(15, 2) NULL
+  appKYCWeightage DECIMAL(15, 2) NULL
+
+TABLE: tblPaymentGatewayEnums (8 rows)
+  appID INTEGER NOT NULL  [PK]
+  appPaymentGatewayName VARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appPaymentGatewayEnumID INTEGER NULL
+  appIsActive BIT NULL
+
+TABLE: tblPaymentMode (8 rows)
+  appPaymentModeID INTEGER NOT NULL  [PK]
+  appPaymentMode VARCHAR(96) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIcon VARCHAR(500) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appTemplet VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsActive BIT NULL
+  appMinAmount DECIMAL(10, 2) NULL
+  appMaxAmount DECIMAL(10, 2) NULL
+  appDisplayOrder INTEGER NULL
+  appPaymentModeTypeEnum INTEGER NULL
+  appPaymentTransferModeId INTEGER NULL
+
+TABLE: tblPaymentTransferMode (6 rows)
+  appId INTEGER NOT NULL  [PK]
+  appPaymentTransferModeId INTEGER NULL
+  appPaymentTransferMode NVARCHAR(255) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+
+TABLE: tblPermission (8,884 rows)
+  appPermissionID INTEGER NOT NULL  [PK]
+  appTabID INTEGER NULL
+  appRoleID INTEGER NULL
+  appIsAdd BIT NULL
+  appIsEdit BIT NULL
+  appIsView BIT NULL
+  appIsDelete BIT NULL
+  appCreatedDate DATETIME NOT NULL
+  appCreatedBy INTEGER NOT NULL
+
+TABLE: tblPermissionDetail (2,214 rows)
+  appPermissionDetailID INTEGER NOT NULL  [PK]
+  appPermissionLogID INTEGER NOT NULL  [FK -> tblPermissionLog.appPermissionLogID]
+  appPermissionMstID TINYINT NOT NULL  [FK -> tblPermissionMst.appPermissionMstID]
+  appUserID INTEGER NOT NULL
+  appUserType TINYINT NOT NULL
+  appIsTrue BIT NOT NULL
+  appIsActive BIT NOT NULL
+  appRefPermissionDetailID INTEGER NULL
+
+TABLE: tblPermissionLog (2,214 rows)
+  appPermissionLogID INTEGER NOT NULL  [PK]
+  appPermissionMstID TINYINT NOT NULL  [FK -> tblPermissionMst.appPermissionMstID]
+  appLogEntryID INTEGER NOT NULL
+  appUserID INTEGER NOT NULL
+  appUserType TINYINT NOT NULL
+  appUserLevel TINYINT NOT NULL
+  appIsTrue BIT NULL
+  appWithChild BIT NOT NULL
+  appCreatedBy INTEGER NOT NULL  [FK -> tblUser.appUserId]
+  appCreatedByLevel TINYINT NOT NULL
+  appCreatedDate DATE NOT NULL
+  appCreatedTime TIME NOT NULL
+  appThreadGenerated INTEGER NOT NULL
+  appThreadProcessed INTEGER NOT NULL
+  appThreadStatus INTEGER NOT NULL
+
+TABLE: tblPermissionMst (27 rows)
+  appPermissionMstID TINYINT NOT NULL  [PK]
+  appPermission VARCHAR(160) COLLATE "SQL_Latin1_General_CP1_CI_AS" NOT NULL
+  appIsActive BIT NOT NULL
+  appCreatedDate DATE NOT NULL
+  appCreatedTime TIME NOT NULL
+  appCreatedBy INTEGER NOT NULL
+  appDisplayName VARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+
+TABLE: tblPlaceFromEnum (5 rows)
+  appID INTEGER NOT NULL
+  appName VARCHAR(96) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appEnumID INTEGER NULL
+  appIsActive BIT NULL
+
+TABLE: tblPointTransaction (763,928 rows)
+  appID INTEGER NOT NULL  [PK]
+  appClientID INTEGER NOT NULL
+  appPoint DECIMAL(18, 5) NOT NULL
+  appOldPoint DECIMAL(18, 5) NULL
+  appNewPoint DECIMAL(18, 5) NULL
+  appType INTEGER NULL
+  appMarketID INTEGER NULL
+  appTPGameRoundID VARCHAR(200) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appWalltedID INTEGER NULL
+  appCampaignID INTEGER NULL
+  appCampaignSubscriptionID INTEGER NULL
+  appUpdateFrom VARCHAR(500) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appCreatedDate DATETIME NULL
+
+TABLE: tblProvider (48 rows)
+  appProviderID INTEGER NOT NULL  [PK]
+  appProviderName VARCHAR(64) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appDisplayName VARCHAR(64) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appProviderLogo VARCHAR(800) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsNew BIT NULL
+  appIsActive BIT NULL
+  appDisplayOrder INTEGER NULL
+  appCreatedDate DATETIME NULL
+  appIcon VARCHAR(800) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appDarkLogo VARCHAR(800) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appProviderCode VARCHAR(24) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appTpGameRefType INTEGER NULL
+  appIsShowOnDashboard BIT NULL
+  appShare DECIMAL(9, 2) NULL
+  appIsPremiumGame BIT NULL
+
+TABLE: tblRateSource (12 rows)
+  appID INTEGER NOT NULL  [PK]
+  appRateSourceID INTEGER NOT NULL
+  appRateSource VARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NOT NULL
+  appIsActive BIT NULL
+
+TABLE: tblRecommendGames (10 rows)
+  appId INTEGER NOT NULL  [PK]
+  appProviderID INTEGER NULL
+  appGameName VARCHAR(200) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appClientsPlayed INTEGER NULL
+  appRecordDate DATETIME NULL
+
+TABLE: tblRecursiveType (4 rows)
+  appId TINYINT NOT NULL  [PK]
+  appTitle VARCHAR(56) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appRecursiveTypeEnum INTEGER NULL
+
+TABLE: tblRedeemRequest (5 rows)
+  appRedeemRequestId INTEGER NOT NULL  [PK]
+  appUserId INTEGER NULL
+  appWalletId INTEGER NULL
+  appStatus INTEGER NULL
+  appCreatedDate DATETIME NULL
+  appRemark VARCHAR(500) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appDeviceInfo VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appApprovedBy INTEGER NULL
+  appStatusDate DATETIME NULL
+
+TABLE: tblReportCheckIP (2,348 rows)
+  appIpCheckId INTEGER NOT NULL
+  appIpInfo VARCHAR(64) COLLATE "SQL_Latin1_General_CP1_CI_AS" NOT NULL
+  appCount SMALLINT NOT NULL
+  appDate DATE NOT NULL
+
+TABLE: tblReportCheckIPDetail (15,212 rows)
+  appCheckIPDetailID INTEGER NOT NULL  [PK]
+  appRefCheckIpId INTEGER NOT NULL
+  appUserID INTEGER NOT NULL
+  appUserType TINYINT NOT NULL
+  appUserName VARCHAR(80) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appActionType TINYINT NOT NULL
+  appRefID INTEGER NULL
+  appRefType INTEGER NULL
+  appRefUserName VARCHAR(80) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appActionTime DATETIME NOT NULL
+
+TABLE: tblRequestLog (158 rows)
+  appRequestLogID INTEGER NOT NULL  [PK]
+  appCreatedDate DATE NOT NULL
+  appCreatedTime TIME NOT NULL
+  appUserID INTEGER NOT NULL
+  appUserType TINYINT NOT NULL
+  appRefID INTEGER NULL
+  appRefType TINYINT NULL
+  appRequestType TINYINT NOT NULL
+  appParameterDecomp NVARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appStatus TINYINT NULL
+  appModifiedDate DATE NULL
+  appModifiedTime TIME NULL
+  appParameter VARBINARY NOT NULL
+
+TABLE: tblRFMCalculationType (3 rows)
+  appId INTEGER NOT NULL  [PK]
+  appCalculationTypeId INTEGER NULL
+  appName VARCHAR(20) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+
+TABLE: tblRFMClusterCenters (9 rows)
+  any_activity_past_3_months FLOAT NULL
+  made_deposit_past_3_months FLOAT NULL
+  time_since_signup FLOAT NULL
+  time_since_last_login FLOAT NULL
+  time_since_last_bet FLOAT NULL
+  total_logins_since_signup FLOAT NULL
+  number_of_deposits FLOAT NULL
+  total_number_of_bets FLOAT NULL
+  avg_time_between_logins FLOAT NULL
+  avg_time_between_deposits FLOAT NULL
+  total_deposit_amount FLOAT NULL
+  total_bonus_amount FLOAT NULL
+  total_bet_amount FLOAT NULL
+  avg_amt_per_deposit FLOAT NULL
+  median_bet_amount FLOAT NULL
+  total_pl FLOAT NULL
+  perc_profitable_bets FLOAT NULL
+  sport_bets_perc FLOAT NULL
+  cricket_preferred FLOAT NULL
+  vkingPlay_preferred FLOAT NULL
+  ipl_preferred FLOAT NULL
+  worldcasino_preferred FLOAT NULL
+  evolution_player FLOAT NULL
+  ezugi_player FLOAT NULL
+  number_of_withdrawals FLOAT NULL
+  withdrawal_as_a_perc_of_deposit FLOAT NULL
+  latest_balance FLOAT NULL
+  cluster_size BIGINT NULL
+
+TABLE: tblRFMCondition (3 rows)
+  appConditionId INTEGER NOT NULL  [PK]
+  appCondition VARCHAR(20) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appConditionExpression VARCHAR(15) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsActive BIT NULL
+
+TABLE: tblRFMMaster (5 rows)
+  appRFMId INTEGER NOT NULL  [PK]
+  appRFMTitle VARCHAR(96) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appRFMType TINYINT NULL
+  appFromDate DATETIME NULL
+  appToDate DATETIME NULL
+  appMatrixCount TINYINT NULL
+  appCalculationTypeR TINYINT NULL
+  appCalculationTypeF TINYINT NULL
+  appCalculationTypeM TINYINT NULL
+  appWebsiteId INTEGER NULL
+  appCreatedBy INTEGER NULL
+  appCreatedDate DATETIME NULL
+  appModifyBy INTEGER NULL
+  appModifyDate DATETIME NULL
+  appisactive BIT NULL
+
+TABLE: tblRFMSegment (11 rows)
+  appId INTEGER NOT NULL  [PK]
+  appSegmentId INTEGER NULL
+  appSegment VARCHAR(48) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appScore VARCHAR(1000) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appColor VARCHAR(48) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+
+TABLE: tblRFMSegmentMapping (3 rows)
+  cluster_label VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  simplified_cluster_label VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  clientCount INTEGER NULL
+  RFMSegmentMappingId INTEGER NOT NULL  [PK]
+
+TABLE: tblRFMType (2 rows)
+  appId INTEGER NOT NULL  [PK]
+  appRFMTypeId INTEGER NULL
+  appName VARCHAR(20) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+
+TABLE: tblRole (45 rows)
+  appRoleID INTEGER NOT NULL  [PK]
+  appRoleName VARCHAR(50) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appDescription VARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appCreatedDate DATETIME NOT NULL
+  appCreatedBy INTEGER NOT NULL
+  appDisplayType INTEGER NULL
+  appIsActive BIT NOT NULL
+  appIsSystemRole BIT NOT NULL
+  appCreatedFor INTEGER NULL
+
+TABLE: tblRoleWiseEvent (1 rows)
+  appRoleEventId INTEGER NOT NULL  [PK]
+  appRoleId INTEGER NULL
+  appEventType INTEGER NULL
+  appEventId INTEGER NULL
+  appisActive BIT NULL
+
+TABLE: tblSeamlessAPI (7 rows)
+  appID INTEGER NOT NULL  [PK]
+  appType INTEGER NULL
+  appUri VARCHAR(500) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appTimeOut INTEGER NULL
+  appNoOfTimeCall SMALLINT NULL
+  appIsActive BIT NULL
+
+TABLE: tblServices (4 rows)
+  appServicesId INTEGER NOT NULL  [PK]
+  appServiceName VARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appServiceStartTime DATETIME NULL
+  appServicesEndTime DATETIME NULL
+
+TABLE: tblSettings (1 rows)
+  appSettingsId INTEGER NOT NULL  [PK]
+  appSiteName NVARCHAR(50) COLLATE "SQL_Latin1_General_CP1_CI_AS" NOT NULL
+  appSiteTitle NVARCHAR(50) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appClientSiteURL NVARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appFooterText NVARCHAR(50) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsSiteOffline BIT NULL
+  appSiteOfflineMessage TEXT(16) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appSiteOfflineImage TEXT(16) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appSiteLogo TEXT(16) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appSiteFavicon TEXT(16) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appSiteTagLine NVARCHAR(50) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appSiteDefaultListLimit NVARCHAR(10) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appPathToFolder NVARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appDatasource NVARCHAR(50) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appDatasourceUserName NVARCHAR(50) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appDatasourcePassword NVARCHAR(50) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsUseIntegratedSecurity BIT NULL
+  appDatabaseName NVARCHAR(50) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appSiteEmail NVARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appRecepientEmail NVARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appSMTP NVARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appEmailPassword NVARCHAR(50) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appPortNumber NVARCHAR(50) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appCreatedBy INTEGER NOT NULL
+  appCreatedDate DATETIME NOT NULL
+  appIsActiveBet BIT NULL
+  appClientComission DECIMAL(10, 2) NULL
+  appFreshbetdelay INTEGER NULL
+  appCancelbetdelay INTEGER NULL
+  appMarketRate INTEGER NULL
+  appGeneralImportServices BIT NULL
+  appSoccerImportServices BIT NULL
+  appInPlayServices BIT NULL
+  appCloseServices BIT NULL
+  appSettlementServices BIT NULL
+  appUnMatchSettlementServices BIT NULL
+  appSessionToken VARCHAR(1000) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsMainAccount BIT NULL
+  appMarketLimit INTEGER NULL
+  appAfterMinMarketSleep INTEGER NULL
+  appMinbetRate DECIMAL(10, 2) NULL
+  appMaxbetRate DECIMAL(10, 2) NULL
+  appMinStack DECIMAL(12, 2) NULL
+  appMaxStack DECIMAL(12, 2) NULL
+  appRule NVARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appTermCondition VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appSessionRateDifferent DECIMAL(10, 2) NULL
+  appSessionRule VARCHAR(160) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appKhadoRule VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appKhadoRateDifferent DECIMAL(10, 2) NULL
+  appClientMaxLoss DECIMAL(10, 2) NULL
+  appClientMaxProfit DECIMAL(10, 2) NULL
+  appClientInplaylimit DECIMAL(10, 2) NULL
+  appSessionCommission DECIMAL(10, 2) NULL
+  appSessionMaxStack DECIMAL(10, 2) NULL
+  appSessionBetMaxStack DECIMAL(10, 2) NULL
+  appSessionMinStack DECIMAL(10, 2) NULL
+  appBetRateLimit DECIMAL(10, 2) NULL
+  appBetRatelimitPoint DECIMAL(10, 2) NULL
+  appSessionClientMaxProfit DECIMAL(10, 2) NULL
+  appSessionClientMaxLoss DECIMAL(10, 2) NULL
+  appApplicationVersion DECIMAL(10, 2) NULL
+  appSiteEmail1 NVARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appRecepientEmail1 NVARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appSMTP1 NVARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appEmailPassword1 NVARCHAR(50) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appPortNumber1 NVARCHAR(50) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsSSLEnabled BIT NOT NULL
+  appTopLogo INTEGER NULL
+  appSessionCancelDelay INTEGER NULL
+  appSessionFreshDelay INTEGER NULL
+  appModalData VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appMarketRules VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+
+TABLE: tblSettlementSystemTask (32 rows)
+  appSystemTaskID INTEGER NOT NULL  [PK]
+  appTaskType INTEGER NULL
+  appUserID INTEGER NULL
+  appUserType INTEGER NULL
+  appEventID INTEGER NULL
+  appEventType INTEGER NULL
+  appCentralizationID VARCHAR(50) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsDownline BIT NULL
+  appValue VARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appKey VARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appStatus INTEGER NULL
+  appIpAddress VARCHAR(96) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appRemark VARCHAR(160) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appCreatedBy INTEGER NULL
+  appCreatedType INTEGER NULL
+  appCreatedDate DATETIME NULL
+
+TABLE: tblSettlementSystemTaskDetail (5 rows)
+  appID INTEGER NOT NULL  [PK]
+  appSystemTaskID INTEGER NULL
+  appClientID INTEGER NULL
+  appOldBalance DECIMAL(18, 5) NULL
+  appNewBalance DECIMAL(18, 5) NULL
+
+TABLE: tblShareRequestLog (1 rows)
+  appShareRequestLogID INTEGER NOT NULL  [PK]
+  appCreatedDate DATE NOT NULL
+  appCreatedTime TIME NOT NULL
+  appUserID INTEGER NOT NULL
+  appUserType TINYINT NOT NULL
+  appRefID INTEGER NULL
+  appRefType TINYINT NULL
+  appStatus TINYINT NULL
+  appParameterDecomp NVARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appModifiedDate DATE NULL
+  appModifiedTime TIME NULL
+  appParameter VARBINARY NOT NULL
+  appAdminshareDetail VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appESTEffectedUser INTEGER NULL
+  appEffectedUser INTEGER NULL
+
+TABLE: tblSignalR (1 rows)
+  appSignarlRID INTEGER NOT NULL  [PK]
+  appSignalR VARCHAR(2000) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appSignalRAPI VARCHAR(2000) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appisActive BIT NULL
+  appCeratedBy INTEGER NULL
+  appCreatedDate DATETIME NULL
+  appToken NVARCHAR(32) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsSendCCDData BIT NULL
+  appNoticationBaseUrl VARCHAR(300) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+
+TABLE: tblSport (35 rows)
+  appSportID INTEGER NOT NULL  [PK]
+  appSport VARCHAR(50) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appSportID_BF INTEGER NULL
+  appImage VARCHAR(500) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appShowIsMenu BIT NULL
+  appDisplayOrder INTEGER NULL
+  appIsActive BIT NULL
+  appCreatedDate DATETIME NULL
+  appCreatedBy INTEGER NULL
+
+TABLE: tblTab (299 rows)
+  appTabID INTEGER NOT NULL  [PK]
+  appTabName VARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NOT NULL
+  appWebPageName VARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appParentID INTEGER NOT NULL
+  appIsMenu BIT NULL
+  appIsAdd BIT NOT NULL
+  appIsEdit BIT NOT NULL
+  appIsDelete BIT NOT NULL
+  appIsActive BIT NOT NULL
+  appAddPage VARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appDisplayOrder INTEGER NOT NULL
+  appIsShowOnDashboard BIT NULL
+  appIconPath NVARCHAR(150) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appTabDetailName VARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appCreatedDate DATETIME NOT NULL
+  appCreatedBy INTEGER NOT NULL
+  appRoutePath NVARCHAR(500) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appUpdatedBy INTEGER NULL
+  appUpdatedDate DATETIME NULL
+  appIsOldPage BIT NULL
+  appNewWebPageName NVARCHAR(200) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appNewAddPageName NVARCHAR(200) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appDisplayName VARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appDisplayType INTEGER NULL
+  appIsForWhitelabel BIT NULL
+  appKeywords VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+
+TABLE: tblTagCategory (3 rows)
+  appTagCategoryID INTEGER NOT NULL  [PK]
+  appTagCategoryName VARCHAR(32) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsActive BIT NULL
+  appCreatedDate DATETIME NULL
+  appCreratedBy INTEGER NULL
+  appModifiedDate DATETIME NULL
+  appModifiedBy INTEGER NULL
+
+TABLE: tblTagMaster (13 rows)
+  appTagID TINYINT NOT NULL  [PK]
+  appTagName VARCHAR(48) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appDescription VARCHAR(800) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appTagCategoryID TINYINT NULL
+  appIsActive BIT NULL
+  appCreatedDate DATETIME NULL
+  appCreatedBy INTEGER NULL
+  appModifiedDate DATETIME NULL
+  appModifiedBy INTEGER NULL
+  appColor VARCHAR(16) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appKeywords VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+
+TABLE: tblTheme (4 rows)
+  appThemeId INTEGER NOT NULL  [PK]
+  appThemeName VARCHAR(40) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appThemePath NVARCHAR(500) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appThemeImage NVARCHAR(500) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsActive BIT NULL
+  appIsDefault BIT NULL
+  appDisplayOrder INTEGER NULL
+
+TABLE: tblThread (230 rows)
+  appMarketThreadID INTEGER NOT NULL  [PK]
+  appBetID INTEGER NULL
+  appMarket_BF VARCHAR(50) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsStart BIT NULL
+  appStartTime DATETIME NULL
+  appIsClose BIT NULL
+  appIsDefault BIT NULL
+
+TABLE: tblTimeZone (75 rows)
+  appTimeZoneId INTEGER NOT NULL  [PK]
+  appTimeZone VARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appDifferenceWithISTinMinutes INTEGER NULL
+
+TABLE: tblTournament (1,504 rows)
+  appTournamentID INTEGER NOT NULL  [PK]
+  appTournament VARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appSportID INTEGER NULL
+  appTournamentID_BF INTEGER NULL
+  appDisplayOrder INTEGER NULL
+  appIsAustralian BIT NULL
+  appIsActive BIT NULL
+  appCreatedDate DATETIME NULL
+  appCreatedBy INTEGER NULL
+  appTPRefCode VARCHAR(8) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  IsVirtual BIT NULL
+  Team1Image VARCHAR(240) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  Team2Image VARCHAR(240) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsShowInClient BIT NULL
+  appOpenPage INTEGER NULL
+  appIsFavorite BIT NULL
+  appImage VARCHAR(80) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+
+TABLE: tblTraceLog (1,583 rows)
+  appLogID INTEGER NOT NULL  [PK]
+  appEventType INTEGER NULL
+  appEventID INTEGER NULL
+  appLogType INTEGER NULL
+  appDescription VARCHAR(800) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIPinformation VARCHAR(800) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appUpdateFrom INTEGER NULL
+  appCreatedBy INTEGER NULL
+  appCreatedType INTEGER NULL
+  appCreatedDate DATETIME NULL
+  appGameName VARCHAR(32) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appErrorMessage VARCHAR(1600) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+
+TABLE: tblTraceLogBackup (1,423,235 rows)
+  appLogID INTEGER NOT NULL  [PK]
+  appEventType INTEGER NULL
+  appEventID INTEGER NULL
+  appLogType INTEGER NULL
+  appDescription VARCHAR(1400) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIPinformation VARCHAR(1400) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appUpdateFrom INTEGER NULL
+  appCreatedBy INTEGER NULL
+  appCreatedType INTEGER NULL
+  appCreatedDate DATETIME NULL
+  appGameName VARCHAR(32) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appErrorMessage VARCHAR(1600) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+
+TABLE: tblTransaction (61,656 rows)
+  appTransactionID INTEGER NOT NULL  [PK]
+  appDate DATETIME NULL
+  appUserType INTEGER NULL
+  appUserID INTEGER NULL
+  appAmount DECIMAL(18, 3) NULL
+  appWinAmount DECIMAL(18, 3) NULL
+  appParticular VARCHAR(800) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsIn BIT NULL
+  appClientBetID INTEGER NULL
+  appLiability DECIMAL(10, 2) NULL
+  appIsCashout BIT NULL
+  appIsTemp BIT NULL
+  appIsAc BIT NULL
+  appBetID INTEGER NULL
+  appTransactionType INTEGER NULL
+  appBetDetailID INTEGER NULL
+  appIsBack BIT NULL
+  appRate DECIMAL(10, 3) NULL
+  appStake DECIMAL(10, 3) NULL
+  appIsMatched BIT NULL
+  appAdminShareMasterID INTEGER NULL
+  appWalletID INTEGER NULL
+  appPoint DECIMAL(9, 2) NULL
+  appCashoutPer DECIMAL(5, 3) NULL
+  appIsCheckBet BIT NULL
+  appCertainly SMALLINT NULL
+  appIpAddress VARCHAR(96) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+
+TABLE: tblTransactionWager (150 rows)
+  appTransactionID INTEGER NOT NULL
+  appDate DATETIME NULL
+  appUserType INTEGER NULL
+  appUserID INTEGER NULL
+  appAmount DECIMAL(18, 3) NULL
+  appWinAmount DECIMAL(18, 3) NULL
+  appParticular VARCHAR(800) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsIn BIT NULL
+  appClientBetID INTEGER NULL
+  appLiability DECIMAL(10, 2) NULL
+  appIsCashout BIT NULL
+  appIsTemp BIT NULL
+  appIsAc BIT NULL
+  appBetID INTEGER NULL
+  appTransactionType INTEGER NULL
+  appBetDetailID INTEGER NULL
+  appIsBack BIT NULL
+  appRate DECIMAL(10, 3) NULL
+  appStake DECIMAL(10, 3) NULL
+  appIsMatched BIT NULL
+  appAdminShareMasterID INTEGER NULL
+  appWalletID INTEGER NULL
+  appPoint DECIMAL(5, 2) NULL
+  appIpAddress VARCHAR(96) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+
+TABLE: tblTrendingGamesList (3 rows)
+  GameId INTEGER NOT NULL  [PK]
+  gameName VARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  providerId VARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  RecordDate DATETIME NULL
+
+TABLE: tblUIConfig (1 rows)
+  AppConfigId INTEGER NOT NULL  [PK]
+  AppNavigationType NVARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  AppThemeColor NVARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  AppTopBarColor NVARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  AppLeftBarColor NVARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  AppLeftBarSize NVARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  AppModifyBy INTEGER NULL
+  AppModifyDate DATETIME NULL
+  AppTopbarBackground NVARCHAR(160) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  AppTopbarFontColor NVARCHAR(200) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  AppNavigationBackground NVARCHAR(160) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  AppNavigationFontColor NVARCHAR(200) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  AppBodyBackground NVARCHAR(160) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  AppContentBackground NVARCHAR(160) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  AppFontColor NVARCHAR(200) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  AppIsAdvanceConfiguration BIT NULL
+  AppBorderColor NVARCHAR(400) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsAdmin BIT NULL
+  appWhitelabelId INTEGER NULL
+  appListHeaderColor VARCHAR(200) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsListOddEvenColor BIT NULL
+  appListFontWeight VARCHAR(10) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appListHeaderFontColor VARCHAR(200) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsListBorder BIT NULL
+
+TABLE: tblUser (50 rows)
+  appUserId INTEGER NOT NULL  [PK]
+  appRoleId INTEGER NULL  [FK -> tblRole.appRoleID]
+  appLoginType INTEGER NULL
+  appUserName NVARCHAR(25) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appPassword NVARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appFullName NVARCHAR(25) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appUserType INTEGER NULL
+  appIsSuperAdmin BIT NULL
+  appLastLoginTime DATETIME NULL
+  appDescription VARCHAR(160) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appBalance DECIMAL(18, 2) NULL
+  appMarketPLBalance DECIMAL(10, 2) NULL
+  appSessionPLBalance DECIMAL(18, 3) NULL
+  appCommissionBalance DECIMAL(18, 5) NULL
+  appSessionCommissionBalance DECIMAL(18, 3) NULL
+  appMarketCommission DECIMAL(10, 2) NULL
+  appMarketMinCommission DECIMAL(10, 2) NULL
+  appSessionCommission DECIMAL(10, 2) NULL
+  appSessionMaxCommission DECIMAL(10, 2) NULL
+  appIsAllowMultiLogin BIT NULL
+  appParentId INTEGER NULL
+  appCommissionType INTEGER NULL
+  appCreatedDate DATETIME NULL
+  appCreatedBy INTEGER NULL
+  appModifyBy INTEGER NULL
+  appModifyDate DATETIME NULL
+  appIsResetPassword BIT NULL
+  appIsApproved BIT NULL
+  appIsDelete BIT NULL
+  appIsReverse BIT NULL
+  appIsVeronica BIT NULL
+  appModifyType INTEGER NULL
+  appExposureLimit DECIMAL(18, 2) NULL
+  appMarketMaxCommission DECIMAL(18, 0) NULL
+  appSessionMinCommission DECIMAL(18, 0) NULL
+  appMaxChild INTEGER NULL
+  appIsBinaryLogin BIT NULL
+  appIsDemoUser BIT NULL
+  appReference VARCHAR(500) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appChipsPts DECIMAL(18, 5) NULL
+  appChipsRs DECIMAL(18, 5) NULL
+  appCashAmountPts DECIMAL(18, 5) NULL
+  appCashAmountRs DECIMAL(18, 5) NULL
+  appChipsPLAmountPts DECIMAL(18, 5) NULL
+  appChipsPLAmountRs DECIMAL(18, 5) NULL
+  appBalanceRs DECIMAL(18, 3) NULL
+  appMarketCommissionPts DECIMAL(18, 3) NULL
+  appMarketCommissionRs DECIMAL(18, 3) NULL
+  appSessionCommissionPts DECIMAL(18, 3) NULL
+  appSessionCommissionRs DECIMAL(18, 3) NULL
+  appMarketPLPts DECIMAL(18, 3) NULL
+  appMarketPLRs DECIMAL(18, 3) NULL
+  appSessionPLPts DECIMAL(18, 3) NULL
+  appSessionPLRs DECIMAL(18, 3) NULL
+  appIsVacuumPlayLogin BIT NULL
+  appUserLevel SMALLINT NULL
+  appParentTree VARCHAR(2400) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsVkingPlayLogin BIT NULL
+  appCreditReference DECIMAL(18, 3) NULL
+  appIsShowPassword BIT NULL
+  appIsBetallow BIT NULL
+  appCreditReferenceRs DECIMAL(18, 3) NOT NULL
+  appChildCreditReference DECIMAL(18, 5) NULL
+  appChildCreditReferenceRs DECIMAL(18, 5) NULL
+  appParentCash DECIMAL(18, 3) NOT NULL
+  appParentCashRs DECIMAL(18, 3) NOT NULL
+  appChildCash DECIMAL(18, 3) NOT NULL
+  appChildCashRs DECIMAL(18, 3) NOT NULL
+  appIsManageDLUser TINYINT NULL
+  appIsManageDLDW TINYINT NULL
+  appIsManageDLSettlement TINYINT NULL
+  appIsManageDLLimit TINYINT NULL
+  appEUserId VARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appEParentId VARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsAcceptAnyOdds BIT NULL
+  appCasinoPLPts DECIMAL(18, 5) NULL
+  appCasinoPLRs DECIMAL(18, 5) NULL
+  appIsB2C BIT NULL
+  appIsShowReverseConfirm BIT NULL
+  appTabID INTEGER NULL
+  appIsWorldcasinoLogin BIT NULL
+  appReferralCode VARCHAR(50) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appReferralUrl VARCHAR(80) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsManageDLSharing TINYINT NULL
+  appIsManageDLResetPassword TINYINT NULL
+  appIsManageDLPermission TINYINT NULL
+  appIsAllowCashDeposit BIT NULL
+  appDCOUserName VARCHAR(60) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appDCOUserPassword VARCHAR(200) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appUserIPAddress VARCHAR(192) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appLimitType TINYINT NULL
+  appIsCaller BIT NULL
+  appIsAffiliate BIT NULL
+  appIsVerified BIT NULL
+  appEmailID VARCHAR(300) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appMobileNo VARCHAR(20) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appWhiteLableid INTEGER NULL
+  appSeamlessUser BIT NULL
+  appCountryId INTEGER NULL
+  appFranchiseShare DECIMAL(10, 2) NULL
+  appIsFranchiseUser BIT NULL
+  appCostPerRegister DECIMAL(9, 2) NULL
+  appCostPerDeposit DECIMAL(9, 2) NULL
+  appIsCostPerDepositInPerc BIT NULL
+  appMinDepositForCPD DECIMAL(9, 2) NULL
+  appWhatsAppURL VARCHAR(96) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsCashout BIT NULL
+  appIsSportBook BIT NULL
+  appClientBlockOnPlacebetCount INTEGER NULL
+  appIsClientBlockOnPlacebet BIT NULL
+  appWithdrawableRatio DECIMAL(9, 3) NULL
+  appSessionCommissionOnStake DECIMAL(18, 2) NULL
+  appIsOtpEnable BIT NULL
+  appLineCommission DECIMAL(10, 2) NULL
+  appLineMinCommission DECIMAL(10, 2) NULL
+  appLineMaxCommission DECIMAL(10, 2) NULL
+  appLineCommissionRs DECIMAL(10, 3) NULL
+  appLineCommissionPts DECIMAL(10, 3) NULL
+  appOtpType INTEGER NULL
+  appTelegramChatId VARCHAR(320) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appGoogleAuthKeyId NVARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+
+TABLE: tblUser_DeleteTRG (1 rows)
+  appId INTEGER NOT NULL  [PK]
+  appUserId INTEGER NULL
+  appRoleId INTEGER NULL
+  appLoginType INTEGER NULL
+  appUserName NVARCHAR(25) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appPassword NVARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appFullName NVARCHAR(25) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appUserType INTEGER NULL
+  appIsSuperAdmin BIT NULL
+  appLastLoginTime DATETIME NULL
+  appDescription VARCHAR(160) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appBalance DECIMAL(18, 2) NULL
+  appMarketPLBalance DECIMAL(10, 2) NULL
+  appSessionPLBalance DECIMAL(10, 2) NULL
+  appCommissionBalance DECIMAL(10, 2) NULL
+  appSessionCommissionBalance DECIMAL(10, 2) NULL
+  appMarketCommission DECIMAL(10, 2) NULL
+  appMarketMinCommission DECIMAL(10, 2) NULL
+  appSessionCommission DECIMAL(10, 2) NULL
+  appSessionMaxCommission DECIMAL(10, 2) NULL
+  appIsAllowMultiLogin BIT NULL
+  appParentId INTEGER NULL
+  appCommissionType INTEGER NULL
+  appCreatedDate DATETIME NULL
+  appCreatedBy INTEGER NULL
+  appModifyBy INTEGER NULL
+  appModifyDate DATETIME NULL
+  appIsResetPassword BIT NULL
+  appIsApproved BIT NULL
+  appIsDelete BIT NULL
+  appIsReverse BIT NULL
+  appIsVeronica BIT NULL
+  appModifyType INTEGER NULL
+  appExposureLimit DECIMAL(18, 2) NULL
+  appMarketMaxCommission DECIMAL(18, 0) NULL
+  appSessionMinCommission DECIMAL(18, 0) NULL
+  appMaxChild INTEGER NULL
+  appIsBinaryLogin BIT NULL
+  appIsDemoUser BIT NULL
+  appReference VARCHAR(500) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appChipsPts DECIMAL(18, 3) NULL
+  appChipsRs DECIMAL(18, 3) NULL
+  appCashAmountPts DECIMAL(18, 3) NULL
+  appCashAmountRs DECIMAL(18, 3) NULL
+  appChipsPLAmountPts DECIMAL(18, 3) NULL
+  appChipsPLAmountRs DECIMAL(18, 3) NULL
+  appBalanceRs DECIMAL(18, 3) NULL
+  appMarketCommissionPts DECIMAL(18, 3) NULL
+  appMarketCommissionRs DECIMAL(18, 3) NULL
+  appSessionCommissionPts DECIMAL(18, 3) NULL
+  appSessionCommissionRs DECIMAL(18, 3) NULL
+  appMarketPLPts DECIMAL(18, 3) NULL
+  appMarketPLRs DECIMAL(18, 3) NULL
+  appSessionPLPts DECIMAL(18, 3) NULL
+  appSessionPLRs DECIMAL(18, 3) NULL
+  appIsVacuumPlayLogin BIT NULL
+  appUserLevel SMALLINT NULL
+  appParentTree VARCHAR(2400) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsVkingPlayLogin BIT NULL
+  appCreditReference DECIMAL(18, 3) NULL
+  appIsShowPassword BIT NULL
+  appIsBetallow BIT NULL
+  appCreditReferenceRs DECIMAL(18, 3) NOT NULL
+  appChildCreditReference DECIMAL(18, 3) NOT NULL
+  appChildCreditReferenceRs DECIMAL(18, 3) NOT NULL
+  appParentCash DECIMAL(18, 3) NOT NULL
+  appParentCashRs DECIMAL(18, 3) NOT NULL
+  appChildCash DECIMAL(18, 3) NOT NULL
+  appChildCashRs DECIMAL(18, 3) NOT NULL
+  appIsManageDLUser TINYINT NULL
+  appIsManageDLDW TINYINT NULL
+  appIsManageDLSettlement TINYINT NULL
+  appIsManageDLLimit TINYINT NULL
+  appEUserId VARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appEParentId VARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsAcceptAnyOdds BIT NULL
+  appCasinoPLPts DECIMAL(18, 3) NULL
+  appCasinoPLRs DECIMAL(18, 3) NULL
+  appIsB2C BIT NULL
+  appIsShowReverseConfirm BIT NULL
+  appTabID INTEGER NULL
+  appIsWorldcasinoLogin BIT NULL
+  appReferralCode VARCHAR(50) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appReferralUrl VARCHAR(80) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsManageDLSharing TINYINT NULL
+  appIsManageDLResetPassword TINYINT NULL
+  appIsManageDLPermission TINYINT NULL
+  appIsAllowCashDeposit BIT NULL
+  appDCOUserName VARCHAR(60) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appDCOUserPassword VARCHAR(200) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appUserIPAddress VARCHAR(192) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appLimitType TINYINT NULL
+  appIsCaller BIT NULL
+  appIsAffiliate BIT NULL
+  appIsVerified BIT NULL
+  appEmailID VARCHAR(300) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appMobileNo VARCHAR(20) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appWhiteLableid INTEGER NULL
+  appSeamlessUser BIT NULL
+  appCountryId INTEGER NULL
+  appFranchiseShare DECIMAL(10, 2) NULL
+  appIsFranchiseUser BIT NULL
+  appCostPerRegister DECIMAL(9, 2) NULL
+  appCostPerDeposit DECIMAL(9, 2) NULL
+  appIsCostPerDepositInPerc BIT NULL
+  appMinDepositForCPD DECIMAL(9, 2) NULL
+  appWhatsAppURL VARCHAR(96) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsCashout BIT NULL
+  appDeletedDate DATETIME NULL
+
+TABLE: tblUserActivityAction (32 rows)
+  appID INTEGER NOT NULL  [PK]
+  appActionName VARCHAR(96) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appDisplayName VARCHAR(96) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appActionTypeEnumID INTEGER NULL
+  appAlertType VARCHAR(96) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appAlertColor VARCHAR(96) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsUserActivity BIT NULL
+  appIsSendNotification BIT NULL
+  appIsActivityApproval BIT NULL
+
+TABLE: tblUserActivityLog (18,642 rows)
+  appActivityLogId INTEGER NOT NULL  [PK]
+  appUserId INTEGER NULL
+  appUserType TINYINT NULL
+  appRefId INTEGER NULL
+  appRefType TINYINT NULL
+  appActionType TINYINT NULL
+  appIpInfo VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appDate DATETIME NULL
+  appRemarks VARCHAR(500) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appOperationType TINYINT NULL
+  appIp VARCHAR(96) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+
+TABLE: tblUserCreditReferenceLog (1 rows)
+  Id INTEGER NOT NULL  [PK]
+  appUserId INTEGER NULL
+  appCreditReference DECIMAL(18, 3) NULL
+  appCreatedBy INTEGER NULL
+  appCreatedDate DATETIME NULL
+  appFranchiseShare DECIMAL(10, 2) NULL
+
+TABLE: tblUserDetail (50 rows)
+  appUserDetailId INTEGER NOT NULL  [PK]
+  appUserId INTEGER NULL
+  appVoisoAgentId VARCHAR(8) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appGtawkUserEmail VARCHAR(80) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appGtawkUserId VARCHAR(40) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appGtawkUserNumber VARCHAR(12) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appTotalDeposit DECIMAL(18, 3) NULL
+  appTotalWithdraw DECIMAL(18, 3) NULL
+  appTotalPL DECIMAL(18, 3) NULL
+  appWhatsAppURL VARCHAR(96) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsTL BIT NULL
+  appMapCallerIds VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsDefaultCallerForRegistration BIT NOT NULL
+  appPoint DECIMAL(10, 2) NULL
+
+TABLE: tblUserIPLog (1,256 rows)
+  appLogId INTEGER NOT NULL  [PK]
+  appUserId INTEGER NULL
+  appUserType INTEGER NULL
+  appRefId INTEGER NULL
+  appRefType INTEGER NULL
+  appActionType INTEGER NULL
+  appIpInfo VARCHAR(96) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appDate DATETIME NULL
+
+TABLE: tblvkingplayDeletedBets (8 rows)
+  appvkingplayDeletedBetsID INTEGER NOT NULL  [PK]
+  appFinalTransactionID INTEGER NULL
+  appUserID INTEGER NULL
+  appAmount DECIMAL(18, 2) NULL
+  appParticular VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appUserType INTEGER NULL
+  appDate DATETIME NULL
+  appIsIn BIT NULL
+  appClientBetID INTEGER NULL
+  appBetId INTEGER NULL
+  appIsAc BIT NULL
+  appBalance DECIMAL(18, 2) NULL
+  appTransactionType INTEGER NULL
+  appIsFreeChips BIT NULL
+  appAdminShare DECIMAL(10, 2) NULL
+  appMDLShare DECIMAL(10, 2) NULL
+  appDLShare DECIMAL(10, 2) NULL
+  appAdminPoint DECIMAL(10, 2) NULL
+  appMDLPoint DECIMAL(10, 2) NULL
+  appDLPoint DECIMAL(10, 2) NULL
+  appClientPoint DECIMAL(10, 2) NULL
+  appCommission DECIMAL(10, 2) NULL
+  appRefType INTEGER NULL
+  appRefID INTEGER NULL
+  appPlaceFrom INTEGER NULL
+  appIPInfo VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appAdminShareMasterID INTEGER NULL
+  appIsHavala BIT NULL
+  appHavalaID INTEGER NULL
+  appCreatedBy INTEGER NULL
+  appCreatedType INTEGER NULL
+  appTPGameRefID VARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appUserPoint INTEGER NULL
+  appCreatedDate DATETIME NULL
+  appTPGameRefType INTEGER NULL
+
+TABLE: tblWagerProcess (480 rows)
+  appWagerProcessId INTEGER NOT NULL  [PK]
+  appClientId INTEGER NULL
+  appBetId INTEGER NULL
+  appWalletId INTEGER NULL
+  appSportId INTEGER NULL
+  appTournamentId INTEGER NULL
+  appMatchId INTEGER NULL
+  appBetTitle VARCHAR(400) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appTotalPL DECIMAL(18, 5) NULL
+  appTotalStake DECIMAL(18, 5) NULL
+  appStatus TINYINT NOT NULL
+  appRemark VARBINARY(600) NOT NULL
+  appRemarkDecom NVARCHAR(600) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appCreatedBy INTEGER NULL
+  appCreatedDate DATETIME NULL
+  appProviderId INTEGER NULL
+  appTableId INTEGER NULL
+  appTPRoundId VARCHAR(256) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appClientbetId INTEGER NULL
+
+TABLE: tblWagerTransaction (480 rows)
+  appWagerTransactionId INTEGER NOT NULL  [PK]
+  appWalletId INTEGER NULL
+  appCampaignSubscriptionId INTEGER NULL
+  appCompaignId INTEGER NULL
+  appUserId INTEGER NULL
+  appBetId INTEGER NULL
+  appCreatedBy INTEGER NULL
+  appCreatedDate DATETIME NULL
+  appModifiedBy INTEGER NULL
+  appModifiedDate DATETIME NULL
+  appWager DECIMAL(18, 5) NULL
+  appParticular VARBINARY(600) NOT NULL
+  appParticularDecom NVARCHAR(600) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+
+TABLE: tblWallet (11,390 rows)
+  appWalletId INTEGER NOT NULL  [PK]
+  appWalletTypeId INTEGER NULL
+  appWalletName VARCHAR(96) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appTotalBonusAmount DECIMAL(15, 2) NULL
+  appUsableBonusAmount DECIMAL(15, 2) NULL
+  appWalletAmount DECIMAL(15, 2) NULL
+  appWagerAmount DECIMAL(15, 2) NULL
+  appAchievedWagerAmount DECIMAL(15, 2) NULL
+  appRemainingWagerAmount DECIMAL(15, 2) NULL
+  appTotalBetPlaced INTEGER NULL
+  appCampaignSubscriptionId INTEGER NULL
+  appUserId INTEGER NULL
+  appCampaignId INTEGER NULL
+  appIsDefault BIT NULL
+  appIsActive BIT NULL
+  appCreatedBy INTEGER NULL
+  appCreatedDate DATETIME NULL
+  appModifiedBy INTEGER NULL
+  appModifiedDate DATETIME NULL
+  appisRedeemed BIT NULL
+  appWalletTypeEnumId INTEGER NULL
+
+TABLE: tblWalletTransaction (27,049 rows)
+  appWalletTransactionId INTEGER NOT NULL  [PK]
+  appWalletId INTEGER NULL
+  appCampaignSubscriptionId INTEGER NULL
+  appUserId INTEGER NULL
+  appCampaignId INTEGER NULL
+  appWalletTypeId INTEGER NULL
+  appBetId INTEGER NULL
+  appClientBetId INTEGER NULL
+  appAmount DECIMAL(15, 2) NULL
+  appRemarks VARCHAR(200) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appCreatedBy INTEGER NULL
+  appCreatedDate DATETIME NULL
+  appModifiedBy INTEGER NULL
+  appModifiedDate DATETIME NULL
+  appTPGameRefId VARCHAR(256) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appProviderId INTEGER NULL
+  appWalletTypeEnumId INTEGER NULL
+
+TABLE: tblWalletType (4 rows)
+  appWalletTypeId INTEGER NOT NULL  [PK]
+  appWalletType VARCHAR(96) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appWalletTypeEnumId TINYINT NULL
+  appMaxBetAmount DECIMAL(15, 2) NULL
+  appMinBetAmount DECIMAL(15, 2) NULL
+  appPercentBonusUsedInBet DECIMAL(5, 2) NULL
+  appMaxBonusAmoutUsedInBet DECIMAL(5, 2) NULL
+  appIsWager BIT NULL
+  appIsActive BIT NULL
+  appCreatedBy INTEGER NULL
+  appCreatedDate DATETIME NULL
+  appModifiedBy INTEGER NULL
+  appModifiedDate DATETIME NULL
+
+TABLE: tblWalletTypeAction (48 rows)
+  appWalletTypeActionId INTEGER NOT NULL  [PK]
+  appIsActive BIT NULL
+  appWalletTypeEnumId INTEGER NULL
+  appCampaignActionEnumId INTEGER NULL
+
+TABLE: tblWebsiteSetting (452 rows)
+  appWebsiteSettingId INTEGER NOT NULL  [PK]
+  appKey VARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NOT NULL
+  appValue VARCHAR(1000) COLLATE "SQL_Latin1_General_CP1_CI_AS" NOT NULL
+  appdescription VARCHAR(800) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsActive BIT NULL
+  appCreatedDate DATETIME NULL
+  appCreatedBy BIT NULL
+  appModifiedDate DATETIME NULL
+  appModifiedBy BIT NULL
+  appSettingType INTEGER NULL
+  appIsForAdmin BIT NULL
+
+TABLE: tblWebsiteSetting_kh2025 (414 rows)
+  appWebsiteSettingId INTEGER NOT NULL
+  appKey NVARCHAR(50) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appValue NVARCHAR(500) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appdescription VARCHAR(800) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsActive BIT NULL
+  appCreatedDate DATETIME NULL
+  appCreatedBy BIT NULL
+  appModifiedDate DATETIME NULL
+  appModifiedBy BIT NULL
+  appSettingType INTEGER NULL
+  appIsForAdmin BIT NULL
+
+TABLE: tblWhitelabel (3 rows)
+  appWhiteLableid INTEGER NOT NULL  [PK]
+  appSiteName VARCHAR(50) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appSiteUrl VARCHAR(50) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appRequestUrl VARCHAR(50) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appPanelUrl VARCHAR(50) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appAgentId VARCHAR(160) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appAndroidappDownloadurl VARCHAR(256) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appAndroidappversion DECIMAL(18, 0) NULL
+  appLogoUrl VARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsWhiteLabel BIT NULL
+  appAgentPanelUrl VARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  AppDarkLogo NVARCHAR(160) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  AppDarkSmallLogo NVARCHAR(160) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  AppLightLogo NVARCHAR(160) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  AppLightSmallLogo NVARCHAR(160) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  AppFavIcon NVARCHAR(160) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appThemeId INTEGER NULL
+  AppIsDarkLogo BIT NULL
+  appAndroidAppPath VARCHAR(500) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appClientAPIUrl VARCHAR(500) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appClientWebRateUrl VARCHAR(500) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appClientAndroidRateUrl VARCHAR(500) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appPanelRateUrl VARCHAR(500) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appNotificationUrl VARCHAR(500) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsB2C BIT NULL
+  appIsHideSportWithNoEvent BIT NULL
+  appIsShowSocialmediaIcon BIT NULL
+  appWhatsAppUrl VARCHAR(200) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appFacebookUrl VARCHAR(200) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appTelegramUrl VARCHAR(200) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appInstagramUrl VARCHAR(200) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appTwitterUrl VARCHAR(200) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appPanelNotificationUrl VARCHAR(500) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appScoreboardBackColor VARCHAR(400) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appScoreboardFontColor VARCHAR(400) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsDCOBanner BIT NULL
+  appCMSUrl VARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appSupportMailID VARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appSupportMobileNo VARCHAR(20) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsB2BDWPasswordAdmin BIT NULL
+  appIsB2BDWPasswordAgent BIT NULL
+  appPartnerKey VARCHAR(208) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appPublicKey VARCHAR(208) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsIframe BIT NULL
+  appYouTubeUrl VARCHAR(400) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appClientSiteUrl VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appAuthIPAddress VARCHAR(1024) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appPlacebetUrl VARCHAR(200) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appPanelApiURL VARCHAR(108) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsActive BIT NULL
+  appFileUploadUrl VARCHAR(104) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appNoticationBaseUrl VARCHAR(300) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIframeUrl VARCHAR(104) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+
+TABLE: tblWhitelabel_placebet (3 rows)
+  appWhiteLableid INTEGER NOT NULL
+  appSiteName VARCHAR(50) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appSiteUrl VARCHAR(50) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appRequestUrl VARCHAR(50) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appPanelUrl VARCHAR(50) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appAgentId VARCHAR(160) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appAndroidappDownloadurl VARCHAR(256) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appAndroidappversion DECIMAL(18, 0) NULL
+  appLogoUrl VARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsWhiteLabel BIT NULL
+  appAgentPanelUrl VARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  AppDarkLogo NVARCHAR(160) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  AppDarkSmallLogo NVARCHAR(160) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  AppLightLogo NVARCHAR(160) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  AppLightSmallLogo NVARCHAR(160) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  AppFavIcon NVARCHAR(160) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appThemeId INTEGER NULL
+  AppIsDarkLogo BIT NULL
+  appAndroidAppPath VARCHAR(500) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appClientAPIUrl VARCHAR(500) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appClientWebRateUrl VARCHAR(500) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appClientAndroidRateUrl VARCHAR(500) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appPanelRateUrl VARCHAR(500) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appNotificationUrl VARCHAR(500) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsB2C BIT NULL
+  appIsHideSportWithNoEvent BIT NULL
+  appIsShowSocialmediaIcon BIT NULL
+  appWhatsAppUrl VARCHAR(200) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appFacebookUrl VARCHAR(200) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appTelegramUrl VARCHAR(200) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appInstagramUrl VARCHAR(200) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appTwitterUrl VARCHAR(200) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appPanelNotificationUrl VARCHAR(500) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appScoreboardBackColor VARCHAR(400) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appScoreboardFontColor VARCHAR(400) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsDCOBanner BIT NULL
+  appCMSUrl VARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appSupportMailID VARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appSupportMobileNo VARCHAR(20) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsB2BDWPasswordAdmin BIT NULL
+  appIsB2BDWPasswordAgent BIT NULL
+  appPartnerKey VARCHAR(208) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appPublicKey VARCHAR(208) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsIframe BIT NULL
+  appYouTubeUrl VARCHAR(400) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appClientSiteUrl VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appAuthIPAddress VARCHAR(1024) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appPlacebetUrl VARCHAR(200) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appPanelApiURL VARCHAR(108) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsActive BIT NULL
+  appFileUploadUrl VARCHAR(104) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appNoticationBaseUrl VARCHAR(300) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIframeUrl VARCHAR(104) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+
+TABLE: tblWithdraw (5,688 rows)
+  appWithdrawId INTEGER NOT NULL  [PK]
+  appClientId INTEGER NULL
+  appBetLiabilityID INTEGER NULL
+  appBankDetailId INTEGER NULL
+  appFDTransactionId VARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appTransactionId VARCHAR(96) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appAmount DECIMAL(18, 3) NULL
+  appStatus INTEGER NULL
+  appRemarks VARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appDeviceInfo VARCHAR(800) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appApprovedBy INTEGER NULL
+  appApprovedDate DATETIME NULL
+  appCreatedDate DATETIME NULL
+  appUserRemarks VARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appManualWithdraw BIT NULL
+  appIsPayoutCall BIT NULL
+  appStatusDate DATETIME NULL
+  appWhiteLableid INTEGER NULL
+  appPlaceFrom INTEGER NULL
+  appIsCryptoWithdraw BIT NULL
+  appWithdrawTypeEnum TINYINT NULL
+  appPaymentApiProviderEnumId TINYINT NULL
+  appPGRemarks VARCHAR(400) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appPaymentAccountId INTEGER NULL
+  appVerifyDate DATETIME NULL
+  appIsWalletLocked BIT NOT NULL
+
+TABLE: tblWithdraw_DeleteTRG (1 rows)
+  appId INTEGER NOT NULL  [PK]
+  appWithdrawId INTEGER NULL
+  appClientId INTEGER NULL
+  appBetLiabilityID INTEGER NULL
+  appBankDetailId INTEGER NULL
+  appFDTransactionId VARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appTransactionId VARCHAR(96) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appAmount DECIMAL(18, 3) NULL
+  appStatus INTEGER NULL
+  appRemarks VARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appDeviceInfo VARCHAR(800) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appApprovedBy INTEGER NULL
+  appApprovedDate DATETIME NULL
+  appCreatedDate DATETIME NULL
+  appUserRemarks VARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appManualWithdraw BIT NULL
+  appIsPayoutCall BIT NULL
+  appStatusDate DATETIME NULL
+  appWhiteLableid INTEGER NULL
+  appPlaceFrom INTEGER NULL
+  appIsCryptoWithdraw BIT NULL
+  appWithdrawTypeEnum TINYINT NULL
+  appPaymentApiProviderEnumId TINYINT NULL
+  appDeletedDate DATETIME NULL
+
+TABLE: tblWithdrawableAmountTransaction (653,227 rows)
+  appID INTEGER NOT NULL  [PK]
+  appClientID INTEGER NOT NULL
+  appSportID INTEGER NOT NULL
+  appTournamentID INTEGER NOT NULL
+  appMatchID INTEGER NOT NULL
+  appBetID INTEGER NOT NULL
+  appTableID INTEGER NOT NULL
+  appGameRoundID VARCHAR(104) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appSport VARCHAR(54) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appTournament VARCHAR(104) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appMatch VARCHAR(104) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appMarket VARCHAR(208) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appStake DECIMAL(18, 5) NOT NULL
+  appProfit DECIMAL(18, 5) NOT NULL
+  appLiability DECIMAL(18, 5) NOT NULL
+  appApplyOn TINYINT NOT NULL
+  appWithdrawableAmount DECIMAL(18, 5) NOT NULL
+  appStatus TINYINT NOT NULL
+  appType TINYINT NOT NULL
+  appPlaceForm TINYINT NOT NULL
+  appRefId INTEGER NULL
+  appCreatedDate DATETIME NOT NULL
+  appModifiedDate DATETIME NULL
+  appWithdrawableRatio DECIMAL(9, 3) NULL
+
+TABLE: tblWithdrawBalanceTraceLog (5,756 rows)
+  appTeaceLogId INTEGER NOT NULL  [PK]
+  appClientId INTEGER NULL
+  appTotalBalance DECIMAL(18, 3) NULL
+  appSportBalance DECIMAL(18, 3) NULL
+  appCasinoBalance DECIMAL(18, 3) NULL
+  appLiability DECIMAL(18, 3) NULL
+  appDatetime DATETIME NULL
+  appWithdrawAmount NUMERIC(15, 2) NULL
+
+TABLE: tblWithdrawTraceLog_DeleteTRG (1 rows)
+  appId INTEGER NOT NULL  [PK]
+  appWithdrawTraceLogId INTEGER NULL
+  appClientId INTEGER NULL
+  appName VARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appPatnerUserName VARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appSecretKey VARCHAR(200) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appAccountNumber VARCHAR(50) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIFSC VARCHAR(20) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appEmailID VARCHAR(300) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appMobileNo VARCHAR(15) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appFDTransactionId VARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appAmount DECIMAL(18, 3) NULL
+  appTransactionId VARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appStatus VARCHAR(50) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appFundTransferBy VARCHAR(50) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appTransactionDate DATETIME NULL
+  appRemarks VARCHAR(100) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appWithdrawType VARCHAR(48) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIsRequest BIT NULL
+  appData VARCHAR(1400) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appDescription VARCHAR(800) COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appCreatedDate DATETIME NULL
+  appCreatedBy INTEGER NULL
+  appDeletedDate DATETIME NULL
+
+TABLE: tblWServicesLog (45,661 rows)
+  appWSerivcesLogID INTEGER NOT NULL  [PK]
+  appEventType INTEGER NULL
+  appEventID INTEGER NULL
+  appLogType INTEGER NULL
+  appDescription VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appIPinformation VARCHAR COLLATE "SQL_Latin1_General_CP1_CI_AS" NULL
+  appUpdateFrom INTEGER NULL
+  appCreatedBy INTEGER NULL
+  appCreatedType INTEGER NULL
+  appCreatedDate DATETIME NULL

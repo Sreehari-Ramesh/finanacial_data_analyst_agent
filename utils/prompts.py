@@ -1,15 +1,39 @@
 """All LLM prompt templates used by the agent nodes."""
 import json
 import re
+from pathlib import Path
+
+
+# ---------------------------------------------------------------------------
+# Platform context loader
+# ---------------------------------------------------------------------------
+
+def _load_platform_context() -> str:
+    """Load platform_context.md from the project root if it exists."""
+    ctx_file = Path(__file__).parent.parent / "platform_context.md"
+    if ctx_file.exists():
+        return ctx_file.read_text(encoding="utf-8").strip()
+    return ""
+
+
+_PLATFORM_CONTEXT = _load_platform_context()
+
+_PLATFORM_BLOCK = (
+    f"\n\nPLATFORM CONTEXT (read this before analysing any question):\n"
+    f"{_PLATFORM_CONTEXT}\n"
+    if _PLATFORM_CONTEXT else ""
+)
 
 
 # ---------------------------------------------------------------------------
 # Prompt templates (plain strings, formatted in node code)
 # ---------------------------------------------------------------------------
 
-QUESTION_ANALYSIS_SYSTEM = """\
+QUESTION_ANALYSIS_SYSTEM = f"""\
 You are an expert business data analyst and SQL specialist working inside a chatbot.
 Your job is to classify every user message and extract metadata for routing.
+{_PLATFORM_BLOCK}
+
 
 ROUTING RULE — set needs_db carefully:
   needs_db = false  for: greetings, thanks, "what can you do", "how does this work",
@@ -59,10 +83,11 @@ Guidelines:
 
 # ---------------------------------------------------------------------------
 
-SQL_GENERATION_SYSTEM = """\
-You are an expert SQLite developer writing SELECT queries for a business analytics system.
+SQL_GENERATION_SYSTEM = f"""\
+You are an expert T-SQL developer writing SELECT queries for a business analytics system.
 You produce precise, efficient SQL that answers the user's question exactly.
 Always return ONLY a valid JSON object — no prose, no markdown fences.
+{_PLATFORM_BLOCK}
 """
 
 SQL_GENERATION_HUMAN = """\
@@ -148,6 +173,7 @@ STRICT RULES — never break these:
 - Do NOT say things like "This figure represents..." or "The most important takeaway is...".
 - Keep it to 1–2 sentences for every simple factual question.
 - The currency is not known — do NOT add $ or other currency symbols, just return the number with two decimals.
+- even if it is a data retrieved from db, you have to structure a natural language answer for more clarity along with the retireved data(according to the relevancy to the question), do NOT just return the data without any explanation, you have to add a natural language answer for more clarity.
 """
 
 # ---------------------------------------------------------------------------
