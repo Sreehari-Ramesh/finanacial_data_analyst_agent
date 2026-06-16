@@ -31,29 +31,47 @@ can run on the same infrastructure, each with their own agent network and client
 - **P&L (Profit & Loss)** — tracked separately for market bets, session bets, and casino
 - **DWM** — Deposit minus Withdrawal; a common metric to measure net client cash flow
 
-## Login / user type enums
+## Enums
+
+### Login / user type
 - appLoginType: Admin=1, Agent=2, Client=3, Operator=4, Caller=6, AgentOperator=7
 - appUserType: 1 = parent/agent user, 3 = client/player
 - Clients and players refer to the same entity throughout the database
+
+### BetStatus (used in tblBet and tblClientBet)
+- Open=1, InActive=2, Suspended=3, Closed=4, Settled=5, InPlay=6,
+  OverLimitSuspended=7, ReopenBet=8, BallStart=9, Cancel=10
+- Active/live bets: status IN (1, 6, 8, 9) — Open, InPlay, ReopenBet, BallStart
+- Completed bets: status = 5 (Settled)
+- Cancelled/void bets: status = 10 (Cancel)
 
 ## Key tables and their purpose
 
 ### tblClient
 Primary client/player table. Contains all client details including balance, exposure,
-commission rates, access flags, and contact info. Use appClientID as the join key
-across all client-related queries. Clients are also referred to as players.
+commission rates, access flags, and contact info.
+- appClientId — primary key for client records; use this as the join key across all
+  client-related queries
+- appUserId — references tblUser.appUserId for the parent/agent user of this client
+  (no database FK enforced, but logically linked)
+Clients and players refer to the same entity throughout the database.
 
 ### tblUser
-Contains user info (UserName, FullName, etc.) for the full user hierarchy including
-agents and clients. appUserType=1 is a parent/agent; appUserType=3 is a client.
+Contains user records for the full hierarchy (agents, operators, admins).
+- appUserId — primary key for user records
+- appUserType=1 is a parent/agent; appUserType=3 is a client
+When joining tblClient to tblUser, match on tblClient.appUserId = tblUser.appUserId.
 
 ### tblBet
 Contains bet definitions — the market name, the match it belongs to, and bet status.
-Use appMatchID to join with tblMatch for match details.
+- appStatus uses BetStatus enum: Settled=5 for completed bets, Cancel=10 for void bets
+- Use appMatchID to join with tblMatch for match details
 
 ### tblClientBet
 Contains details of bets placed by clients including profit, betID, matchID, and status.
-Joining tblClient with tblClientBet answers most queries about client betting activity.
+- appStatus uses BetStatus enum: filter status=5 (Settled) for settled bets,
+  status IN (1,6,8,9) for currently active bets
+- Joining tblClient with tblClientBet answers most queries about client betting activity
 
 ### tblDeletedMarketBets
 Contains market bets that were cancelled or deleted. Join on appClientID and appBetID
@@ -82,8 +100,12 @@ Contains all withdrawal transaction records.
 - Withdraw Type: PaymentGateway=1, Manual=2, ByAdmin=3
 
 ### tblDepositWithdrawCount
-Contains the count of deposits and withdrawals made by each client. Useful for
+Contains the count of deposits and withdrawals per user or client. Useful for
 frequency-based queries without scanning the full deposit/withdraw tables.
+- appUserType controls how appUserID is interpreted (polymorphic FK):
+  - appUserType=1 → appUserID refers to tblUser.appUserId (agent/user record)
+  - appUserType=3 → appUserID refers to tblClient.appClientId (client/player record)
+- Always filter by appUserType when joining to avoid mixing user and client rows
 
 ### tblTransaction
 Contains transaction records including win amounts. Join using appUserID and appUserType

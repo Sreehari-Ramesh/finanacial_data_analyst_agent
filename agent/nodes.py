@@ -12,6 +12,10 @@ from utils.prompts import (
     QUESTION_ANALYSIS_HUMAN,
     SQL_GENERATION_SYSTEM,
     SQL_GENERATION_HUMAN,
+    REPAIR_SQL_SYSTEM,
+    REPAIR_SQL_HUMAN,
+    VALIDATE_SQL_SYSTEM,
+    VALIDATE_SQL_HUMAN,
     RESPONSE_FORMATTING_SYSTEM,
     RESPONSE_FORMATTING_HUMAN,
     REPORT_TITLE_HUMAN,
@@ -84,28 +88,32 @@ def analyze_question(state: SQLAgentState) -> dict:
         analysis = _llm_json(QUESTION_ANALYSIS_SYSTEM, human)
     except Exception:
         analysis = {
-            "needs_db":         True,
-            "question_type":    "aggregation",
-            "intent":           state["user_question"],
-            "relevant_tables":  get_all_table_names(),
-            "metrics":          [],
-            "filters":          [],
-            "groupby":          [],
-            "time_period":      None,
-            "sort_order":       None,
-            "limit":            None,
-            "is_report_request": False,
-            "report_format":    None,
+            "needs_db":              True,
+            "is_ambiguous":          False,
+            "clarification_question": None,
+            "question_type":         "aggregation",
+            "intent":                state["user_question"],
+            "relevant_tables":       get_all_table_names(),
+            "metrics":               [],
+            "filters":               [],
+            "groupby":               [],
+            "time_period":           None,
+            "sort_order":            None,
+            "limit":                 None,
+            "is_report_request":     False,
+            "report_format":         None,
         }
 
     return {
-        "question_analysis": analysis,
-        "needs_db":          bool(analysis.get("needs_db", True)),
-        "relevant_tables":   analysis.get("relevant_tables") or get_all_table_names(),
-        "is_report_request": bool(analysis.get("is_report_request", False)),
-        "report_format":     analysis.get("report_format") or "excel",
-        "error":             None,
-        "retry_count":       0,
+        "question_analysis":     analysis,
+        "needs_db":              bool(analysis.get("needs_db", True)),
+        "is_ambiguous":          bool(analysis.get("is_ambiguous", False)),
+        "clarification_question": analysis.get("clarification_question"),
+        "relevant_tables":       analysis.get("relevant_tables") or get_all_table_names(),
+        "is_report_request":     bool(analysis.get("is_report_request", False)),
+        "report_format":         analysis.get("report_format") or "excel",
+        "error":                 None,
+        "retry_count":           0,
     }
  
 
@@ -131,6 +139,19 @@ def chat_response(state: SQLAgentState) -> dict:
         response = "Sorry, I ran into an issue. Could you rephrase that?"
 
     return {"response": response}
+
+
+# ---------------------------------------------------------------------------
+# Node 1c — Clarification request (question is ambiguous)
+# ---------------------------------------------------------------------------
+
+def clarify(state: SQLAgentState) -> dict:
+    """Return the clarification question to the user instead of querying the DB."""
+    q = (
+        state.get("clarification_question")
+        or "Could you clarify your question? It could mean a few different things."
+    )
+    return {"response": q}
 
 
 # ---------------------------------------------------------------------------
@@ -183,47 +204,94 @@ def fetch_schema(state: SQLAgentState) -> dict:
 
 def generate_sql(state: SQLAgentState) -> dict:
     """Translate the natural-language question into a SQL query."""
-    analysis = state.get("question_analysis") or {}
-    retry    = state.get("retry_count", 0)
+    analysis  = state.get("question_analysis") or {}
+    retry     = state.get("retry_count", 0)
+    schema    = state.get("schema_info", "")
+    question  = state["user_question"]
 
-    # If we are retrying, include the previous error so the LLM can fix it
-    retry_context = ""
-    if retry > 0 and state.get("error"):
-        retry_context = (
-            f"IMPORTANT: Your previous SQL caused this error:\n"
-            f"  {state['error']}\n"
-            f"Fix the query — ensure column names and table names match the schema exactly."
+    if retry > 0 and state.get("error") and state.get("sql_query"):
+        # Targeted repair: show the model exactly what broke and ask for a minimal fix
+        human = REPAIR_SQL_HUMAN.format(
+            schema=schema,
+            question=question,
+            failed_sql=state["sql_query"],
+            error=state["error"],
         )
+        try:
+            result = _llm_json(REPAIR_SQL_SYSTEM, human)
+        except Exception as exc:
+            return {"error": f"SQL repair failed: {exc}"}
+    else:
+        # Fresh generation from question analysis
+        human = SQL_GENERATION_HUMAN.format(
+            schema=schema,
+            question=question,
+            question_type=analysis.get("question_type", "aggregation"),
+            intent=analysis.get("intent", ""),
+            metrics=", ".join(analysis.get("metrics") or []) or "none specified",
+            filters=", ".join(analysis.get("filters") or []) or "none specified",
+            groupby=", ".join(analysis.get("groupby") or []) or "none specified",
+            time_period=analysis.get("time_period") or "none",
+            sort_order=analysis.get("sort_order") or "none",
+            limit=str(analysis.get("limit")) if analysis.get("limit") else "none",
+            retry_context="",
+        )
+        try:
+            result = _llm_json(SQL_GENERATION_SYSTEM, human)
+        except Exception as exc:
+            return {"error": f"SQL generation failed: {exc}"}
 
-    human = SQL_GENERATION_HUMAN.format(
-        schema=state.get("schema_info", ""),
-        question=state["user_question"],
-        question_type=analysis.get("question_type", "aggregation"),
-        intent=analysis.get("intent", ""),
-        metrics=", ".join(analysis.get("metrics") or []) or "none specified",
-        filters=", ".join(analysis.get("filters") or []) or "none specified",
-        groupby=", ".join(analysis.get("groupby") or []) or "none specified",
-        time_period=analysis.get("time_period") or "none",
-        sort_order=analysis.get("sort_order") or "none",
-        limit=str(analysis.get("limit")) if analysis.get("limit") else "none",
-        retry_context=retry_context,
-    )
-
-    try:
-        result = _llm_json(SQL_GENERATION_SYSTEM, human)
-        sql  = result.get("sql", "").strip()
-        expl = result.get("explanation", "")
-    except Exception as exc:
-        return {"error": f"SQL generation failed: {exc}"}
+    sql  = result.get("sql", "").strip()
+    expl = result.get("explanation", "")
 
     if not sql:
         return {"error": "LLM returned an empty SQL query."}
 
     return {
-        "sql_query":      sql,
+        "sql_query":       sql,
         "sql_explanation": expl,
-        "error":          None,
+        "error":           None,
     }
+
+
+# ---------------------------------------------------------------------------
+# Node 3b — Validate / self-correct the generated SQL before execution
+# ---------------------------------------------------------------------------
+
+def validate_sql(state: SQLAgentState) -> dict:
+    """Review the generated SQL for semantic correctness before hitting the DB.
+
+    Checks enum values, table choice, join keys, and filter alignment with the
+    user intent. If the reviewer finds an issue it returns a corrected SQL;
+    otherwise the state is unchanged (empty dict → no-op update).
+    """
+    sql = state.get("sql_query", "")
+    if not sql:
+        return {}
+
+    analysis = state.get("question_analysis") or {}
+    human = VALIDATE_SQL_HUMAN.format(
+        question=state["user_question"],
+        intent=analysis.get("intent", state["user_question"]),
+        schema=state.get("schema_info", ""),
+        sql=sql,
+    )
+
+    try:
+        result   = _llm_json(VALIDATE_SQL_SYSTEM, human)
+        final_sql = result.get("sql", "").strip()
+        issues    = result.get("issues") or []
+
+        if final_sql and final_sql != sql:
+            note = f"[Validator corrections: {'; '.join(issues)}]" if issues else ""
+            return {
+                "sql_query":       final_sql,
+                "sql_explanation": (state.get("sql_explanation") or "") + ("\n" + note if note else ""),
+            }
+    except Exception:
+        pass  # validation failed — proceed with the original SQL unchanged
+
+    return {}
 
 
 # ---------------------------------------------------------------------------
@@ -296,6 +364,15 @@ def format_response(state: SQLAgentState) -> dict:
     columns  = state.get("column_names") or []
     question = state["user_question"]
     analysis = state.get("question_analysis") or {}
+
+    # Validation: empty result with no error — return directly, skip LLM call
+    if not rows and not state.get("error"):
+        return {
+            "response": (
+                "No results found. The query ran successfully but returned no data — "
+                "the filters may be too specific, or data may not exist for the requested period."
+            )
+        }
 
     # Build the results table string for the prompt
     results_table = _rows_to_table(rows, columns)

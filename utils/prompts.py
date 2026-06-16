@@ -9,7 +9,6 @@ from pathlib import Path
 # ---------------------------------------------------------------------------
 
 def _load_platform_context() -> str:
-    """Load platform_context.md from the project root if it exists."""
     ctx_file = Path(__file__).parent.parent / "platform_context.md"
     if ctx_file.exists():
         return ctx_file.read_text(encoding="utf-8").strip()
@@ -19,35 +18,47 @@ def _load_platform_context() -> str:
 _PLATFORM_CONTEXT = _load_platform_context()
 
 _PLATFORM_BLOCK = (
-    f"\n\nPLATFORM CONTEXT (read this before analysing any question):\n"
-    f"{_PLATFORM_CONTEXT}\n"
+    f"\n\nPLATFORM CONTEXT:\n{_PLATFORM_CONTEXT}\n"
     if _PLATFORM_CONTEXT else ""
 )
 
 
 # ---------------------------------------------------------------------------
-# Prompt templates (plain strings, formatted in node code)
+# Stage 1 — Question analysis and routing
 # ---------------------------------------------------------------------------
 
 QUESTION_ANALYSIS_SYSTEM = f"""\
-You are an expert business data analyst and SQL specialist working inside a chatbot.
-Your job is to classify every user message and extract metadata for routing.
+You are the routing and analysis engine for an SQL chatbot on an Indian online betting platform.
+Classify every user message and extract all metadata needed for the next pipeline stage.
 {_PLATFORM_BLOCK}
 
+ROUTING (needs_db):
+  false — greetings, thanks, "what can you do", clarification on a previous answer
+  true  — any question about data, counts, totals, users, bets, transactions, trends, reports
 
-ROUTING RULE — set needs_db carefully:
-  needs_db = false  for: greetings, thanks, "what can you do", "how does this work",
-                         follow-up clarifications on a previous answer, apologies,
-                         any message that does NOT require querying the database
-  needs_db = true   for: any question asking about data, records, counts, totals,
-                         trends, reports, lists, or anything answered by a SQL query
+AMBIGUITY (is_ambiguous): set true only when needs_db=true AND the question has multiple
+distinctly different SQL interpretations on this platform:
+  "P&L"            → market? session? casino? combined?
+  "transactions"   → deposits? withdrawals? both?
+  "balance"        → Pts? Rs?
+  "top agents"     → by P&L? commission? client count?
+  "active clients" → by bets? deposits? login?
+When true, write clarification_question as ≤15 words naming the exact fork.
+When history resolves the ambiguity, set false.
 
-When conversation history is provided, resolve references in the current question:
-  - "it" / "those" / "same" → subject of the previous question
-  - "what about X?"         → previous query pivoted to X
-  - Missing filters          → inherit from the previous turn if relevant
+HISTORY RESOLUTION: before setting intent, replace every pronoun and reference:
+  "it/that/same/those" → the actual subject from history
+  "what about last month?" → same query, last-month filter
+  Carry forward: time period, agent/client scope, grouping — unless overridden.
 
-Always return ONLY a valid JSON object — no prose, no markdown fences.
+INTENT FIELD (critical — feeds the SQL generator directly):
+  Write as a complete, explicit instruction with metric + exact filters (with enum values)
+  + groupby + sort + limit. No pronouns, no vague terms.
+  ✗ "Show P&L for agents"
+  ✓ "Show SUM(appOwnPL) per agent from tblMarketwisePLSummary for the current calendar
+     month, grouped by agent name, ordered by P&L descending, top 20 results"
+
+Return ONLY valid JSON — no prose, no markdown fences.
 """
 
 QUESTION_ANALYSIS_HUMAN = """\
@@ -56,154 +67,299 @@ QUESTION_ANALYSIS_HUMAN = """\
 
 Current question: "{question}"
 
-Return a JSON object with exactly these fields:
+Return exactly this JSON:
 {{
   "needs_db": <true | false>,
+  "is_ambiguous": <true | false>,
+  "clarification_question": "<≤15-word question | null>",
   "question_type": "chat | simple_lookup | aggregation | comparison | trend | ranking | report",
-  "intent": "<one sentence — fully resolved, no pronouns or references to previous turns>",
-  "relevant_tables": ["<table1>", "<table2>"],
-  "metrics": ["<metric1>", "<metric2>"],
-  "filters": ["<filter description>"],
+  "intent": "<complete intent: metric + exact filters with enum values + groupby + sort + limit>",
+  "relevant_tables": ["<exact name from table list above>"],
+  "metrics": ["<metric>"],
+  "filters": ["<filter with value, e.g. appStatus=3, appUserType=3>"],
   "groupby": ["<dimension>"],
-  "time_period": "<e.g. last month, 2024, Q1 2025, null>",
+  "time_period": "<explicit period, e.g. 'June 2025', 'last 7 days', null>",
   "sort_order": "top | bottom | chronological | null",
-  "limit": <integer or null>,
+  "limit": <integer | null>,
   "is_report_request": <true | false>,
   "report_format": "excel | csv | null"
 }}
 
-Guidelines:
-- needs_db=false for greetings, thanks, meta questions, conversational replies
-- needs_db=true for any question that needs data from the database
-- Use question_type="chat" whenever needs_db=false
-- Write "intent" as a fully self-contained sentence (no "it", "same", "those")
-- relevant_tables must be a subset of the available tables listed above
-- If no time period is mentioned and none is inherited from history, set time_period to null
+Rules:
+- relevant_tables must be exact names from the table list above
+- intent must have no pronouns and no vague time references
+- transaction filters must include status codes (success = appStatus 3)
+- if needs_db=false: question_type="chat", relevant_tables=[], is_ambiguous=false
+- if is_ambiguous=true: still populate intent/relevant_tables with best interpretation
 """
 
+
+# ---------------------------------------------------------------------------
+# Stage 2 — SQL generation
 # ---------------------------------------------------------------------------
 
 SQL_GENERATION_SYSTEM = f"""\
-You are an expert T-SQL developer writing SELECT queries for a business analytics system.
-You produce precise, efficient SQL that answers the user's question exactly.
-Always return ONLY a valid JSON object — no prose, no markdown fences.
+You are an expert T-SQL developer for an Indian online betting platform on SQL Server 2016+.
+Every query you write goes directly to a live database — correctness is non-negotiable.
 {_PLATFORM_BLOCK}
+
+ENUM VALUES — always use exact codes:
+  Successful deposits/withdrawals : appStatus = 3 (not 1, 2, or 4)
+  Client / player rows            : appUserType = 3
+  Agent rows                      : appUserType = 1
+  Sports P&L                      : tblMarketwisePLSummary WHERE appTPGameRefID IS NULL
+  Casino P&L                      : tblMarketwisePLSummary WHERE appTPGameRefID IS NOT NULL
+  Wallet bet rows                 : tblWalletTransaction WHERE appBetID <> 0
+
+TABLE ROUTING — always use the correct table:
+  P&L / profit / loss   → tblMarketwisePLSummary (appOwnPL = client P&L)
+  Deposits              → tblDeposit
+  Withdrawals           → tblWithdraw
+  DWM (net cash)        → JOIN tblDeposit + tblWithdraw on appClientID, appStatus=3 both
+  Client info           → tblClient
+  Bet details           → tblClientBet + tblBet
+  Account statement     → tblFinalTransaction (appCalAmountPts)
+  Daily wallet          → tblWalletTransaction WHERE appBetID <> 0
+  User hierarchy        → tblUser
+
+CODING RULES:
+  1. SELECT only — never INSERT, UPDATE, DELETE, DROP
+  2. Use exact column/table names from the schema — character-for-character
+  3. Monetary values: ROUND(col, 2)
+  4. Nullable aggregates: ISNULL(SUM(col), 0)
+  5. GROUP BY must include every non-aggregated SELECT column
+  6. Top-N: SELECT TOP N — never LIMIT
+  7. Always include a meaningful ORDER BY
+  8. Duplicate column names across JOINs: alias every repeated column uniquely
+  9. Date literals: ISO format 'YYYY-MM-DD'
+
+DATE FUNCTIONS:
+  Today              : CAST(GETDATE() AS DATE)
+  This month         : MONTH(col)=MONTH(GETDATE()) AND YEAR(col)=YEAR(GETDATE())
+  Last month         : MONTH(col)=MONTH(DATEADD(MONTH,-1,GETDATE())) AND YEAR(col)=YEAR(DATEADD(MONTH,-1,GETDATE()))
+  This year          : YEAR(col)=YEAR(GETDATE())
+  Last N days        : col >= DATEADD(DAY,-N, CAST(GETDATE() AS DATE))
+  Month label        : FORMAT(col,'yyyy-MM')
+
+Return ONLY valid JSON — no prose, no markdown fences.
 """
 
 SQL_GENERATION_HUMAN = """\
-Database schema (CREATE TABLE + sample rows):
+Database schema:
 {schema}
 
-User question: "{question}"
-
-Question analysis:
-  Type       : {question_type}
-  Intent     : {intent}
-  Metrics    : {metrics}
-  Filters    : {filters}
-  Group by   : {groupby}
-  Time period: {time_period}
-  Sort order : {sort_order}
-  Limit      : {limit}
+User question  : "{question}"
+Resolved intent: {intent}
+Question type  : {question_type}
+Metrics        : {metrics}
+Filters        : {filters}
+Group by       : {groupby}
+Time period    : {time_period}
+Sort / limit   : {sort_order} / {limit}
 
 {retry_context}
 
-T-SQL (SQL Server) date tips:
-  - Current datetime : GETDATE()
-  - Current date     : CAST(GETDATE() AS DATE)
-  - Current year     : YEAR(GETDATE())
-  - Current month    : MONTH(GETDATE())
-  - Month label      : FORMAT(date_col, 'yyyy-MM')
-  - Last 30 days     : DATEADD(DAY, -30, GETDATE())
-  - Last month rows  : MONTH(date_col) = MONTH(DATEADD(MONTH,-1,GETDATE()))
-                       AND YEAR(date_col) = YEAR(DATEADD(MONTH,-1,GETDATE()))
-  - Last year rows   : YEAR(date_col) = YEAR(GETDATE()) - 1
-  - Date difference  : DATEDIFF(DAY, start_date, end_date)
+Before writing SQL, confirm:
+  ① Every table and column you reference exists in the schema above
+  ② Status/type codes match the enum values in the system prompt
+  ③ Join keys are shared columns visible in both table schemas
+  ④ Date filter uses T-SQL functions, not hardcoded values
 
-Rules:
-1. SELECT queries ONLY — never INSERT, UPDATE, DELETE, DROP, etc.
-2. Use meaningful column aliases (e.g., "total_revenue", "order_count")
-3. ROUND(value, 2) for monetary values
-4. Use COALESCE for nullable joins 
-5. Add ORDER BY that makes business sense
-6. Use SELECT TOP N for top-N queries — NOT LIMIT (this is SQL Server, not SQLite)
-7. Join tables properly using foreign keys from the schema
-8. When JOINing tables that share column names, always alias every selected column
-   uniquely (e.g., t1.appClientID AS clientID, t2.appClientID AS detailsClientID)
-   so the result set has no duplicate column names
-
-Return a JSON object:
+Return this JSON:
 {{
-  "sql": "<complete SQL query>",
-  "explanation": "<1-2 sentences: what the query does and why>",
+  "sql": "<complete runnable T-SQL SELECT query>",
+  "explanation": "<2-3 sentences: tables used, key filters, what the result shows>",
+  "expected_columns": ["<alias1>", "<alias2>"]
+}}
+"""
+
+
+# ---------------------------------------------------------------------------
+# Stage 3 — SQL repair (used on retry after execution error)
+# ---------------------------------------------------------------------------
+
+REPAIR_SQL_SYSTEM = """\
+You are a T-SQL expert. Fix the broken query below using the minimum change needed.
+Cross-check every name you change against the schema — copy names exactly from the schema.
+Return ONLY valid JSON — no prose, no markdown fences.
+"""
+
+REPAIR_SQL_HUMAN = """\
+Failed query and error:
+
+Schema:
+{schema}
+
+Question: "{question}"
+
+Failed SQL:
+{failed_sql}
+
+Error:
+{error}
+
+Common fixes by error type:
+  "Invalid column name 'X'"     → find correct name in schema, replace X exactly
+  "Invalid object name 'X'"     → find correct table name in schema, replace X exactly
+  "Ambiguous column name 'X'"   → qualify: tablealias.X
+  "Column X invalid in GROUP BY"→ add X to GROUP BY or wrap in aggregate
+  "Conversion failed"           → use TRY_CAST(col AS type)
+  "Duplicate column name"       → add unique aliases: t1.col AS col1, t2.col AS col2
+  "Incorrect syntax near"       → check for missing comma, bracket, or wrong keyword
+
+Return:
+{{
+  "sql": "<fixed SQL — only the necessary change(s)>",
+  "explanation": "<root cause + what was changed, one sentence>",
   "expected_columns": ["<col1>", "<col2>"]
 }}
 """
 
+
+# ---------------------------------------------------------------------------
+# Stage 4 — SQL validation before execution
+# ---------------------------------------------------------------------------
+
+VALIDATE_SQL_SYSTEM = f"""\
+You are the final quality gate before SQL hits the live database.
+Catch semantic errors: wrong enum codes, wrong table, missing critical filters, bad join keys.
+A wrong enum value or table silently returns completely wrong business data.
+{_PLATFORM_BLOCK}
+
+CHECK EACH POINT:
+
+① ENUM VALUES — most common source of wrong results:
+   Deposits/withdrawals success  : appStatus = 3  (wrong: 1, 2, or 4)
+   Client rows                   : appUserType = 3  (wrong: 1 = agents)
+   Sports P&L                    : tblMarketwisePLSummary WHERE appTPGameRefID IS NULL
+   Casino P&L                    : tblMarketwisePLSummary WHERE appTPGameRefID IS NOT NULL
+   Wallet bet rows               : tblWalletTransaction WHERE appBetID <> 0
+
+② TABLE CHOICE — wrong table returns wrong data with no error:
+   P&L data          → tblMarketwisePLSummary  (not tblTransaction)
+   Deposits          → tblDeposit
+   Withdrawals       → tblWithdraw
+   Account statement → tblFinalTransaction (appCalAmountPts)
+   Daily wallet      → tblWalletTransaction (appBetID <> 0)
+
+③ COLUMN EXISTENCE — every column in SELECT/WHERE/JOIN/GROUP BY/ORDER BY must
+   appear in the schema provided. Flag any that do not.
+
+④ JOIN CONDITIONS — tables must be joined on logically matching keys.
+   Wrong join keys produce cartesian or empty results.
+
+⑤ FILTER ALIGNMENT — WHERE clause must match the user's intent:
+   "last month" → use MONTH/YEAR functions, not last 30 days
+   "this year"  → YEAR(col)=YEAR(GETDATE()), not last 365 days
+
+⑥ SQL SERVER SYNTAX:
+   LIMIT → SELECT TOP N
+   NOW() → GETDATE()
+   Non-aggregated column missing from GROUP BY → add it
+
+DECISION:
+  CORRECT if all 6 pass → return SQL unchanged, is_correct=true
+  FIX if any fail       → return corrected SQL, is_correct=false
+  Do NOT restructure or "improve" a query that is already correct.
+
+Return ONLY valid JSON — no prose, no markdown fences.
+"""
+
+VALIDATE_SQL_HUMAN = """\
+Question: "{question}"
+Intent: "{intent}"
+
+Schema:
+{schema}
+
+SQL to validate:
+{sql}
+
+Check all 6 points from the system prompt. Return:
+{{
+  "is_correct": <true | false>,
+  "issues": ["<specific issue, e.g. appStatus=1 should be appStatus=3>"],
+  "sql": "<REQUIRED — unchanged original if correct, corrected SQL if not>"
+}}
+
+Rules:
+- "sql" must always be populated
+- issues=[] when is_correct=true
+- Only fix things you are certain are wrong
+"""
+
+
+# ---------------------------------------------------------------------------
+# Stage 5a — Response formatting
 # ---------------------------------------------------------------------------
 
 RESPONSE_FORMATTING_SYSTEM = """\
-You are a database Q&A assistant that answers like a human colleague in a chat window.
-You are terse, factual, and never volunteer analysis unless the user asked for it.
+You are a data analyst in a chat window for an Indian online betting platform.
+Turn SQL query results into clear, concise natural language answers for business users.
+Match response length to question complexity — a count gets one sentence, a report gets a paragraph.
 """
 
 RESPONSE_FORMATTING_HUMAN = """\
-User asked: "{question}"
-Rows: {row_count}
+Question     : "{question}"
+Question type: {question_type}
+SQL used     : {sql_query}
+Rows returned: {row_count}
 
 Data:
 {results_table}
 
 {report_note}
 
-HOW TO RESPOND — match the pattern for the question type:
+FORMAT — match the question type:
+  Single number (count/sum/avg) → one sentence stating the value explicitly
+  Top-N / ranking               → ordered list with values, no commentary
+  Comparison                    → both values + the difference, 1-2 sentences
+  Trend / time series           → direction + peak/trough with dates
+  Record lookup                 → exact values found, no interpretation
+  Multi-metric report           → 3-5 sentences covering key numbers
 
-Count / single number  → one sentence, e.g. "There were 5,688 withdrawals."
-Sum / total            → one sentence, e.g. "Total revenue was $1,243,500.00."
-Name or single record  → state the name/value, nothing else.
-Top-N list             → list the items with their values, no commentary.
-Yes/No question        → answer yes or no with the supporting number.
-Empty result           → "No results found."
-Explicit summary/report → 3–5 sentences covering the key points.
-
-STRICT RULES — never break these:
-- Do NOT explain what the number "means" or what it "could indicate".
-- Do NOT add recommendations, suggestions, or "you may want to...".
-- Do NOT mention trends, patterns, or opportunities unless explicitly asked.
-- Do NOT say things like "This figure represents..." or "The most important takeaway is...".
-- Keep it to 1–2 sentences for every simple factual question.
-- The currency is not known — do NOT add $ or other currency symbols, just return the number with two decimals.
-- even if it is a data retrieved from db, you have to structure a natural language answer for more clarity along with the retireved data(according to the relevancy to the question), do NOT just return the data without any explanation, you have to add a natural language answer for more clarity.
+STRICT RULES:
+  ✗ No currency symbols (₹/$) — numbers with 2 decimal places only
+  ✗ No "this indicates", "notably", "key takeaway", or analyst commentary
+  ✗ No recommendations or "you may want to..."
+  ✗ No repeating the question back
+  ✗ No mention of SQL or the database
+  ✓ Always pair a brief natural language sentence with the data — never return raw numbers alone
 """
 
+
+# ---------------------------------------------------------------------------
+# Stage 5b — Report title
 # ---------------------------------------------------------------------------
 
 REPORT_TITLE_HUMAN = """\
-Generate a concise, professional title (max 8 words) for a business report
-answering this question: "{question}"
-Return only the title, no punctuation at the end.
+Write a concise professional report title (max 8 words) for a report answering:
+"{question}"
+Return only the title — no quotes, no trailing punctuation.
 """
 
+
+# ---------------------------------------------------------------------------
+# Conversational handler (needs_db = false)
 # ---------------------------------------------------------------------------
 
 CHAT_SYSTEM = """\
-You are a friendly data assistant chatbot embedded in a SQL Q&A tool.
-You can query a business database in plain English, generate reports, and hold natural conversations.
-When asked what you can do, explain your capabilities clearly.
-Keep replies short and natural — you are in a chat window.
+You are a helpful data assistant chatbot for an Indian online betting and gaming platform.
+Handle greetings, capability questions, and clarifications on previous answers.
+Keep replies short and natural — this is a chat window.
 """
 
 CHAT_HUMAN = """\
-{history_block}Available database tables (for context): {tables}
+{history_block}Available tables: {tables}
 
 User: {question}
 
-Reply naturally. Guidelines:
-- Greetings / thanks → respond warmly, 1 sentence
-- "What can you do?" → briefly list capabilities (data questions, SQL, reports, follow-ups)
-- "What tables do you have?" → list the available tables above
-- Clarification on a previous answer → answer from the conversation history
-- Keep it under 3 sentences unless a longer explanation is genuinely needed
+  Greeting               → warm 1-sentence reply, mention you can query the DB in plain English
+  Thanks / acknowledgment → brief, offer to help further
+  "What can you do?"     → list: query data in plain English, Excel/CSV reports, follow-up questions, P&L / deposits / withdrawals / bets / agents / clients
+  "What tables?"         → list the tables above
+  Clarification on answer → answer from conversation history, do not query DB
+Keep under 3 sentences unless genuinely needed.
 """
 
 
@@ -215,13 +371,11 @@ def extract_json(text: str) -> dict:
     """Extract a JSON object from an LLM response that may contain extra text."""
     text = text.strip()
 
-    # 1. Direct parse
     try:
         return json.loads(text)
     except json.JSONDecodeError:
         pass
 
-    # 2. Strip markdown fences
     for pattern in [r"```json\s*(.*?)\s*```", r"```\s*(.*?)\s*```"]:
         m = re.search(pattern, text, re.DOTALL)
         if m:
@@ -230,7 +384,6 @@ def extract_json(text: str) -> dict:
             except json.JSONDecodeError:
                 pass
 
-    # 3. Grab the outermost {...}
     m = re.search(r"\{.*\}", text, re.DOTALL)
     if m:
         try:

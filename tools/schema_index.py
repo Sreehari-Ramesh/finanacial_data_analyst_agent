@@ -26,6 +26,53 @@ warnings.filterwarnings("ignore", category=FutureWarning)
 warnings.filterwarnings("ignore", category=UserWarning)
 
 
+# ── Platform context hints ────────────────────────────────────────────────────
+
+def _load_table_hints() -> dict[str, str]:
+    """Parse platform_context.md and return a {table_name: description} dict."""
+    ctx_file = Path(__file__).parent.parent / "platform_context.md"
+    if not ctx_file.exists():
+        return {}
+
+    hints: dict[str, str] = {}
+    current_table: str | None = None
+    current_lines: list[str] = []
+
+    for line in ctx_file.read_text(encoding="utf-8").splitlines():
+        if line.startswith("### "):
+            # Close the previous section
+            if current_table:
+                hints[current_table] = "\n".join(current_lines).strip()
+            if line.startswith("### tbl"):
+                current_table = line[4:].strip()   # "### tblClient" → "tblClient"
+                current_lines = []
+            else:
+                current_table = None
+                current_lines = []
+        elif line.startswith("## "):
+            if current_table:
+                hints[current_table] = "\n".join(current_lines).strip()
+                current_table = None
+                current_lines = []
+        elif current_table is not None:
+            current_lines.append(line)
+
+    if current_table and current_lines:
+        hints[current_table] = "\n".join(current_lines).strip()
+
+    return hints
+
+
+_TABLE_HINTS: dict[str, str] = {}   # populated lazily on first build
+
+
+def _get_table_hints() -> dict[str, str]:
+    global _TABLE_HINTS
+    if not _TABLE_HINTS:
+        _TABLE_HINTS = _load_table_hints()
+    return _TABLE_HINTS
+
+
 # ── Embedding factory ─────────────────────────────────────────────────────────
 
 def _make_embeddings():
@@ -167,6 +214,12 @@ def _build_document(meta: dict) -> Document:
     if kws:
         lines.append("")
         lines.append(f"Concepts: {', '.join(kws)}")
+
+    hint = _get_table_hints().get(meta["name"], "")
+    if hint:
+        lines.append("")
+        lines.append("Platform context:")
+        lines.extend(f"  {l}" for l in hint.splitlines() if l.strip())
 
     return Document(
         page_content="\n".join(lines),

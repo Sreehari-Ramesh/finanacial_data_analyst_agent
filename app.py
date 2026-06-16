@@ -137,8 +137,8 @@ def _agent_worker(
 ):
     """Runs agent nodes in a daemon thread. Stops cleanly on stop_ev."""
     from agent.nodes import (
-        analyze_question, chat_response,
-        fetch_schema, generate_sql,
+        analyze_question, chat_response, clarify,
+        fetch_schema, generate_sql, validate_sql,
         execute_sql, format_response, generate_report,
     )
     from config import MAX_RETRIES
@@ -147,23 +147,25 @@ def _agent_worker(
         return stop_ev.is_set()
 
     state: dict = {
-        "user_question":        question,
-        "conversation_history": history,
-        "needs_db":             True,
-        "question_analysis":    None,
-        "relevant_tables":      None,
-        "is_report_request":    False,
-        "report_format":        "excel",
-        "schema_info":          None,
-        "sql_query":            None,
-        "sql_explanation":      None,
-        "query_results":        None,
-        "column_names":         None,
-        "row_count":            None,
-        "response":             None,
-        "report_path":          None,
-        "error":                None,
-        "retry_count":          0,
+        "user_question":         question,
+        "conversation_history":  history,
+        "needs_db":              True,
+        "is_ambiguous":          False,
+        "clarification_question": None,
+        "question_analysis":     None,
+        "relevant_tables":       None,
+        "is_report_request":     False,
+        "report_format":         "excel",
+        "schema_info":           None,
+        "sql_query":             None,
+        "sql_explanation":       None,
+        "query_results":         None,
+        "column_names":          None,
+        "row_count":             None,
+        "response":              None,
+        "report_path":           None,
+        "error":                 None,
+        "retry_count":           0,
     }
 
     try:
@@ -175,6 +177,12 @@ def _agent_worker(
             # progress["step"] = "💬 Preparing answer…"
             if stopped(): result_q.put({"__stopped__": True}); return
             state.update(chat_response(state))
+            result_q.put(state)
+            return
+
+        if state.get("is_ambiguous", False):
+            if stopped(): result_q.put({"__stopped__": True}); return
+            state.update(clarify(state))
             result_q.put(state)
             return
 
@@ -190,6 +198,9 @@ def _agent_worker(
             # )
             if stopped(): result_q.put({"__stopped__": True}); return
             state.update(generate_sql(state))
+
+            if stopped(): result_q.put({"__stopped__": True}); return
+            state.update(validate_sql(state))
 
             progress["step"] = "⚡ Querying database…"
             if stopped(): result_q.put({"__stopped__": True}); return

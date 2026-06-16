@@ -32,6 +32,10 @@ class SQLAgentState(TypedDict):
     error:       Optional[str]
     retry_count: int
 
+    # Ambiguity detection (set during analyze_question)
+    is_ambiguous:          bool
+    clarification_question: Optional[str]
+
     # Conversation memory (injected from outside; not mutated by the graph)
     # Each entry: {"role": "user"|"assistant", "content": str, "sql_query": str|None}
     conversation_history: list

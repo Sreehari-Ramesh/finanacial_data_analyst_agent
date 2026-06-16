@@ -13,9 +13,6 @@ import sys
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent))
 
-from dotenv import load_dotenv
-load_dotenv()
-
 from sqlalchemy import inspect as sa_inspect, text
 from config import get_db_engine, DB_SERVER, DB_NAME
 
