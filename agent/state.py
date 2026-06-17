@@ -25,8 +25,9 @@ class SQLAgentState(TypedDict):
     row_count:     Optional[int]
 
     # Phase 5: output
-    response:    Optional[str]
-    report_path: Optional[str]
+    response:        Optional[str]
+    report_bytes:    Optional[bytes]
+    report_filename: Optional[str]
 
     # Error handling / retry
     error:       Optional[str]
@@ -35,6 +36,9 @@ class SQLAgentState(TypedDict):
     # Ambiguity detection (set during analyze_question)
     is_ambiguous:          bool
     clarification_question: Optional[str]
+
+    # Available date ranges per table (populated by fetch_date_context)
+    date_context: Optional[str]
 
     # Conversation memory (injected from outside; not mutated by the graph)
     # Each entry: {"role": "user"|"assistant", "content": str, "sql_query": str|None}

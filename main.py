@@ -135,11 +135,10 @@ def _render_response(state: dict):
             )
         )
 
-    # Report path
-    rp = state.get("report_path")
-    if rp:
+    # Report
+    if state.get("report_filename"):
         console.print(
-            f"\n[bold yellow] Report saved:[/] [underline]{rp}[/]\n"
+            f"\n[bold yellow] Report ready:[/] {state['report_filename']}\n"
         )
 
 

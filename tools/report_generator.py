@@ -1,13 +1,11 @@
-"""Generate Excel and CSV reports from query results."""
+"""Generate Excel and CSV reports from query results — in memory, no disk writes."""
+import io
 import re
 from datetime import datetime
-from pathlib import Path
 
 import pandas as pd
 from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
 from openpyxl.utils import get_column_letter
-
-from config import REPORTS_DIR
 
 
 def _sanitize_filename(text: str) -> str:
@@ -29,17 +27,18 @@ def generate_excel_report(
     question: str,
     title: str = "",
     sql_query: str = "",
-) -> str:
-    """Create a formatted Excel report and return the file path."""
+) -> tuple[bytes, str]:
+    """Build a formatted Excel report in memory and return (bytes, filename)."""
 
     df = pd.DataFrame(rows, columns=columns) if rows else pd.DataFrame(columns=columns)
     title = title or f"Report: {question[:60]}"
 
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     slug      = _sanitize_filename(question)
-    filename  = REPORTS_DIR / f"report_{timestamp}_{slug}.xlsx"
+    filename  = f"report_{timestamp}_{slug}.xlsx"
 
-    with pd.ExcelWriter(filename, engine="openpyxl") as writer:
+    buf = io.BytesIO()
+    with pd.ExcelWriter(buf, engine="openpyxl") as writer:
         # ── Data sheet ──────────────────────────────────────────────────────
         df.to_excel(writer, sheet_name="Data", startrow=3, index=False)
         ws = writer.sheets["Data"]
@@ -116,20 +115,21 @@ def generate_excel_report(
             for i, line in enumerate(sql_query.splitlines(), start=2):
                 ws3.cell(i, 1, line).font = Font(name="Courier New", size=10)
 
-    return str(filename)
+    return buf.getvalue(), filename
 
 
 def generate_csv_report(
     rows: list[dict],
     columns: list[str],
     question: str,
-) -> str:
-    """Create a CSV file and return the file path."""
+) -> tuple[bytes, str]:
+    """Build a CSV report in memory and return (bytes, filename)."""
     df = pd.DataFrame(rows, columns=columns) if rows else pd.DataFrame(columns=columns)
 
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     slug      = _sanitize_filename(question)
-    filename  = REPORTS_DIR / f"report_{timestamp}_{slug}.csv"
+    filename  = f"report_{timestamp}_{slug}.csv"
 
-    df.to_csv(filename, index=False)
-    return str(filename)
+    buf = io.BytesIO()
+    df.to_csv(buf, index=False)
+    return buf.getvalue(), filename

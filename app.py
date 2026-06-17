@@ -23,37 +23,45 @@ st.set_page_config(
 st.markdown("""
 <style>
 /* Background */
-.stApp { background: #0d1117; }
+.stApp { background: #faf8f5; }
 .block-container { padding-top: 1.2rem !important; }
 
 /* Sidebar */
 [data-testid="stSidebar"] > div:first-child {
-    background: #161b22;
-    border-right: 1px solid #21262d;
+    background: #f0ece4;
+    border-right: 1px solid #ddd5c8;
 }
 [data-testid="stSidebar"] p,
 [data-testid="stSidebar"] span,
-[data-testid="stSidebar"] label { color: #c9d1d9 !important; }
+[data-testid="stSidebar"] label { color: #3d3530 !important; }
+
+/* Inline code tags (server/db labels) */
+[data-testid="stSidebar"] code {
+    background: #e8e0d5 !important;
+    color: #3d3530 !important;
+    border-radius: 4px !important;
+    padding: 1px 5px !important;
+}
 
 /* Chat input */
 [data-testid="stChatInput"] textarea {
-    background: #161b22 !important;
-    border: 1px solid #30363d !important;
-    color: #e6edf3 !important;
+    background: #ffffff !important;
+    border: 1px solid #ddd5c8 !important;
+    color: #2d2d2d !important;
     border-radius: 10px !important;
 }
 
 /* Expanders */
 [data-testid="stExpander"] {
-    background: #161b22 !important;
-    border: 1px solid #21262d !important;
+    background: #f5f1eb !important;
+    border: 1px solid #ddd5c8 !important;
     border-radius: 8px !important;
 }
-[data-testid="stExpander"] summary { color: #8b949e !important; }
-[data-testid="stExpander"] summary:hover { color: #c9d1d9 !important; }
+[data-testid="stExpander"] summary { color: #6b5e52 !important; }
+[data-testid="stExpander"] summary:hover { color: #3d3530 !important; }
 
 /* Code blocks */
-.stCodeBlock pre { background: #1e1e2e !important; border-radius: 8px !important; }
+.stCodeBlock pre { background: #ede8e0 !important; border-radius: 8px !important; }
 
 /* Dataframe */
 [data-testid="stDataFrame"] { border-radius: 8px; overflow: hidden; }
@@ -62,13 +70,13 @@ st.markdown("""
 [data-testid="stStatus"] { border-radius: 10px !important; }
 
 /* Divider */
-hr { border-color: #21262d !important; }
+hr { border-color: #ddd5c8 !important; }
 
 /* Sidebar buttons */
 .stButton > button {
-    background: #161b22 !important;
-    border: 1px solid #30363d !important;
-    color: #8b949e !important;
+    background: #ede8e0 !important;
+    border: 1px solid #ddd5c8 !important;
+    color: #3d3530 !important;
     border-radius: 10px !important;
     padding: 8px 14px !important;
     font-size: 0.87rem !important;
@@ -76,15 +84,15 @@ hr { border-color: #21262d !important; }
     transition: all 0.15s;
 }
 .stButton > button:hover {
-    background: #1f2d45 !important;
-    border-color: #388bfd !important;
-    color: #e6edf3 !important;
+    background: #ddd5c8 !important;
+    border-color: #5c6bc0 !important;
+    color: #2d2d2d !important;
 }
 
 /* Scrollbar */
 ::-webkit-scrollbar { width: 5px; height: 5px; }
-::-webkit-scrollbar-track { background: #0d1117; }
-::-webkit-scrollbar-thumb { background: #30363d; border-radius: 3px; }
+::-webkit-scrollbar-track { background: #f0ece4; }
+::-webkit-scrollbar-thumb { background: #ddd5c8; border-radius: 3px; }
 </style>
 """, unsafe_allow_html=True)
 
@@ -138,7 +146,7 @@ def _agent_worker(
     """Runs agent nodes in a daemon thread. Stops cleanly on stop_ev."""
     from agent.nodes import (
         analyze_question, chat_response, clarify,
-        fetch_schema, generate_sql, validate_sql,
+        fetch_schema, fetch_date_context, generate_sql, validate_sql,
         execute_sql, format_response, generate_report,
     )
     from config import MAX_RETRIES
@@ -157,13 +165,15 @@ def _agent_worker(
         "is_report_request":     False,
         "report_format":         "excel",
         "schema_info":           None,
+        "date_context":          None,
         "sql_query":             None,
         "sql_explanation":       None,
         "query_results":         None,
         "column_names":          None,
         "row_count":             None,
         "response":              None,
-        "report_path":           None,
+        "report_bytes":          None,
+        "report_filename":       None,
         "error":                 None,
         "retry_count":           0,
     }
@@ -189,6 +199,9 @@ def _agent_worker(
         # progress["step"] = "📋 Reading database schema…"
         if stopped(): result_q.put({"__stopped__": True}); return
         state.update(fetch_schema(state))
+
+        if stopped(): result_q.put({"__stopped__": True}); return
+        state.update(fetch_date_context(state))
 
         for attempt in range(MAX_RETRIES + 1):
             # progress["step"] = (
@@ -266,18 +279,19 @@ def render_result(msg: dict, key_prefix: str = ""):
     answer = msg.get("content") or msg.get("response") or ""
     st.markdown(answer if answer else "_No response generated._")
 
-    row_count   = msg.get("row_count")
-    sql         = msg.get("sql_query")
-    results     = msg.get("query_results") or []
-    col_names   = msg.get("column_names") or []
-    report_path = msg.get("report_path")
+    row_count       = msg.get("row_count")
+    sql             = msg.get("sql_query")
+    results         = msg.get("query_results") or []
+    col_names       = msg.get("column_names") or []
+    report_bytes    = msg.get("report_bytes")
+    report_filename = msg.get("report_filename")
 
     badges = []
     if row_count is not None:
         badges.append(f"🗃️ **{row_count}** row{'s' if row_count != 1 else ''}")
     if sql:
         badges.append("📝 SQL generated")
-    if report_path:
+    if report_bytes:
         badges.append("📊 Report ready")
     if badges:
         st.caption("  ·  ".join(badges))
@@ -323,15 +337,16 @@ def render_result(msg: dict, key_prefix: str = ""):
                     key=f"{key_prefix}_xlsx",
                 )
 
-    if report_path and Path(report_path).exists():
-        with open(report_path, "rb") as f:
-            st.download_button(
-                "📥 Download Full Report",
-                data=f.read(),
-                file_name=Path(report_path).name,
-                mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                key=f"{key_prefix}_report",
-            )
+    if report_bytes and report_filename:
+        mime = "text/csv" if report_filename.endswith(".csv") else \
+               "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        st.download_button(
+            "📥 Download Full Report",
+            data=report_bytes,
+            file_name=report_filename,
+            mime=mime,
+            key=f"{key_prefix}_report",
+        )
 
 
 # ── Sidebar ───────────────────────────────────────────────────────────────────
@@ -339,7 +354,7 @@ def render_result(msg: dict, key_prefix: str = ""):
 def render_sidebar(info: dict):
     with st.sidebar:
         st.markdown(
-            "<h2 style='color:#58a6ff; margin-bottom:0;'>🗄️ SQL Q&A</h2>",
+            "<h2 style='color:#3d3530; margin-bottom:0;'>🗄️ SQL Q&A</h2>",
             unsafe_allow_html=True,
         )
         st.caption("Powered by LangChain · LangGraph")
@@ -397,7 +412,7 @@ def main():
     render_sidebar(info)
 
     st.markdown(
-        "<h1 style='font-size:1.5rem; color:#e6edf3; margin-bottom:0.2rem;'>"
+        "<h1 style='font-size:1.5rem; color:#2d2d2d; margin-bottom:0.2rem;'>"
         "SQL Q&amp;A Agent</h1>",
         unsafe_allow_html=True,
     )
@@ -479,13 +494,14 @@ def main():
                     {"role": "user", "content": q_text}
                 )
                 st.session_state.messages.append({
-                    "role":          "assistant",
-                    "content":       result.get("response", ""),
-                    "sql_query":     result.get("sql_query"),
-                    "query_results": result.get("query_results"),
-                    "column_names":  result.get("column_names"),
-                    "row_count":     result.get("row_count"),
-                    "report_path":   result.get("report_path"),
+                    "role":            "assistant",
+                    "content":         result.get("response", ""),
+                    "sql_query":       result.get("sql_query"),
+                    "query_results":   result.get("query_results"),
+                    "column_names":    result.get("column_names"),
+                    "row_count":       result.get("row_count"),
+                    "report_bytes":    result.get("report_bytes"),
+                    "report_filename": result.get("report_filename"),
                 })
 
             st.rerun()

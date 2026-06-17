@@ -1,4 +1,5 @@
 """LangGraph node functions — each transforms a slice of SQLAgentState."""
+from datetime import date as _date
 from tabulate import tabulate
 from langchain_core.messages import SystemMessage, HumanMessage
 
@@ -199,6 +200,73 @@ def fetch_schema(state: SQLAgentState) -> dict:
 
 
 # ---------------------------------------------------------------------------
+# Node 2b — Probe actual date ranges in the DB for relevant tables
+# ---------------------------------------------------------------------------
+
+_DATE_TYPE_TOKENS = {"DATE", "DATETIME", "DATETIME2", "SMALLDATETIME", "TIMESTAMP"}
+
+
+def fetch_date_context(state: SQLAgentState) -> dict:
+    """For each relevant table, run MIN/MAX on its primary date column.
+
+    The result is a concise text block passed to the SQL generator so it knows
+    whether the user's relative date expression ("last month", "last week") maps
+    to data that actually exists in the DB — and can shift to the most recent
+    available period if not.
+    """
+    from config import get_db_engine
+    from sqlalchemy import inspect as sa_inspect, text as sa_text
+
+    tables = state.get("relevant_tables") or []
+    if not tables:
+        return {"date_context": ""}
+
+    try:
+        engine    = get_db_engine()
+        inspector = sa_inspect(engine)
+        lines: list[str] = []
+
+        for tbl in tables:
+            try:
+                cols = inspector.get_columns(tbl)
+            except Exception:
+                continue
+
+            date_col: str | None = None
+            for col in cols:
+                type_name = type(col["type"]).__name__.upper()
+                col_upper = col["name"].upper()
+                if any(tok in type_name for tok in _DATE_TYPE_TOKENS) or "DATE" in col_upper:
+                    date_col = col["name"]
+                    break
+
+            if not date_col:
+                continue
+
+            try:
+                with engine.connect() as conn:
+                    row = conn.execute(
+                        sa_text(f"SELECT MIN([{date_col}]), MAX([{date_col}]) FROM [{tbl}]")
+                    ).fetchone()
+                if row and row[0] is not None:
+                    min_d = str(row[0])[:10]
+                    max_d = str(row[1])[:10]
+                    lines.append(f"  {tbl:<42} {date_col}: {min_d} → {max_d}")
+            except Exception:
+                continue
+
+        if not lines:
+            return {"date_context": ""}
+
+        ctx = "Available data date ranges (from DB):\n" + "\n".join(lines)
+        # print(ctx)  # log for debugging
+        return {"date_context": ctx}
+
+    except Exception:
+        return {"date_context": ""}
+
+
+# ---------------------------------------------------------------------------
 # Node 3 — Generate SQL
 # ---------------------------------------------------------------------------
 
@@ -234,6 +302,8 @@ def generate_sql(state: SQLAgentState) -> dict:
             time_period=analysis.get("time_period") or "none",
             sort_order=analysis.get("sort_order") or "none",
             limit=str(analysis.get("limit")) if analysis.get("limit") else "none",
+            today_date=_date.today().isoformat(),
+            date_context=state.get("date_context") or "",
             retry_context="",
         )
         try:
@@ -342,16 +412,16 @@ def generate_report(state: SQLAgentState) -> dict:
 
     try:
         if fmt == "csv":
-            path = generate_csv_report(rows, columns, question)
+            data, fname = generate_csv_report(rows, columns, question)
         else:
-            path = generate_excel_report(
+            data, fname = generate_excel_report(
                 rows, columns, question,
                 title=title,
                 sql_query=state.get("sql_query", ""),
             )
-        return {"report_path": path}
+        return {"report_bytes": data, "report_filename": fname}
     except Exception as exc:
-        return {"report_path": None, "error": f"Report generation failed: {exc}"}
+        return {"report_bytes": None, "report_filename": None, "error": f"Report generation failed: {exc}"}
 
 
 # ---------------------------------------------------------------------------
@@ -378,8 +448,8 @@ def format_response(state: SQLAgentState) -> dict:
     results_table = _rows_to_table(rows, columns)
 
     report_note = ""
-    if state.get("report_path"):
-        report_note = f"A report file has been saved to: {state['report_path']}"
+    if state.get("report_filename"):
+        report_note = f"Report ready to download: {state['report_filename']}"
 
     # Handle execution error case
     if state.get("error") and not rows:

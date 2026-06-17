@@ -7,6 +7,7 @@ from agent.nodes import (
     chat_response,
     clarify,
     fetch_schema,
+    fetch_date_context,
     generate_sql,
     validate_sql,
     execute_sql,
@@ -56,7 +57,8 @@ def build_graph():
     g.add_node("analyze_question", analyze_question)
     g.add_node("chat_response",    chat_response)
     g.add_node("clarify",          clarify)
-    g.add_node("fetch_schema",     fetch_schema)
+    g.add_node("fetch_schema",      fetch_schema)
+    g.add_node("fetch_date_context", fetch_date_context)
     g.add_node("generate_sql",     generate_sql)
     g.add_node("validate_sql",     validate_sql)
     g.add_node("execute_sql",      execute_sql)
@@ -76,7 +78,8 @@ def build_graph():
     )
     g.add_edge("chat_response", END)
     g.add_edge("clarify",       END)
-    g.add_edge("fetch_schema",   "generate_sql")
+    g.add_edge("fetch_schema",        "fetch_date_context")
+    g.add_edge("fetch_date_context",  "generate_sql")
     g.add_edge("generate_sql",   "validate_sql")
     g.add_edge("validate_sql",   "execute_sql")
 
@@ -113,7 +116,7 @@ def run_agent(question: str, conversation_history: list | None = None) -> dict:
                               The agent uses this to resolve follow-up references
                               ("same", "it", "what about last month?", etc.).
 
-    Returns the final state dict (response, sql_query, row_count, report_path, …).
+    Returns the final state dict (response, sql_query, row_count, report_bytes, report_filename, …).
     """
     initial_state: SQLAgentState = {
         "user_question":         question,
@@ -126,13 +129,15 @@ def run_agent(question: str, conversation_history: list | None = None) -> dict:
         "is_ambiguous":          False,
         "clarification_question": None,
         "schema_info":           None,
+        "date_context":          None,
         "sql_query":             None,
         "sql_explanation":       None,
         "query_results":         None,
         "column_names":          None,
         "row_count":             None,
         "response":              None,
-        "report_path":           None,
+        "report_bytes":          None,
+        "report_filename":       None,
         "error":                 None,
         "retry_count":           0,
     }

@@ -133,13 +133,22 @@ CODING RULES:
   8. Duplicate column names across JOINs: alias every repeated column uniquely
   9. Date literals: ISO format 'YYYY-MM-DD'
 
-DATE FUNCTIONS:
+DATE FUNCTIONS (T-SQL syntax):
   Today              : CAST(GETDATE() AS DATE)
   This month         : MONTH(col)=MONTH(GETDATE()) AND YEAR(col)=YEAR(GETDATE())
   Last month         : MONTH(col)=MONTH(DATEADD(MONTH,-1,GETDATE())) AND YEAR(col)=YEAR(DATEADD(MONTH,-1,GETDATE()))
   This year          : YEAR(col)=YEAR(GETDATE())
   Last N days        : col >= DATEADD(DAY,-N, CAST(GETDATE() AS DATE))
   Month label        : FORMAT(col,'yyyy-MM')
+
+DATE RANGE AWARENESS:
+  Today's actual date and the DB's available data ranges are in the human message.
+  Step 1 — translate the user's relative expression to an absolute date range using today's date.
+  Step 2 — check if that range overlaps the table's available range from the human message.
+  Step 3 — if it does NOT overlap, shift to the most recent available period (e.g. if data ends
+           2025-12-31 and user asks "last month" on 2026-06-17, use December 2025 instead).
+           Note the shift in the explanation field.
+  Never return an empty result set when recent data exists — always use what the DB has.
 
 Return ONLY valid JSON — no prose, no markdown fences.
 """
@@ -156,6 +165,9 @@ Filters        : {filters}
 Group by       : {groupby}
 Time period    : {time_period}
 Sort / limit   : {sort_order} / {limit}
+Today's date   : {today_date}
+
+date_context: {date_context}
 
 {retry_context}
 
@@ -354,9 +366,9 @@ CHAT_HUMAN = """\
 
 User: {question}
 
-  Greeting               → warm 1-sentence reply, mention you can query the DB in plain English
-  Thanks / acknowledgment → brief, offer to help further
-  "What can you do?"     → list: query data in plain English, Excel/CSV reports, follow-up questions, P&L / deposits / withdrawals / bets / agents / clients
+  Greeting               → short, natural reply (no self-introduction or capability pitch)
+  Thanks / acknowledgment → brief acknowledgment, offer to help further
+  "What can you do?"     → list: P&L / deposits / withdrawals / bets / agents / clients, Excel/CSV reports, follow-up questions
   "What tables?"         → list the tables above
   Clarification on answer → answer from conversation history, do not query DB
 Keep under 3 sentences unless genuinely needed.
