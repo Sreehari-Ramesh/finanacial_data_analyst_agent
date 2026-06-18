@@ -1,6 +1,14 @@
 from pathlib import Path
 from sqlalchemy import create_engine
 from sqlalchemy.engine import URL as SAUrl, Engine
+import os
+
+#---- LangSmith ---------------------------------
+os.environ["LANGSMITH_API_KEY"] = "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"
+
+os.environ["LANGSMITH_TRACING"] = "true"
+os.environ["LANGSMITH_PROJECT"] = "qna_agent"
+
 
 # ── LLM ──────────────────────────────────────────────────────────────────────
 LLM_PROVIDER      = "openai"

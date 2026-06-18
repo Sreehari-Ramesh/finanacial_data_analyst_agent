@@ -7,10 +7,6 @@ import queue as _queue
 import pandas as pd
 from pathlib import Path
 import os
-os.environ["LANGSMITH_API_KEY"] = "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"
-
-os.environ["LANGSMITH_TRACING"] = "true"
-os.environ["LANGSMITH_PROJECT"] = "qna_agent"
 
 sys.path.insert(0, str(Path(__file__).parent))
 
