@@ -1,0 +1,35 @@
+# Version control
+.git/
+.gitattributes
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environments
+demo_qna/
+venv/
+.venv/
+
+# Secrets (not loaded by code but shouldn't be in the image)
+.env
+
+# Schema index — built at runtime by connecting to the live DB
+schema_index/
+
+# Reports — generated in-memory, no disk files
+reports/
+
+# SQLite test DB
+*.db
+
+# Schema export files
+schema_*.txt
+
+# IDE and tool config
+.claude/
+*.jsonl
+.vscode/
+.idea/

@@ -30,7 +30,6 @@ _PLATFORM_BLOCK = (
 QUESTION_ANALYSIS_SYSTEM = f"""\
 You are the routing and analysis engine for an SQL chatbot on an Indian online betting platform.
 Classify every user message and extract all metadata needed for the next pipeline stage.
-{_PLATFORM_BLOCK}
 
 ROUTING (needs_db):
   false — greetings, thanks, "what can you do", clarification on a previous answer
@@ -219,6 +218,9 @@ Common fixes by error type:
   "Duplicate column name"       → add unique aliases: t1.col AS col1, t2.col AS col2
   "Incorrect syntax near"       → check for missing comma, bracket, or wrong keyword
 
+points to be noted:
+ -- SELECT only — never INSERT, UPDATE, DELETE, DROP
+ 
 Return:
 {{
   "sql": "<fixed SQL — only the necessary change(s)>",

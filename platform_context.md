@@ -31,6 +31,126 @@ can run on the same infrastructure, each with their own agent network and client
 - **P&L (Profit & Loss)** — tracked separately for market bets, session bets, and casino
 - **DWM** — Deposit minus Withdrawal; a common metric to measure net client cash flow
 
+## Sports data hierarchy
+
+Sports data is organised in a strict parent-child hierarchy. Always traverse from the
+top level down when filtering; never skip levels.
+
+```
+tblSport
+  └── tblTournament  (linked via appSportId)
+        └── tblMatch  (linked via appTournamentId)  ← also called "events" in the DB
+              └── tblBet / tblClientBet  (linked via appMatchId)
+                    └── tblMarketType  (linked via appMarketId)
+```
+
+**Key terminology rule:** In this database, a "match within a tournament" is stored as
+an event. The terms **match** and **event** are interchangeable — both refer to rows
+in `tblMatch`. When a user asks "show me events for IPL" or "matches in tournament X",
+query `tblMatch` filtered by the relevant `appTournamentId`.
+
+### Typical join path for sport-level queries
+```sql
+tblSport s
+  JOIN tblTournament t  ON t.appSportId      = s.appSportId
+  JOIN tblMatch m        ON m.appTournamentId = t.appTournamentId
+  JOIN tblBet b          ON b.appMatchId      = m.appMatchId
+  JOIN tblClientBet cb   ON cb.appBetId       = b.appBetId
+```
+
+### When to use each table
+| Goal | Table |
+|------|-------|
+| List sports available | tblSport |
+| Find tournaments for a sport | tblTournament (filter by appSportId) |
+| Find matches/events in a tournament | tblMatch (filter by appTournamentId) |
+| Find market types for a match | tblMarketType (filter by appMatchId or appMarketId) |
+| Bet-level detail | tblBet + tblClientBet (filter by appMatchId) |
+| P&L summary | tblMarketwisePLSummary (appTPGameRefID IS NULL for sports) |
+
+---
+
+
+## Shared Sports + Casino Data Model
+
+The platform stores both sportsbook events and casino games inside the same four-level hierarchy:
+
+```
+tblSport
+  └── tblTournament
+        └── tblMatch
+              └── tblBet
+```
+
+This means a casino game is not modelled as a completely separate top-level object. Instead, a casino game is usually represented as a `tblBet` row under a synthetic sport such as `ExchGame`, often under a tournament such as `vkingPlay`. The same hierarchy is therefore used for both:
+- resolving a sportsbook bet to its readable Sport → Tournament → Event → Market
+- listing casino games under the casino sport and enriching them with provider/game metadata
+
+**Important reasoning rule:** one tree, two readings. For sport lookups, read downward from a known sport/tournament/match/bet path. For casino catalogue lookups, filter the same tree to the synthetic casino sport and then enrich the result with provider/game details.
+
+## Casino Provider / Game Resolution
+
+Casino provider and game names are not reliably stored in `tblBet.appBetName`. For casino rows, `appBetName` may be only a generic slot label. To get the real readable casino game information, use this enrichment path:
+
+```
+tblClientBet.appTableCode
+  → tblAngularCasinoGame.gameCode
+  → tblAngularCasinoGame.appProviderID
+  → tblProvider.appProviderID
+```
+
+### Key casino lookup rules
+- `tblBet` still represents the casino game slot in the shared hierarchy
+- `tblClientBet.appTableCode` is the bridge from betting data to the casino catalogue
+- `tblAngularCasinoGame.Name` gives the readable game name
+- `tblProvider.appProviderName` gives the casino provider / studio name
+- do not assume casino names are cleanly available in `tblBet.appBetName`
+
+### Config-driven casino sport id
+Do not hard-code the casino sport id. Read it from `tblWebsiteSetting` using:
+- `appKey = 'ExchGameSportID'`
+
+This makes casino queries more robust if the configured sport id changes.
+
+## Query Rules / Good to Know
+
+### Canonical sports event lookup pattern
+When you have a known `appBetId` and need the human-readable event context, use the shared hierarchy:
+
+```sql
+SELECT
+  s.appSport,
+  t.appTournament,
+  m.appMatch AS appEvent,
+  m.appDate,
+  b.appBetName AS appMarketName
+FROM tblSport s
+JOIN tblTournament t ON t.appSportId = s.appSportId
+JOIN tblMatch m ON m.appTournamentId = t.appTournamentId
+JOIN tblBet b ON b.appMatchId = m.appMatchId
+WHERE b.appBetId = @BetId;
+```
+
+### Canonical casino catalogue lookup pattern
+When listing casino games, first filter the shared hierarchy to the casino sport, then enrich the rows with provider/game data from `tblClientBet`, `tblAngularCasinoGame`, and `tblProvider`.
+
+### Why `GROUP BY appBetID` with `MIN(...)` is used
+A casino bet can sometimes match more than one catalogue row. Grouping by `appBetID` and using `MIN(...)` for provider/game fields forces exactly one deterministic row per bet and avoids duplicate fan-out after the join.
+
+### Reporting / SQL Server notes
+- `WITH (NOLOCK)` may be used in catalogue/reporting reads to reduce blocking, but it can read uncommitted or temporarily duplicated rows
+- `appBetId` and `appBetID` refer to the same identifier in SQL Server because identifier casing is not significant here
+- for money or month-based reporting, prefer date-range filters over `MONTH(column)` and `YEAR(column)` when possible
+- for example, total successful deposit for May 2026 is better written as:
+
+```sql
+SELECT ROUND(ISNULL(SUM(d.appAmount), 0), 2) AS total_deposit
+FROM tblDeposit AS d
+WHERE d.appStatus = 3
+  AND d.appCreatedDate >= '2026-05-01'
+  AND d.appCreatedDate < '2026-06-01';
+```
+
 ## Enums
 
 ### Login / user type
@@ -84,10 +204,34 @@ Contains P&L summary per market or game.
 - appTPGameRefID = NULL → sports data; appTPGameRefID IS NOT NULL → casino data
 Use this table for most betting P&L queries. Also useful for finding top winners/losers.
 
+### tblSport
+Top of the sports hierarchy. Contains one row per sport (cricket, football, tennis, etc.).
+- appSportId — primary key; used to filter tblTournaments to a specific sport
+- Use this table when the user asks "which sports are available" or filters by sport name
+
+### tblTournament
+Second level of the hierarchy. Each row is a tournament belonging to one sport.
+- appTournamentId — primary key; used to filter tblMatch to a specific tournament
+- appSportId — foreign key to tblSport
+- Examples: IPL, English Premier League, Wimbledon
+- Use this table when the user specifies a tournament or competition name
+
 ### tblMatch
-Contains match and event details. Join on appMatchID to enrich data from other tables.
-Use this table when filtering by sport, tournament, or date for event-specific queries.
-For event details also refer to tblSport and tblTournament.
+Third level of the hierarchy. Each row is a match/event within a tournament.
+**Important:** In this database, matches within a tournament are referred to as "events".
+The words "match" and "event" are interchangeable — both map to rows in tblMatch.
+- appMatchId — primary key; join key for tblBet, tblClientBet, tblMarketType
+- appTournamentId — foreign key to tblTournament
+- Use this table when filtering by sport, tournament, date, or specific match/event
+- When a user says "events for IPL" → filter tblMatch by the relevant appTournamentId
+
+### tblMarketType
+Fourth level — defines the types of markets available on a match (e.g. Match Winner,
+Over/Under, Both Teams to Score).
+- appMarketId — primary key
+- appMatchId — foreign key to tblMatch
+- Use this table when the user asks about market types, bet types, or wants to
+  filter results to a specific kind of market within a match
 
 ### tblDeposit
 Contains all deposit transaction records.
@@ -151,6 +295,8 @@ Contains location/geographic details for clients.
   sum successful deposits (status=3) minus successful withdrawals (status=3)
 - **Client betting activity** — join tblClient + tblClientBet
 - **Sports vs casino P&L** — use tblMarketwisePLSummary filtering appTPGameRefID IS NULL (sports) or IS NOT NULL (casino)
-- **Event/match queries** — join tblMatch with tblSport and tblTournament
+- **Event/match queries** — join tblMatch with tblTournament and tblSport; remember "events" = rows in tblMatch
+- **Sport → tournament → match drill-down** — tblSport → tblTournament (appSportId) → tblMatch (appTournamentId) → tblBet (appMatchId)
+- **Market type breakdown for a match** — join tblMatch + tblMarketType on appMatchId
 - **Account statement** — use tblFinalTransaction (appCalAmountPts)
 - **Daily wallet movement** — use tblWalletTransaction WHERE appBetID <> 0

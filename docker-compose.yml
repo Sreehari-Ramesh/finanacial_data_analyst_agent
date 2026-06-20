@@ -1,0 +1,14 @@
+services:
+  sql-qna:
+    build: .
+    ports:
+      - "8501:8501"
+    volumes:
+      # Persists the FAISS schema index across container restarts.
+      # On first start the app builds it by connecting to the DB;
+      # subsequent starts load it from this volume (fast).
+      - schema_index:/app/schema_index
+    restart: unless-stopped
+
+volumes:
+  schema_index:
