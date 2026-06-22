@@ -29,6 +29,10 @@ class SQLAgentState(TypedDict):
     report_bytes:    Optional[bytes]
     report_filename: Optional[str]
 
+    # Guardrail flags (set by guard_input)
+    blocked:      bool
+    block_reason: Optional[str]
+
     # Error handling / retry
     error:       Optional[str]
     retry_count: int

@@ -3,7 +3,7 @@ from datetime import date as _date
 from tabulate import tabulate
 from langchain_core.messages import SystemMessage, HumanMessage
 
-from config import get_llm, MAX_RETRIES
+from config import get_llm
 from agent.state import SQLAgentState
 from database.schema import get_schema, get_all_table_names, get_table_descriptions
 from tools.sql_tools import execute_query
@@ -374,6 +374,14 @@ def execute_sql(state: SQLAgentState) -> dict:
     if not sql:
         return {"error": "No SQL query to execute."}
 
+    # from agent.guards import guard_sql
+    # is_safe, reason = guard_sql(sql)
+    # if not is_safe:
+    #     return {
+    #         "error":       f"Query blocked by safety check: {reason}",
+    #         "retry_count": state.get("retry_count", 0) + 1,
+    #     }
+
     result = execute_query(sql)
 
     if result["success"]:
@@ -471,7 +479,7 @@ def format_response(state: SQLAgentState) -> dict:
 
     try:
         response = _llm_text(RESPONSE_FORMATTING_SYSTEM, human)
-    except Exception as exc:
+    except Exception:
         # Fallback: return raw table
         response = (
             f"Query returned {state.get('row_count', 0)} rows.\n\n"

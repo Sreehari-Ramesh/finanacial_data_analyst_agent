@@ -6,8 +6,6 @@ import threading
 import queue as _queue
 import pandas as pd
 from pathlib import Path
-import os
-
 sys.path.insert(0, str(Path(__file__).parent))
 
 import streamlit as st
@@ -150,6 +148,7 @@ def _agent_worker(
         fetch_schema, fetch_date_context, generate_sql, validate_sql,
         execute_sql, format_response, generate_report,
     )
+    from agent.guards import guard_input, guard_output
     from config import MAX_RETRIES
 
     def stopped():
@@ -158,6 +157,8 @@ def _agent_worker(
     state: dict = {
         "user_question":         question,
         "conversation_history":  history,
+        "blocked":               False,
+        "block_reason":          None,
         "needs_db":              True,
         "is_ambiguous":          False,
         "clarification_question": None,
@@ -180,20 +181,27 @@ def _agent_worker(
     }
 
     try:
-        # progress["step"] = "🔍 Understanding your question…"
+        # Input guardrail — runs before anything else
+        if stopped(): result_q.put({"__stopped__": True}); return
+        state.update(guard_input(state))
+        if state.get("blocked"):
+            result_q.put(state)
+            return
+
         if stopped(): result_q.put({"__stopped__": True}); return
         state.update(analyze_question(state))
 
         if not state.get("needs_db", True):
-            # progress["step"] = "💬 Preparing answer…"
             if stopped(): result_q.put({"__stopped__": True}); return
             state.update(chat_response(state))
+            state.update(guard_output(state))
             result_q.put(state)
             return
 
         if state.get("is_ambiguous", False):
             if stopped(): result_q.put({"__stopped__": True}); return
             state.update(clarify(state))
+            state.update(guard_output(state))
             result_q.put(state)
             return
 
@@ -204,7 +212,7 @@ def _agent_worker(
         if stopped(): result_q.put({"__stopped__": True}); return
         state.update(fetch_date_context(state))
 
-        for attempt in range(MAX_RETRIES + 1):
+        for _ in range(MAX_RETRIES + 1):
             # progress["step"] = (
             #     "⚙️ Writing SQL query…"
             #     if attempt == 0
@@ -233,6 +241,7 @@ def _agent_worker(
         progress["step"] = "💬 Preparing answer…"
         if stopped(): result_q.put({"__stopped__": True}); return
         state.update(format_response(state))
+        state.update(guard_output(state))
 
         result_q.put(state)
 

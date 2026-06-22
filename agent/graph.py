@@ -14,6 +14,7 @@ from agent.nodes import (
     generate_report,
     format_response,
 )
+from agent.guards import guard_input, guard_output
 from config import MAX_RETRIES
 
 
@@ -49,24 +50,41 @@ def route_after_analysis(state: SQLAgentState) -> str:
     return "fetch_schema"
 
 
+def route_after_guard(state: SQLAgentState) -> str:
+    """If the input was blocked, short-circuit to END (response already set)."""
+    return "blocked" if state.get("blocked", False) else "analyze_question"
+
+
 def build_graph():
     """Compile and return the runnable LangGraph agent."""
     g = StateGraph(SQLAgentState)
 
     # Register nodes
-    g.add_node("analyze_question", analyze_question)
-    g.add_node("chat_response",    chat_response)
-    g.add_node("clarify",          clarify)
+    g.add_node("guard_input",       guard_input)
+    g.add_node("analyze_question",  analyze_question)
+    g.add_node("chat_response",     chat_response)
+    g.add_node("clarify",           clarify)
     g.add_node("fetch_schema",      fetch_schema)
     g.add_node("fetch_date_context", fetch_date_context)
-    g.add_node("generate_sql",     generate_sql)
-    g.add_node("validate_sql",     validate_sql)
-    g.add_node("execute_sql",      execute_sql)
-    g.add_node("generate_report",  generate_report)
-    g.add_node("format_response",  format_response)
+    g.add_node("generate_sql",      generate_sql)
+    g.add_node("validate_sql",      validate_sql)
+    g.add_node("execute_sql",       execute_sql)
+    g.add_node("generate_report",   generate_report)
+    g.add_node("format_response",   format_response)
+    g.add_node("guard_output",      guard_output)
+    # Stub node: blocked input already has response set — just pass through to END
+    g.add_node("blocked", lambda _: {})
+
+    # Entry: guard first, then route on blocked flag
+    g.add_edge(START, "guard_input")
+    g.add_conditional_edges(
+        "guard_input",
+        route_after_guard,
+        {"blocked": "blocked", "analyze_question": "analyze_question"},
+    )
+    g.add_edge("blocked", END)
 
     # After analysis: chat shortcut or full DB pipeline
-    g.add_edge(START, "analyze_question")
     g.add_conditional_edges(
         "analyze_question",
         route_after_analysis,
@@ -76,12 +94,12 @@ def build_graph():
             "fetch_schema":  "fetch_schema",
         },
     )
-    g.add_edge("chat_response", END)
-    g.add_edge("clarify",       END)
-    g.add_edge("fetch_schema",        "fetch_date_context")
-    g.add_edge("fetch_date_context",  "generate_sql")
-    g.add_edge("generate_sql",   "validate_sql")
-    g.add_edge("validate_sql",   "execute_sql")
+    g.add_edge("chat_response",      "guard_output")
+    g.add_edge("clarify",            "guard_output")
+    g.add_edge("fetch_schema",       "fetch_date_context")
+    g.add_edge("fetch_date_context", "generate_sql")
+    g.add_edge("generate_sql",       "validate_sql")
+    g.add_edge("validate_sql",       "execute_sql")
 
     # Conditional routing after execution
     g.add_conditional_edges(
@@ -94,9 +112,9 @@ def build_graph():
         },
     )
 
-    # Report always flows into the response formatter
     g.add_edge("generate_report", "format_response")
-    g.add_edge("format_response", END)
+    g.add_edge("format_response", "guard_output")
+    g.add_edge("guard_output",    END)
 
     return g.compile()
 
@@ -125,6 +143,8 @@ def run_agent(question: str, conversation_history: list | None = None) -> dict:
         "relevant_tables":       None,
         "is_report_request":     False,
         "report_format":         "excel",
+        "blocked":               False,
+        "block_reason":          None,
         "needs_db":              True,
         "is_ambiguous":          False,
         "clarification_question": None,
