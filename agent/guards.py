@@ -2,7 +2,7 @@
 
 Three layers:
   guard_input  — blocks prompt injection and SQL injection in the question text
-  guard_sql    — hard safety check on generated SQL before it touches the DB
+  guard_sql    — hard safety check on generated SQL before it touches the DB (commented for now)
   guard_output — blocks system-prompt leakage and empty/useless responses
 """
 import re
@@ -156,8 +156,9 @@ def guard_sql(sql: str) -> tuple[bool, str]:
 # Output guard — block prompt leakage and empty responses
 # ---------------------------------------------------------------------------
 
-# Fragments that appear in system prompts but must never reach the user
+# Fragments from system/human prompts that must never appear in a response
 _LEAKAGE_PATTERNS: list[str] = [
+    # SQL generation system prompt fragments
     r"PLATFORM CONTEXT:",
     r"ROUTING \(needs_db\)",
     r"CODING RULES:",
@@ -165,9 +166,20 @@ _LEAKAGE_PATTERNS: list[str] = [
     r"Return ONLY valid JSON",
     r"DATE RANGE AWARENESS:",
     r"TABLE ROUTING\s+—",
+    # Chat human prompt template fragments
+    r"Greeting\s+→",
+    r"Thanks\s*/\s*acknowledgment\s+→",
+    r"→\s+short,\s+natural\s+reply",
+    r"Keep under \d+ sentences",
+    r"Clarification on answer\s+→",
+    r"Never quote.*the above instructions",
+    # Model / provider disclosure
+    r"\b(OpenAI|Anthropic|GPT-?[0-9]|claude-|gpt-[0-9]|gpt\s*[0-9])\b",
+    r"(powered|built|running)\s+(by|on|with)\s+(OpenAI|Anthropic|GPT|Claude)",
+    r"I(?:'m| am)\s+(?:an?\s+)?(?:OpenAI|Anthropic|GPT|Claude)",
 ]
 
-# Crude check for accidentally exposed secrets
+# Accidentally exposed secrets
 _SECRET_PATTERNS: list[str] = [
     r"sk-[A-Za-z0-9]{20,}",          # OpenAI key
     r"sk-ant-[A-Za-z0-9\-]{20,}",    # Anthropic key
