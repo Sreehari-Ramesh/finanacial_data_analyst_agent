@@ -22,8 +22,9 @@ schema_index/
 # Reports — generated in-memory, no disk files
 reports/
 
-# SQLite test DB
+# SQLite DBs — auth/users.db is mounted as a volume at runtime, not baked in
 *.db
+auth/users.db
 
 # Schema export files
 schema_*.txt

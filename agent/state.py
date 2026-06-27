@@ -44,6 +44,10 @@ class SQLAgentState(TypedDict):
     # Available date ranges per table (populated by fetch_date_context)
     date_context: Optional[str]
 
+    # Logged-in user — injected from the UI layer, not mutated by the graph
+    # {"id": int, "username": str, "role": "admin"|"agent", "agent_id": int|None}
+    current_user: Optional[dict]
+
     # Conversation memory (injected from outside; not mutated by the graph)
     # Each entry: {"role": "user"|"assistant", "content": str, "sql_query": str|None}
     conversation_history: list

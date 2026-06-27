@@ -17,3 +17,4 @@ faiss-cpu>=1.7.4
 fpdf2>=2.7.0
 sentence-transformers>=2.2.0
 langchain-huggingface>=0.0.3
+bcrypt>=4.0.0

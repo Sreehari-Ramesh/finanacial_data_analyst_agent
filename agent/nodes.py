@@ -290,6 +290,20 @@ def generate_sql(state: SQLAgentState) -> dict:
         except Exception as exc:
             return {"error": f"SQL repair failed: {exc}"}
     else:
+        # Build user access filter from the logged-in user
+        # current_user = state.get("current_user") or {}
+        # # role     = current_user.get("role", "admin")
+        # agent_id = current_user.get("agent_id")
+        # if role == "agent" and agent_id is not None:
+        #     user_filter = (
+        #         f"USER FILTER — role: agent, agent_id: {agent_id}\n"
+        #         f"IMPORTANT: Every query MUST filter to only show data for agent_id = {agent_id}. "
+        #         f"Apply a WHERE condition on the appropriate agent ID column in each relevant table. "
+        #         f"Never return data from other agents."
+        #     )
+        # else:
+        #     user_filter = "USER FILTER — role: admin, no filter required. Query all data normally."
+
         # Fresh generation from question analysis
         human = SQL_GENERATION_HUMAN.format(
             schema=schema,
@@ -304,6 +318,7 @@ def generate_sql(state: SQLAgentState) -> dict:
             limit=str(analysis.get("limit")) if analysis.get("limit") else "none",
             today_date=_date.today().isoformat(),
             date_context=state.get("date_context") or "",
+            # user_filter=user_filter,
             retry_context="",
         )
         try:

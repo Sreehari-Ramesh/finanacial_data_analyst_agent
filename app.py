@@ -17,6 +17,11 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
+# ── Auth gate — must run before any other rendering ───────────────────────────
+from auth.login import show_login, logout
+if not show_login():
+    st.stop()
+
 # ── CSS ───────────────────────────────────────────────────────────────────────
 
 st.markdown("""
@@ -138,6 +143,7 @@ def _ensure_schema_index() -> str:
 def _agent_worker(
     question: str,
     history: list,
+    current_user: dict,
     result_q: "_queue.Queue",
     stop_ev: threading.Event,
     progress: dict,
@@ -157,6 +163,7 @@ def _agent_worker(
     state: dict = {
         "user_question":         question,
         "conversation_history":  history,
+        "current_user":          current_user,
         "blocked":               False,
         "block_reason":          None,
         "needs_db":              True,
@@ -268,9 +275,10 @@ def _start_agent(question: str):
     result_q = _queue.Queue()
     progress = {"step": "Starting…"}
 
+    current_user = st.session_state.get("current_user", {})
     thread = threading.Thread(
         target=_agent_worker,
-        args=(question, _build_history(), result_q, stop_ev, progress),
+        args=(question, _build_history(), current_user, result_q, stop_ev, progress),
         daemon=True,
     )
 
@@ -368,6 +376,19 @@ def render_sidebar(info: dict):
             unsafe_allow_html=True,
         )
         st.caption("Powered by LangChain · LangGraph")
+        st.divider()
+
+        # ── Logged-in user info + logout ──────────────────────────────────────
+        user = st.session_state.get("current_user", {})
+        role_label = "Admin" if user.get("role") == "admin" else "Agent"
+        st.markdown(
+            f"👤 &nbsp;**{user.get('username', '—')}** &nbsp;"
+            f"<span style='font-size:0.78rem; color:#6b5e52;'>({role_label})</span>",
+            unsafe_allow_html=True,
+        )
+        if st.button("🚪 Sign out", use_container_width=True):
+            logout()
+
         st.divider()
 
         if info.get("success"):

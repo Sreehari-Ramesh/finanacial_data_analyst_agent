@@ -8,6 +8,7 @@ services:
       # On first start the app builds it by connecting to the DB;
       # subsequent starts load it from this volume (fast).
       - schema_index:/app/schema_index
+      - ./auth/users.db:/app/auth/users.db
     restart: unless-stopped
 
 volumes:
