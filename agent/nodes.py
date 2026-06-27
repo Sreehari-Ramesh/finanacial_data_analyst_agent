@@ -127,10 +127,12 @@ def chat_response(state: SQLAgentState) -> dict:
     history       = state.get("conversation_history") or []
     history_block = _format_history(history[-6:])
 
-    tables = ", ".join(get_all_table_names()) or "none loaded yet"
+    tables    = ", ".join(get_all_table_names()) or "none loaded yet"
+    username  = (state.get("current_user") or {}).get("username", "there")
 
     human = CHAT_HUMAN.format(
         history_block=history_block,
+        username=username,
         tables=tables,
         question=state["user_question"],
     )

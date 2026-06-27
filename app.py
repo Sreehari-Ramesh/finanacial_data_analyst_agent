@@ -231,7 +231,7 @@ def _agent_worker(
             if stopped(): result_q.put({"__stopped__": True}); return
             state.update(validate_sql(state))
 
-            progress["step"] = "⚡ Querying database…"
+            progress["step"] = "Pulling the data..."
             if stopped(): result_q.put({"__stopped__": True}); return
             state.update(execute_sql(state))
 
@@ -241,11 +241,11 @@ def _agent_worker(
                 break
 
         if state.get("is_report_request") and not state.get("error"):
-            progress["step"] = "📊 Building report file…"
+            progress["step"] = "Building report file…"
             if stopped(): result_q.put({"__stopped__": True}); return
             state.update(generate_report(state))
 
-        progress["step"] = "💬 Preparing answer…"
+        progress["step"] = "Hang tight... finalizing response…"
         if stopped(): result_q.put({"__stopped__": True}); return
         state.update(format_response(state))
         state.update(guard_output(state))
@@ -273,7 +273,7 @@ def _start_agent(question: str):
     """Kick off the background agent thread for the given question."""
     stop_ev  = threading.Event()
     result_q = _queue.Queue()
-    progress = {"step": "Starting…"}
+    progress = {"step": "Thinking..."}
 
     current_user = st.session_state.get("current_user", {})
     thread = threading.Thread(
@@ -483,7 +483,7 @@ def main():
             st.markdown(q_text)
 
         with st.chat_message("assistant", avatar="🤖"):
-            step = progress.get("step", "Working…")
+            step = progress.get("step", "Working on it...")
             left, right = st.columns([5, 1])
             with left:
                 st.markdown(f"⏳ &nbsp; {step}")
