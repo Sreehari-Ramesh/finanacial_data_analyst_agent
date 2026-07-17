@@ -45,7 +45,7 @@ class SQLAgentState(TypedDict):
     date_context: Optional[str]
 
     # Logged-in user — injected from the UI layer, not mutated by the graph
-    # {"id": int, "username": str, "role": "admin"|"agent", "agent_id": int|None}
+    # {"id": int, "username": str, "role": "admin"|"user"}
     current_user: Optional[dict]
 
     # Conversation memory (injected from outside; not mutated by the graph)

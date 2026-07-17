@@ -98,7 +98,18 @@ DB_USERNAME = "your_user"
 DB_PASSWORD = "your_password"
 ```
 
-### 3. Build the schema index
+### 3. Create the first admin user
+
+Run once to bootstrap the auth database:
+
+```bash
+python scripts/create_user.py
+```
+
+Enter username, password, role (`admin`), and leave Agent ID blank for admin accounts.
+Subsequent users can self-register from the app's **Create Account** tab using their Agent ID.
+
+### 4. Build the schema index
 
 On first run, click **Rebuild index** in the sidebar — this introspects the database, builds embedding documents for every table (enriched with descriptions from `platform_context.md`), and saves a FAISS index to `schema_index/`.
 
@@ -106,7 +117,7 @@ Rebuild whenever:
 - Tables are added or removed from the database
 - `platform_context.md` is updated with new table descriptions or enum values
 
-### 4. Run
+### 5. Run
 
 ```bash
 streamlit run app.py

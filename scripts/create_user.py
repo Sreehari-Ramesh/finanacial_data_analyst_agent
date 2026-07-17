@@ -3,8 +3,8 @@
 Usage:
     python scripts/create_user.py
 
-Run from the project root. Prompts for username, password, role, and agent ID.
-Re-running with the same username updates that user's password / role / agent_id.
+Run from the project root. Prompts for username, password, and role.
+Re-running with the same username updates that user's password / role.
 """
 import sys
 import getpass
@@ -35,39 +35,27 @@ def main():
         print("Error: passwords do not match.")
         sys.exit(1)
 
-    role = input("Role — admin / agent [agent]: ").strip().lower() or "agent"
-    if role not in ("admin", "agent"):
-        print("Error: role must be 'admin' or 'agent'.")
+    role = input("Role — admin / user [user]: ").strip().lower() or "user"
+    if role not in ("admin", "user"):
+        print("Error: role must be 'admin' or 'user'.")
         sys.exit(1)
-
-    agent_id = None
-    if role == "agent":
-        raw = input("Agent ID (integer from the platform DB): ").strip()
-        try:
-            agent_id = int(raw)
-        except ValueError:
-            print("Error: agent ID must be an integer.")
-            sys.exit(1)
 
     password_hash = bcrypt.hashpw(password.encode(), bcrypt.gensalt()).decode()
 
     with get_connection() as conn:
         conn.execute(
             """
-            INSERT INTO users (username, password_hash, role, agent_id)
-            VALUES (?, ?, ?, ?)
+            INSERT INTO users (username, password_hash, role)
+            VALUES (?, ?, ?)
             ON CONFLICT(username) DO UPDATE SET
                 password_hash = excluded.password_hash,
-                role          = excluded.role,
-                agent_id      = excluded.agent_id
+                role          = excluded.role
             """,
-            (username, password_hash, role, agent_id),
+            (username, password_hash, role),
         )
         conn.commit()
 
     print(f"\nUser '{username}' ({role}) saved successfully.")
-    if role == "agent":
-        print(f"Agent ID: {agent_id}")
 
 
 if __name__ == "__main__":

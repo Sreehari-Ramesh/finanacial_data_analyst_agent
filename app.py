@@ -104,12 +104,20 @@ hr { border-color: #ddd5c8 !important; }
 # ── Session state ─────────────────────────────────────────────────────────────
 
 def _init():
-    st.session_state.setdefault("messages", [])
     st.session_state.setdefault("_running", False)
     st.session_state.setdefault("_current_question", "")
     st.session_state.setdefault("_stop_event", None)
     st.session_state.setdefault("_result_queue", None)
     st.session_state.setdefault("_progress", {"step": ""})
+    st.session_state.setdefault("messages", [])
+    st.session_state.setdefault("current_session_id", None)
+
+    # Load sessions list once per login
+    if not st.session_state.get("_sessions_loaded"):
+        from auth.history import get_sessions
+        user_id = (st.session_state.get("current_user") or {}).get("id")
+        st.session_state["sessions"] = get_sessions(user_id) if user_id else []
+        st.session_state["_sessions_loaded"] = True
 
 
 # ── DB connection (cached across reruns) ──────────────────────────────────────
@@ -271,6 +279,19 @@ def _build_history(n_turns: int = 3) -> list:
 
 def _start_agent(question: str):
     """Kick off the background agent thread for the given question."""
+    from auth.history import create_session, update_session_title, get_sessions
+
+    user_id    = (st.session_state.get("current_user") or {}).get("id")
+    session_id = st.session_state.get("current_session_id")
+
+    # Create a session on the first message of a new conversation
+    if session_id is None and user_id:
+        session_id = create_session(user_id)
+        title = (question[:52] + "…") if len(question) > 52 else question
+        update_session_title(session_id, title)
+        st.session_state["current_session_id"] = session_id
+        st.session_state["sessions"] = get_sessions(user_id)
+
     stop_ev  = threading.Event()
     result_q = _queue.Queue()
     progress = {"step": "Thinking..."}
@@ -297,6 +318,7 @@ def render_result(msg: dict, key_prefix: str = ""):
     answer = msg.get("content") or msg.get("response") or ""
     st.markdown(answer if answer else "_No response generated._")
 
+    historical      = msg.get("_historical", False)   # loaded from DB — no live data
     row_count       = msg.get("row_count")
     sql             = msg.get("sql_query")
     results         = msg.get("query_results") or []
@@ -318,7 +340,7 @@ def render_result(msg: dict, key_prefix: str = ""):
         with st.expander("View SQL"):
             st.code(sql, language="sql")
 
-    if results and col_names:
+    if not historical and results and col_names:
         df = pd.DataFrame(results, columns=col_names)
         if not df.columns.is_unique:
             seen: dict = {}
@@ -355,7 +377,7 @@ def render_result(msg: dict, key_prefix: str = ""):
                     key=f"{key_prefix}_xlsx",
                 )
 
-    if report_bytes and report_filename:
+    if not historical and report_bytes and report_filename:
         mime = "text/csv" if report_filename.endswith(".csv") else \
                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
         st.download_button(
@@ -391,6 +413,62 @@ def render_sidebar(info: dict):
 
         st.divider()
 
+        # ── Conversation threads ──────────────────────────────────────────────
+        st.markdown("**Conversations**")
+
+        if st.button("➕ New conversation", use_container_width=True):
+            if st.session_state.get("_stop_event"):
+                st.session_state._stop_event.set()
+            st.session_state["messages"]           = []
+            st.session_state["current_session_id"] = None
+            st.session_state["_running"]           = False
+            st.rerun()
+
+        sessions    = st.session_state.get("sessions", [])
+        user_id     = (user or {}).get("id")
+        current_sid = st.session_state.get("current_session_id")
+
+        if sessions:
+            from auth.history import date_group, load_session_messages, delete_session, get_sessions
+
+            last_group = None
+            for sess in sessions:
+                group = date_group(sess["updated_at"] or sess["created_at"])
+                if group != last_group:
+                    st.caption(group)
+                    last_group = group
+
+                title     = (sess["title"] or "New conversation")[:50]
+                is_active = sess["id"] == current_sid
+                prefix    = "▶ " if is_active else ""
+                c1, c2    = st.columns([5, 1])
+
+                with c1:
+                    if st.button(
+                        f"{prefix}{title}",
+                        key=f"sess_{sess['id']}",
+                        use_container_width=True,
+                        help=sess["title"] or "",
+                    ):
+                        msgs = load_session_messages(sess["id"])
+                        st.session_state["messages"]           = msgs
+                        st.session_state["current_session_id"] = sess["id"]
+                        st.rerun()
+
+                with c2:
+                    if st.button("🗑", key=f"del_{sess['id']}", help="Delete"):
+                        delete_session(sess["id"], user_id)
+                        if current_sid == sess["id"]:
+                            st.session_state["messages"]           = []
+                            st.session_state["current_session_id"] = None
+                        st.session_state["sessions"] = get_sessions(user_id)
+                        st.rerun()
+        else:
+            st.caption("No conversations yet.")
+
+        st.divider()
+
+        # ── DB connection status ──────────────────────────────────────────────
         if info.get("success"):
             st.markdown(
                 f"🟢 **Connected**  \n"
@@ -419,19 +497,6 @@ def render_sidebar(info: dict):
                      help="Force-rebuild the schema embedding index"):
             st.cache_resource.clear()
             st.session_state["_idx_status"] = ""
-            st.rerun()
-
-        st.divider()
-
-        n = len([m for m in st.session_state.messages if m["role"] == "user"])
-        st.caption(f"💬 {n} question{'s' if n != 1 else ''} this session")
-
-        if st.button("🧹 Clear conversation", use_container_width=True):
-            st.session_state.messages = []
-            # Cancel any running query too
-            if st.session_state.get("_stop_event"):
-                st.session_state._stop_event.set()
-            st.session_state._running = False
             st.rerun()
 
 
@@ -505,6 +570,9 @@ def main():
             result = result_q.get_nowait()
             st.session_state._running = False
 
+            from auth.history import save_message
+            user_id = (st.session_state.get("current_user") or {}).get("id")
+
             if result.get("__stopped__"):
                 st.session_state.messages.append(
                     {"role": "user", "content": q_text}
@@ -513,27 +581,41 @@ def main():
                     {"role": "assistant", "content": "_Query stopped._"}
                 )
             elif result.get("__error__"):
+                err_text = f"Something went wrong: {result['__error__']}"
                 st.session_state.messages.append(
                     {"role": "user", "content": q_text}
                 )
                 st.session_state.messages.append(
-                    {"role": "assistant",
-                     "content": f"Something went wrong: {result['__error__']}"}
+                    {"role": "assistant", "content": err_text}
                 )
+                if user_id:
+                    _sid = st.session_state.get("current_session_id")
+                    if _sid:
+                        save_message(user_id, _sid, "user", q_text)
+                        save_message(user_id, _sid, "assistant", err_text)
             else:
+                assistant_content = result.get("response", "")
+                sql_query         = result.get("sql_query")
                 st.session_state.messages.append(
                     {"role": "user", "content": q_text}
                 )
                 st.session_state.messages.append({
                     "role":            "assistant",
-                    "content":         result.get("response", ""),
-                    "sql_query":       result.get("sql_query"),
+                    "content":         assistant_content,
+                    "sql_query":       sql_query,
                     "query_results":   result.get("query_results"),
                     "column_names":    result.get("column_names"),
                     "row_count":       result.get("row_count"),
                     "report_bytes":    result.get("report_bytes"),
                     "report_filename": result.get("report_filename"),
                 })
+                if user_id:
+                    _sid = st.session_state.get("current_session_id")
+                    if _sid:
+                        save_message(user_id, _sid, "user", q_text)
+                        save_message(user_id, _sid, "assistant", assistant_content, sql_query)
+                        from auth.history import get_sessions
+                        st.session_state["sessions"] = get_sessions(user_id)
 
             st.rerun()
 
