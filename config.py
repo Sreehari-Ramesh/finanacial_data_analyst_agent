@@ -4,7 +4,7 @@ from sqlalchemy.engine import URL as SAUrl, Engine
 import os
 
 #---- LangSmith ---------------------------------
-os.environ["LANGSMITH_API_KEY"] = "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"
+os.environ["LANGSMITH_API_KEY"] = ""
 
 os.environ["LANGSMITH_TRACING"] = "true"
 os.environ["LANGSMITH_PROJECT"] = "qna_agent"
@@ -14,15 +14,15 @@ os.environ["LANGSMITH_PROJECT"] = "qna_agent"
 LLM_PROVIDER      = "openai"
 ANTHROPIC_API_KEY = "your_anthropic_api_key_here"
 ANTHROPIC_MODEL   = "claude-sonnet-4-6"
-OPENAI_API_KEY    = "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"
+OPENAI_API_KEY    = "your_openai_api_key_here"
 OPENAI_MODEL      = "gpt-5.4"
 
 # ── SQL Server ────────────────────────────────────────────────────────────────
-DB_SERVER       = "77.81.191.141"
-DB_PORT         = 36773
-DB_NAME         = "777AiReport"
-DB_USERNAME     = "DBTester"
-DB_PASSWORD     = "Lmno@753"
+DB_SERVER       = ""
+DB_PORT         = 
+DB_NAME         = ""
+DB_USERNAME     = ""
+DB_PASSWORD     = ""
 DB_DRIVER       = "ODBC Driver 17 for SQL Server"
 DB_WINDOWS_AUTH = False
 
